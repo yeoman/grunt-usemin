@@ -1,10 +1,8 @@
 'use strict';
-var fs = require('fs'),
-  util = require('util'),
-  path = require('path');
+var util = require('util');
 
-var inspect = function(o) {
-  return util.inspect(o, false, 4, true);
+var inspect = function(obj) {
+  return util.inspect(obj, false, 4, true);
 };
 
 //
@@ -68,19 +66,18 @@ var inspect = function(o) {
 //
 
 module.exports = function(grunt) {
-  var internal_lib_path = '../lib/';
-  var HTMLProcessor = require( internal_lib_path + 'htmlprocessor'),
-      CSSProcessor = require( internal_lib_path + 'cssprocessor'),
-      RevvedFinder = require( internal_lib_path + 'revvedfinder');
+  var HTMLProcessor = require('../lib/htmlprocessor');
+  var CSSProcessor = require('../lib/cssprocessor');
+  var RevvedFinder = require('../lib/revvedfinder');
 
   grunt.registerMultiTask('usemin', 'Replaces references to non-minified scripts / stylesheets', function() {
     var processors = {
-      'css': CSSProcessor,
-      'html': HTMLProcessor
+      css: CSSProcessor,
+      html: HTMLProcessor
     };
-    var name = this.target,
-      data = this.data,
-      files = grunt.file.expand(data);
+    var name = this.target;
+    var data = this.data;
+    var files = grunt.file.expand(data);
 
     files.map(grunt.file.read).forEach(function(content, i) {
       var filepath = files[i];
@@ -93,18 +90,17 @@ module.exports = function(grunt) {
       content = content.toString();
 
       // Our revved version locator
-      var revvedfinder = new RevvedFinder( grunt.file.expand );
+      var revvedfinder = new RevvedFinder(grunt.file.expand);
 
       // ext-specific directives handling and replacement of blocks
       var proc = new processors[name](filepath, content, revvedfinder, function(msg) {
         grunt.log.writeln(msg);
       });
 
-      content = proc.process ();
+      content = proc.process();
       // write the new content to disk
       grunt.file.write(filepath, content);
     });
-
   });
 
   grunt.registerMultiTask('usemin-handler', 'Using HTML markup as the primary source of information', function() {
@@ -112,10 +108,10 @@ module.exports = function(grunt) {
     var files = grunt.file.expandFiles(this.data);
 
     // concat / min / css / rjs config
-    var concat = grunt.config('concat') || {},
-      min = grunt.config('min') || {},
-      css = grunt.config('css') || {},
-      rjs = grunt.config('rjs') || {};
+    var concat = grunt.config('concat') || {};
+    var min = grunt.config('min') || {};
+    var css = grunt.config('css') || {};
+    var rjs = grunt.config('rjs') || {};
 
     grunt.log
       .writeln('Going through ' + grunt.log.wordlist(files) + ' to update the config')
@@ -129,13 +125,12 @@ module.exports = function(grunt) {
     });
 
     files.forEach(function(file) {
-      var revvedfinder = new RevvedFinder( grunt.file.expand );
+      var revvedfinder = new RevvedFinder(grunt.file.expand);
       var proc = new HTMLProcessor(file.path, file.body, revvedfinder, function(msg) {
         grunt.log.writeln(msg);
       });
 
       proc.blocks.forEach(function(block) {
-
         grunt.log.subhead('Found a block:')
           .writeln(grunt.log.wordlist(block.raw, { separator: '\n' }))
           .writeln('Updating config with the following assets:')
@@ -154,13 +149,13 @@ module.exports = function(grunt) {
         }
 
         // min config, only for js type block
-        if(block.type === 'js') {
+        if (block.type === 'js') {
           min[block.dest] = block.dest;
           grunt.config('min', min);
         }
 
         // css config, only for css type block
-        if(block.type === 'css') {
+        if (block.type === 'css') {
           css[block.dest] = block.dest;
           grunt.config('css', css);
         }
@@ -177,6 +172,5 @@ module.exports = function(grunt) {
       .writeln('  ' + inspect(min))
       .subhead('  rjs:')
       .writeln('  ' + inspect(rjs));
-
   });
 };
