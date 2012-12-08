@@ -7,7 +7,7 @@ _If you haven't used [grunt][] before, be sure to check out the [Getting Started
 
 From the same directory as your project's [Gruntfile][Getting Started] and [package.json][], install this plugin with the following command:
 
-```bash
+```
 npm install grunt-usemin
 ```
 
@@ -23,30 +23,31 @@ If the plugin has been installed correctly, running `grunt --help` at the comman
 [Getting Started]: https://github.com/gruntjs/grunt/blob/devel/docs/getting_started.md
 [package.json]: https://npmjs.org/doc/json.html
 
+
 ## The usemin-handler task
 
 A special task which uses the build block HTML comments in markup to get back the list of files to handle, and initialize the grunt configuration appropriately, and automatically.
 
 Custom HTML "block" comments are provided as an API for interacting with the build script. These comments adhere to the following pattern:
 
-```
-     <!-- build:<type> <path> -->
-       ... HTML Markup, list of script / link tags.
-     <!-- endbuild -->
+```html
+<!-- build:<type> <path> -->
+ ... HTML Markup, list of script / link tags.
+<!-- endbuild -->
 ```
 
- - type: is either js or css.
- - path: is the file path of the optimized file, the target output.
+- type: is either js or css.
+- path: is the file path of the optimized file, the target output.
 
- An example of this in completed form can be seen below:
+An example of this in completed form can be seen below:
 
 ```
-    <!-- build:js js/app.js -->
-      <script src="js/app.js"></script>
-      <script src="js/controllers/thing-controller.js"></script>
-      <script src="js/models/thing-model.js"></script>
-      <script src="js/views/thing-view.js"></script>
-    <!-- endbuild -->
+<!-- build:js js/app.js -->
+  <script src="js/app.js"></script>
+  <script src="js/controllers/thing-controller.js"></script>
+  <script src="js/models/thing-model.js"></script>
+  <script src="js/views/thing-view.js"></script>
+<!-- endbuild -->
 ```
 
  Internally, the task parses your HTML markup to find each of these blocks, and initializes for you the corresponding Grunt config for the concat / min tasks
@@ -81,8 +82,5 @@ This task is responsible for replacing in HTML and CSS files, references to non-
       css: ['**/*.css']
     }
 ```
-
-
-
 
 
