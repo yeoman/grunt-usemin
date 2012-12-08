@@ -103,7 +103,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerMultiTask('usemin-handler', 'Using HTML markup as the primary source of information', function() {
+  grunt.registerMultiTask('useminPrepare', 'Using HTML markup as the primary source of information', function() {
     // collect files
     var files = grunt.file.expandFiles(this.data);
 

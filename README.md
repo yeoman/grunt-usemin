@@ -13,8 +13,16 @@ npm install grunt-usemin --save-dev
 [grunt]: http://gruntjs.com/
 [Getting Started]: https://github.com/gruntjs/grunt/blob/devel/docs/getting_started.md
 
+## Workflow
 
-## The usemin-handler task
+usemin is composed of 2 different tasks (`useminPrepare` and `usemin`) that are part of the same workflow:
+
+- **useminPrepare**: detects special construction (blocks) in the HTML files and update the `grunt` config to run `concat`/`min`/`css`/`requirejs` on the files referenced in the block. It does not changes the HTML files it is working on.
+- **usemin**: in the HTML and CSS files it treats, it replaces the blocks by a reference to a single file, as well as all references to images, scripts, CSS files, by their minified/revved/.. version if it is found on the disk. As such this target rewrites the HTML and CSS files it is working on.
+
+Usually, `useminPrepare` is launched first, then the `concat`, `min`, `css` and `requirejs` tasks are launched (they will created the minified/revved version of the referenced files), and then, in the end `usemin` is launched.
+
+## The useminPrepare task
 
 A special task which uses the build block HTML comments in markup to get back the list of files to handle, and initialize the grunt configuration appropriately, and automatically.
 
@@ -55,7 +63,7 @@ One doesn't need to specify a concat/min/css or RequireJS configuration anymore.
 It is using only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
 
 ```js
-'usemin-handler': {
+'useminPrepare': {
   html: 'index.html'
 }
 ```

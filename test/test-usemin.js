@@ -76,13 +76,13 @@ describe('usemin', function() {
     assert.ok(changed.match(/url\(\"\/images\/23012.test\.png\"/));
   });
 
-  describe('usemin-handler', function() {
+  describe('useminPrepare', function() {
     it('should update the config (HTML)', function() {
       grunt.log.muted = true;
       grunt.config.init();
-      grunt.config('usemin-handler', {html: 'index.html'});
+      grunt.config('useminPrepare', {html: 'index.html'});
       grunt.file.copy(path.join(__dirname,'fixtures/usemin.html'), 'index.html');
-      grunt.task.run('usemin-handler');
+      grunt.task.run('useminPrepare');
       grunt.task.start();
 
       var concat = grunt.config('concat');
