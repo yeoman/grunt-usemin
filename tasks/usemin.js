@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var fs = require('fs'),
   util = require('util'),
   path = require('path');
@@ -68,7 +68,7 @@ var inspect = function(o) {
 //
 
 module.exports = function(grunt) {
-  var internal_lib_path = "../lib/";
+  var internal_lib_path = '../lib/';
   var HTMLProcessor = require( internal_lib_path + 'htmlprocessor'),
       CSSProcessor = require( internal_lib_path + 'cssprocessor'),
       RevvedFinder = require( internal_lib_path + 'revvedfinder');
