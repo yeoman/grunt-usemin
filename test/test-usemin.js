@@ -1,5 +1,4 @@
 'use strict';
-var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
 var grunt = require('grunt');
@@ -15,11 +14,11 @@ opts.redirect = !opts.silent;
 var directory = function directory(dir) {
   return function directory(done) {
     process.chdir(__dirname);
-    rimraf(dir, function(err) {
+    rimraf(dir, function (err) {
       if (err) {
         return done(err);
       }
-      mkdirp(dir, function(err) {
+      mkdirp(dir, function (err) {
         if (err) {
           return done(err);
         }
@@ -30,10 +29,10 @@ var directory = function directory(dir) {
   };
 };
 
-describe('usemin', function() {
+describe('usemin', function () {
   before(directory('temp'));
 
-  it('should take into account path', function() {
+  it('should take into account path', function () {
     grunt.file.mkdir('images');
     grunt.file.mkdir('images/misc');
     grunt.file.write('images/23012.test.png', 'foo');
@@ -41,7 +40,7 @@ describe('usemin', function() {
     grunt.log.muted = true;
     grunt.config.init();
     grunt.config('usemin', {html: 'index.html'});
-    grunt.file.copy(path.join(__dirname,'fixtures/usemin.html'), 'index.html');
+    grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('usemin');
     grunt.task.start();
 
@@ -51,11 +50,11 @@ describe('usemin', function() {
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
-    assert.ok(changed.match(/img[^\>]+src=['"]\/images\/23012.test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]\/images\/23012\.test\.png["']/));
     assert.ok(changed.match('<a href="http://foo/bar"></a><a href="ftp://bar"></a><a href="images/23012.test.png"></a><a href="/images/23012.test.png"></a><a href="#local"></a>'));
   });
 
-  it('should work on CSS files', function() {
+  it('should work on CSS files', function () {
     grunt.file.mkdir('images');
     grunt.file.mkdir('images/misc');
     grunt.file.write('images/23012.test.png', 'foo');
@@ -63,7 +62,7 @@ describe('usemin', function() {
     grunt.log.muted = true;
     grunt.config.init();
     grunt.config('usemin', {css: 'style.css'});
-    grunt.file.copy(path.join(__dirname,'fixtures/style.css'), 'style.css');
+    grunt.file.copy(path.join(__dirname, 'fixtures/style.css'), 'style.css');
     grunt.task.run('usemin');
     grunt.task.start();
 
@@ -73,15 +72,15 @@ describe('usemin', function() {
     assert.ok(changed.match(/url\(\"images\/23012\.test\.png\"/));
     assert.ok(changed.match(/url\(\"images\/misc\/2a436\.test\.png\"/));
     assert.ok(changed.match(/url\(\"\/\/images\/test\.png\"/));
-    assert.ok(changed.match(/url\(\"\/images\/23012.test\.png\"/));
+    assert.ok(changed.match(/url\(\"\/images\/23012\.test\.png\"/));
   });
 
-  describe('useminPrepare', function() {
-    it('should update the config (HTML)', function() {
+  describe('useminPrepare', function () {
+    it('should update the config (HTML)', function () {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'index.html'});
-      grunt.file.copy(path.join(__dirname,'fixtures/usemin.html'), 'index.html');
+      grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
       grunt.task.run('useminPrepare');
       grunt.task.start();
 

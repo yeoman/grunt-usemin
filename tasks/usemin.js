@@ -1,7 +1,7 @@
 'use strict';
 var util = require('util');
 
-var inspect = function(obj) {
+var inspect = function (obj) {
   return util.inspect(obj, false, 4, true);
 };
 
@@ -65,12 +65,12 @@ var inspect = function(obj) {
 // For related sample, see: cli/test/tasks/usemin-handler/index.html
 //
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   var HTMLProcessor = require('../lib/htmlprocessor');
   var CSSProcessor = require('../lib/cssprocessor');
   var RevvedFinder = require('../lib/revvedfinder');
 
-  grunt.registerMultiTask('usemin', 'Replaces references to non-minified scripts / stylesheets', function() {
+  grunt.registerMultiTask('usemin', 'Replaces references to non-minified scripts / stylesheets', function () {
     var processors = {
       css: CSSProcessor,
       html: HTMLProcessor
@@ -79,7 +79,7 @@ module.exports = function(grunt) {
     var data = this.data;
     var files = grunt.file.expand(data);
 
-    files.map(grunt.file.read).forEach(function(content, i) {
+    files.map(grunt.file.read).forEach(function (content, i) {
       var filepath = files[i];
 
       grunt.log.subhead('usemin:' + name + ' - ' + filepath);
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
       var revvedfinder = new RevvedFinder(grunt.file.expand);
 
       // ext-specific directives handling and replacement of blocks
-      var proc = new processors[name](filepath, content, revvedfinder, function(msg) {
+      var proc = new processors[name](filepath, content, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerMultiTask('useminPrepare', 'Using HTML markup as the primary source of information', function() {
+  grunt.registerMultiTask('useminPrepare', 'Using HTML markup as the primary source of information', function () {
     // collect files
     var files = grunt.file.expandFiles(this.data);
 
@@ -117,20 +117,20 @@ module.exports = function(grunt) {
       .writeln('Going through ' + grunt.log.wordlist(files) + ' to update the config')
       .writeln('Looking for build script HTML comment blocks');
 
-    files = files.map(function(filepath) {
+    files = files.map(function (filepath) {
       return {
         path: filepath,
         body: grunt.file.read(filepath)
       };
     });
 
-    files.forEach(function(file) {
+    files.forEach(function (file) {
       var revvedfinder = new RevvedFinder(grunt.file.expand);
-      var proc = new HTMLProcessor(file.path, file.body, revvedfinder, function(msg) {
+      var proc = new HTMLProcessor(file.path, file.body, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 
-      proc.blocks.forEach(function(block) {
+      proc.blocks.forEach(function (block) {
         grunt.log.subhead('Found a block:')
           .writeln(grunt.log.wordlist(block.raw, { separator: '\n' }))
           .writeln('Updating config with the following assets:')
