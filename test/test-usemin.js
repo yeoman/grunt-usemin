@@ -1,26 +1,28 @@
 'use strict';
-var fs      = require('fs');
-var path    = require('path');
-var grunt   = require('grunt');
-var assert  = require('assert');
+var fs = require('fs');
+var path = require('path');
+var assert = require('assert');
+var grunt = require('grunt');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 
 grunt.task.init([]);
 grunt.config.init({});
 
-var usemin = require('../tasks/usemin.js')(grunt);
-
 var opts = grunt.cli.options;
 opts.redirect = !opts.silent;
 
 var directory = function directory(dir) {
   return function directory(done) {
-    process.chdir(__dirname );
+    process.chdir(__dirname);
     rimraf(dir, function(err) {
-      if(err) { return done(err); }
+      if (err) {
+        return done(err);
+      }
       mkdirp(dir, function(err) {
-        if(err) { return done(err); }
+        if (err) {
+          return done(err);
+        }
         process.chdir(dir);
         done();
       });
@@ -28,30 +30,6 @@ var directory = function directory(dir) {
   };
 };
 
-var gruntfile = function(options, taskMap) {
-  return function gruntfile(done) {
-    var config = 'grunt.initConfig(' + JSON.stringify(options, null, 2) + ');';
-    config = config.split('\n').map(function(line) {
-      return '  ' + line;
-    }).join('\n');
-
-    var tasks = Object.keys(taskMap || {}).map(function(key) {
-      return '\ngrunt.registerTask(\'' + key + '\', ' + taskMap[key] + ');';
-    }).join('\n');
-
-    var out = [
-      'module.exports = function(grunt) {',
-      config,
-      tasks,
-      '};'
-    ];
-
-    fs.writeFile('Gruntfile.js', out.join('\n'), done);
-  };
-};
-
-
-// XXX Conform to coding guidelines, mostly literral spacing stuff
 describe('usemin', function() {
   before(directory('temp'));
 
@@ -70,11 +48,11 @@ describe('usemin', function() {
     var changed = grunt.file.read('index.html');
 
     // Check replace has performed its duty
-    assert.ok( changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/) );
-    assert.ok( changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/) );
-    assert.ok( changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/) );
-    assert.ok( changed.match(/img[^\>]+src=['"]\/images\/23012.test\.png["']/) );
-    assert.ok( changed.match('<a href="http://foo/bar"></a><a href="ftp://bar"></a><a href="images/23012.test.png"></a><a href="/images/23012.test.png"></a><a href="#local"></a>'));
+    assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]\/images\/23012.test\.png["']/));
+    assert.ok(changed.match('<a href="http://foo/bar"></a><a href="ftp://bar"></a><a href="images/23012.test.png"></a><a href="/images/23012.test.png"></a><a href="#local"></a>'));
   });
 
   it('should work on CSS files', function() {
@@ -92,10 +70,10 @@ describe('usemin', function() {
     var changed = grunt.file.read('style.css');
 
     // Check replace has performed its duty
-    assert.ok( changed.match(/url\(\"images\/23012\.test\.png\"/) );
-    assert.ok( changed.match(/url\(\"images\/misc\/2a436\.test\.png\"/) );
-    assert.ok( changed.match(/url\(\"\/\/images\/test\.png\"/) );
-    assert.ok( changed.match(/url\(\"\/images\/23012.test\.png\"/) );
+    assert.ok(changed.match(/url\(\"images\/23012\.test\.png\"/));
+    assert.ok(changed.match(/url\(\"images\/misc\/2a436\.test\.png\"/));
+    assert.ok(changed.match(/url\(\"\/\/images\/test\.png\"/));
+    assert.ok(changed.match(/url\(\"\/images\/23012.test\.png\"/));
   });
 
   describe('usemin-handler', function() {
@@ -119,7 +97,6 @@ describe('usemin', function() {
       var min = grunt.config('min');
       assert.equal(min['scripts/amd-app.js'], 'scripts/amd-app.js');
       assert.equal(min['scripts/plugins.js'], 'scripts/plugins.js');
-
     });
   });
 });
