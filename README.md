@@ -2,26 +2,16 @@
 
 > Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).
 
+
 ## Getting Started
-_If you haven't used [grunt][] before, be sure to check out the [Getting Started][] guide._
+If you haven't used [grunt][] before, be sure to check out the [Getting Started][] guide, as it explains how to create a [gruntfile][Getting Started] as well as install and use grunt plugins. Once you're familiar with that process, install this plugin with this command:
 
-From the same directory as your project's [Gruntfile][Getting Started] and [package.json][], install this plugin with the following command:
-
+```shell
+npm install grunt-usemin --save-dev
 ```
-npm install grunt-usemin
-```
-
-Once that's done, add this line to your project's Gruntfile:
-
-```js
-grunt.loadNpmTasks('grunt-usemin');
-```
-
-If the plugin has been installed correctly, running `grunt --help` at the command line should list the newly-installed plugin's task or tasks. In addition, the plugin should be listed in package.json as a `devDependency`, which ensures that it will be installed whenever the `npm install` command is run.
 
 [grunt]: http://gruntjs.com/
 [Getting Started]: https://github.com/gruntjs/grunt/blob/devel/docs/getting_started.md
-[package.json]: https://npmjs.org/doc/json.html
 
 
 ## The usemin-handler task
@@ -36,8 +26,8 @@ Custom HTML "block" comments are provided as an API for interacting with the bui
 <!-- endbuild -->
 ```
 
-- type: is either js or css.
-- path: is the file path of the optimized file, the target output.
+- **type**: either `js` or `css`
+- **path**: the file path of the optimized file, the target output
 
 An example of this in completed form can be seen below:
 
@@ -50,19 +40,17 @@ An example of this in completed form can be seen below:
 <!-- endbuild -->
 ```
 
- Internally, the task parses your HTML markup to find each of these blocks, and initializes for you the corresponding Grunt config for the concat / min tasks
- when `type=js`, the concat / css tasks when `type=css`.
+Internally, the task parses your HTML markup to find each of these blocks, and initializes for you the corresponding Grunt config for the concat / min tasks when `type=js`, the concat / css tasks when `type=css`.
 
- The task also handles use of RequireJS, for the scenario where you specify the main entry point for your application using the "data-main" attribute
- as follows:
+The task also handles use of RequireJS, for the scenario where you specify the main entry point for your application using the "data-main" attribute as follows:
 
-```
+```html
 <!-- build:js js/app.min.js -->
 <script data-main="js/main" src="js/vendor/require.js"></script>
 <!-- -->
 ```
 
-One doesn't need to specify a concat/min/css or rjs configuration anymore.
+One doesn't need to specify a concat/min/css or RequireJS configuration anymore.
 
 It is using only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
 
@@ -71,6 +59,7 @@ It is using only one target: `html`, with a list of the concerned files. For exa
   html: 'index.html'
 }
 ```
+
 
 ## The usemin task
 
@@ -82,3 +71,8 @@ usemin: {
   css: ['**/*.css']
 }
 ```
+
+
+## License
+
+[BSD license](http://opensource.org/licenses/bsd-license.php) and copyright Google
