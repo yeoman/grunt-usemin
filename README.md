@@ -32,7 +32,7 @@ Custom HTML "block" comments are provided as an API for interacting with the bui
 
 ```html
 <!-- build:<type> <path> -->
- ... HTML Markup, list of script / link tags.
+... HTML Markup, list of script / link tags.
 <!-- endbuild -->
 ```
 
@@ -41,12 +41,12 @@ Custom HTML "block" comments are provided as an API for interacting with the bui
 
 An example of this in completed form can be seen below:
 
-```
+```html
 <!-- build:js js/app.js -->
-  <script src="js/app.js"></script>
-  <script src="js/controllers/thing-controller.js"></script>
-  <script src="js/models/thing-model.js"></script>
-  <script src="js/views/thing-view.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers/thing-controller.js"></script>
+<script src="js/models/thing-model.js"></script>
+<script src="js/views/thing-view.js"></script>
 <!-- endbuild -->
 ```
 
@@ -57,30 +57,28 @@ An example of this in completed form can be seen below:
  as follows:
 
 ```
-     <!-- build:js js/app.min.js -->
-     <script data-main="js/main" src="js/vendor/require.js"></script>
-     <!-- -->
+<!-- build:js js/app.min.js -->
+<script data-main="js/main" src="js/vendor/require.js"></script>
+<!-- -->
 ```
 
 One doesn't need to specify a concat/min/css or rjs configuration anymore.
 
 It is using only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
 
-```
-    'usemin-handler': {
-      html: 'index.html'
-    }
+```js
+'usemin-handler': {
+  html: 'index.html'
+}
 ```
 
 ## The usemin task
 
 This task is responsible for replacing in HTML and CSS files, references to non-minified files with reference to their minified/revved version if they are found on the disk.
 
+```js
+usemin: {
+  html: ['**/*.html'],
+  css: ['**/*.css']
+}
 ```
-    usemin: {
-      html: ['**/*.html'],
-      css: ['**/*.css']
-    }
-```
-
-
