@@ -59,7 +59,7 @@ var inspect = function(obj) {
 //     <script data-main="js/main" src="js/vendor/require.js"></script>
 //     <!-- -->
 //
-// One doesn't need to specify a concat/min/css or rjs configuration anymore.
+// One doesn't need to specify a concat/min/css or requirejs configuration anymore.
 //
 // Inspired by previous work in https://gist.github.com/3024891
 // For related sample, see: cli/test/tasks/usemin-handler/index.html
@@ -107,11 +107,11 @@ module.exports = function(grunt) {
     // collect files
     var files = grunt.file.expandFiles(this.data);
 
-    // concat / min / css / rjs config
+    // concat / min / css / requirejs config
     var concat = grunt.config('concat') || {};
     var min = grunt.config('min') || {};
     var css = grunt.config('css') || {};
-    var rjs = grunt.config('rjs') || {};
+    var requirejs = grunt.config('requirejs') || {};
 
     grunt.log
       .writeln('Going through ' + grunt.log.wordlist(files) + ' to update the config')
@@ -140,12 +140,12 @@ module.exports = function(grunt) {
         concat[block.dest] = block.src;
         grunt.config('concat', concat);
 
-        // update rjs config as well, as during path lookup we might have
+        // update requirejs config as well, as during path lookup we might have
         // updated it on data-main attribute
-        if (block.rjs) {
-          rjs.out = rjs.out || block.rjs.dest;
-          rjs.name = rjs.name || block.rjs.name;
-          grunt.config('rjs', rjs);
+        if (block.requirejs) {
+          requirejs.out = requirejs.out || block.requirejs.dest;
+          requirejs.name = requirejs.name || block.requirejs.name;
+          grunt.config('requirejs', requirejs);
         }
 
         // min config, only for js type block
@@ -170,7 +170,7 @@ module.exports = function(grunt) {
       .writeln('  ' + inspect(concat))
       .subhead('  min:')
       .writeln('  ' + inspect(min))
-      .subhead('  rjs:')
-      .writeln('  ' + inspect(rjs));
+      .subhead('  requirejs:')
+      .writeln('  ' + inspect(requirejs));
   });
 };

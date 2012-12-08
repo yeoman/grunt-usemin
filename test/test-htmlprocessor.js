@@ -57,9 +57,9 @@ describe('htmlprocessor', function() {
     '<!-- endbuild -->';
     var hp = new HTMLProcessor('myfile.html', html_content, 3);
     assert.equal(1, hp.blocks.length);
-    assert.ok(hp.blocks[0].rjs);
-    assert.equal(hp.blocks[0].rjs.dest, 'scripts/amd-app.js');
-    assert.equal(hp.blocks[0].rjs.name, 'scripts/main');
+    assert.ok(hp.blocks[0].requirejs);
+    assert.equal(hp.blocks[0].requirejs.dest, 'scripts/amd-app.js');
+    assert.equal(hp.blocks[0].requirejs.name, 'scripts/main');
   });
 
   it('should take into consideration source files referenced from root', function() {

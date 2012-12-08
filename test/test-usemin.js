@@ -89,10 +89,10 @@ describe('usemin', function() {
       assert.ok(concat['scripts/plugins.js']);
       assert.equal(concat['scripts/plugins.js'].length, 13);
 
-      var rjs = grunt.config('rjs');
-      assert.ok(rjs.name);
-      assert.equal(rjs.name, 'scripts/main');
-      assert.equal(rjs.out, 'scripts/amd-app.js');
+      var requirejs = grunt.config('requirejs');
+      assert.ok(requirejs.name);
+      assert.equal(requirejs.name, 'scripts/main');
+      assert.equal(requirejs.out, 'scripts/amd-app.js');
 
       var min = grunt.config('min');
       assert.equal(min['scripts/amd-app.js'], 'scripts/amd-app.js');
