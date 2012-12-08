@@ -96,7 +96,9 @@ module.exports = function(grunt) {
       var revvedfinder = new RevvedFinder( grunt.file.expand );
 
       // ext-specific directives handling and replacement of blocks
-      var proc = new processors[name](filepath, content, revvedfinder);
+      var proc = new processors[name](filepath, content, revvedfinder, function(msg) {
+        grunt.log.writeln(msg);
+      });
 
       content = proc.process ();
       // write the new content to disk
@@ -115,6 +117,10 @@ module.exports = function(grunt) {
       css = grunt.config('css') || {},
       rjs = grunt.config('rjs') || {};
 
+    grunt.log
+      .writeln('Going through ' + grunt.log.wordlist(files) + ' to update the config')
+      .writeln('Looking for build script HTML comment blocks');
+
     files = files.map(function(filepath) {
       return {
         path: filepath,
@@ -124,7 +130,9 @@ module.exports = function(grunt) {
 
     files.forEach(function(file) {
       var revvedfinder = new RevvedFinder( grunt.file.expand );
-      var proc = new HTMLProcessor(file.path, file.body, revvedfinder);
+      var proc = new HTMLProcessor(file.path, file.body, revvedfinder, function(msg) {
+        grunt.log.writeln(msg);
+      });
 
       proc.blocks.forEach(function(block) {
 
