@@ -1,6 +1,11 @@
 "use strict";
 var fs = require('fs'),
+  util = require('util'),
   path = require('path');
+
+var inspect = function(o) {
+  return util.inspect(o, false, 4, true);
+};
 
 //
 // ### Usemin
@@ -157,13 +162,13 @@ module.exports = function(grunt) {
     // log a bit what was added to config
     grunt.log.subhead('Configuration is now:')
       .subhead('  css:')
-      .writeln('  ' + grunt.helper('inspect', css))
+      .writeln('  ' + inspect(css))
       .subhead('  concat:')
-      .writeln('  ' + grunt.helper('inspect', concat))
+      .writeln('  ' + inspect(concat))
       .subhead('  min:')
-      .writeln('  ' + grunt.helper('inspect', min))
+      .writeln('  ' + inspect(min))
       .subhead('  rjs:')
-      .writeln('  ' + grunt.helper('inspect', rjs));
+      .writeln('  ' + inspect(rjs));
 
   });
 };
