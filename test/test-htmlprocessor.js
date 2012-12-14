@@ -62,6 +62,30 @@ describe('htmlprocessor', function () {
     assert.equal(hp.blocks[0].requirejs.name, 'scripts/main');
   });
 
+  it('should take into consideration path of the source file', function () {
+    var htmlcontent = '<!-- build:css bar/foo.css -->\n' +
+    '<link rel="stylesheet" href="bar.css">\n' +
+    '<!-- endbuild -->';
+    var hp = new HTMLProcessor('build/myfile.html', htmlcontent, 3);
+    assert.equal(1, hp.blocks.length);
+    assert.equal('build/bar/foo.css', hp.blocks[0].dest);
+    assert.equal(1, hp.blocks[0].src.length);
+    assert.equal('build/bar.css', hp.blocks[0].src[0]);
+  });
+
+  it('should take into consideration path of the source file (RequireJS)', function () {
+    var htmlcontent = '<!-- build:js scripts/amd-app.js -->\n' +
+    '<script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n' +
+    '<script src="foo.js"></script>\n' +
+    '<!-- endbuild -->';
+    var hp = new HTMLProcessor('build/myfile.html', htmlcontent, 3);
+    assert.equal(1, hp.blocks.length);
+    assert.equal('build/scripts/amd-app.js', hp.blocks[0].dest);
+    assert.ok(hp.blocks[0].requirejs);
+    assert.equal(hp.blocks[0].requirejs.dest, 'build/scripts/amd-app.js');
+    assert.equal(hp.blocks[0].requirejs.name, 'build/scripts/main');
+  });
+
   it('should take into consideration source files referenced from root', function () {
     var htmlcontent = '<!-- build:css /bar/foo.css -->\n' +
     '<link rel="stylesheet" href="bar.css">\n' +
