@@ -32,7 +32,7 @@ var directory = function directory(dir) {
 describe('usemin', function () {
   before(directory('temp'));
 
-  it('should take into account path', function () {
+  it('should take into account path when replacing references', function () {
     grunt.file.mkdir('images');
     grunt.file.mkdir('images/misc');
     grunt.file.write('images/23012.test.png', 'foo');
@@ -96,6 +96,29 @@ describe('usemin', function () {
       var min = grunt.config('min');
       assert.equal(min['scripts/amd-app.js'], 'scripts/amd-app.js');
       assert.equal(min['scripts/plugins.js'], 'scripts/plugins.js');
+    });
+
+    it('output config for subsequent tasks (requirejs, concat, ..) should be relative to observed file', function () {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'build/index.html'});
+      grunt.file.mkdir('html');
+      grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'build/index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var concat = grunt.config('concat');
+      assert.ok(concat['build/scripts/foo.js']);
+      assert.equal(concat['build/scripts/foo.js'].length, 2);
+
+      var requirejs = grunt.config('requirejs');
+      assert.ok(requirejs.name);
+      assert.equal(requirejs.name, 'build/scripts/main');
+      assert.equal(requirejs.out, 'build/scripts/amd-app.js');
+
+      var min = grunt.config('min');
+      assert.equal(min['build/scripts/amd-app.js'], 'build/scripts/amd-app.js');
+      assert.equal(min['build/scripts/foo.js'], 'build/scripts/foo.js');
     });
   });
 });
