@@ -109,6 +109,13 @@ describe('htmlprocessor', function () {
       var replacestring = hp.replaceWith(hp.blocks[0]);
       assert.equal(replacestring, '  <link rel="stylesheet" href="foo.css"/>');
     });
+
+    it('should replace with a path relative to the file', function () {
+      var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
+      var hp = new HTMLProcessor('build/myfile.txt', htmlcontent, 3);
+      var replacestring = hp.replaceWith(hp.blocks[0]);
+      assert.equal(replacestring, '  <script src="foo.js"></script>');
+    });
   });
 
   describe('replaceBlocks', function () {
