@@ -75,6 +75,25 @@ describe('usemin', function () {
     assert.ok(changed.match(/url\(\"\/images\/23012\.test\.png\"/));
   });
 
+  it('should take into account original file location when replacing', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {html: 'build/index.html'});
+    grunt.file.mkdir('build');
+    grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'build/index.html');
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+
+    var changed = grunt.file.read('build/index.html');
+
+    // Check replace has performed its duty
+    assert.ok(changed.match(/<script src=\"scripts\/foo.js\"><\/script>/));
+    assert.ok(changed.match(/<script src=\"scripts\/amd-app.js\"><\/script>/));
+  });
+
+
+
   describe('useminPrepare', function () {
     it('should update the config (HTML)', function () {
       grunt.log.muted = true;
@@ -102,7 +121,7 @@ describe('usemin', function () {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'build/index.html'});
-      grunt.file.mkdir('html');
+      grunt.file.mkdir('build');
       grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'build/index.html');
       grunt.task.run('useminPrepare');
       grunt.task.start();
