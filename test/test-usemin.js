@@ -80,6 +80,10 @@ describe('usemin', function () {
     grunt.config.init();
     grunt.config('usemin', {html: 'build/index.html'});
     grunt.file.mkdir('build');
+    grunt.file.mkdir('build/images');
+    grunt.file.mkdir('build/images/misc');
+    grunt.file.write('build/images/23012.test.png', 'foo');
+    grunt.file.write('build/images/misc/2a436.test.png', 'foo');
     grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'build/index.html');
     grunt.task.run('usemin');
     grunt.task.start();
@@ -90,6 +94,10 @@ describe('usemin', function () {
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo.js\"><\/script>/));
     assert.ok(changed.match(/<script src=\"scripts\/amd-app.js\"><\/script>/));
+    assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]\/images\/23012\.test\.png["']/));
   });
 
 
