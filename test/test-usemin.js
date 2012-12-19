@@ -100,6 +100,24 @@ describe('usemin', function () {
     assert.ok(changed.match(/img[^\>]+src=['"]\/images\/23012\.test\.png["']/));
   });
 
+  it('should take into account relative path when replacing', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {css: 'build/css/style.css'});
+    grunt.file.mkdir('images');
+    grunt.file.mkdir('images/misc');
+    grunt.file.write('images/23012.test.png', 'foo');
+    grunt.file.write('images/misc/2a436.test.png', 'foo');
+    grunt.file.write('build/css/style.css', '.body { background: url("../../images/test.png"); }');
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+
+    var changed = grunt.file.read('build/css/style.css');
+
+    // Check replace has performed its duty
+    assert.ok(changed.match(/url\(\"\.\.\/\.\.\/images\/23012\.test\.png\"/));
+  });
 
 
   describe('useminPrepare', function () {

@@ -13,7 +13,8 @@ describe('cssprocessor', function () {
   describe('process', function () {
     var mapping = {
       'images/pic.png': 'images/2123.pic.png',
-      '/images/pic.png': '/images/2123.pic.png'
+      '/images/pic.png': '/images/2123.pic.png',
+      '../../images/pic.png': '../../images/2123.pic.png',
     };
     var revvedfinder = {
       find: function (s) {
@@ -46,6 +47,13 @@ describe('cssprocessor', function () {
       var content = 'background-image:url(http://images/pic.png);';
       var cp = new CSSProcessor('foo.css', content, revvedfinder);
       var awaited = 'background-image:url(http://images/pic.png);';
+      assert.equal(awaited, cp.process());
+    });
+
+    it('should take into account relative paths', function () {
+      var content = 'background-image:url(../../images/pic.png);';
+      var cp = new CSSProcessor('build/css/foo.css', content, revvedfinder);
+      var awaited = 'background-image:url(../../images/2123.pic.png);';
       assert.equal(awaited, cp.process());
     });
   });
