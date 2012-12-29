@@ -208,6 +208,13 @@ describe('htmlprocessor', function () {
       assert.equal(replaced, '<a href="' + filemapping['image.png'] + '"></a>');
     });
 
+    it('should replace image reference in input', function () {
+      var content = '<input type="image" src="image.png" />';
+      var hp = new HTMLProcessor('myfile.txt', content, revvedfinder);
+      var replaced = hp.replaceWithRevved();
+      assert.equal(replaced, '<input type="image" src="' + filemapping['image.png'] + '" />');
+    });
+
   });
 
   describe('process', function () {
