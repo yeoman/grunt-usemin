@@ -59,7 +59,8 @@ describe('htmlprocessor', function () {
     assert.equal(1, hp.blocks.length);
     assert.ok(hp.blocks[0].requirejs);
     assert.equal(hp.blocks[0].requirejs.dest, 'scripts/amd-app.js');
-    assert.equal(hp.blocks[0].requirejs.name, 'scripts/main');
+    assert.equal(hp.blocks[0].requirejs.baseUrl, 'scripts');
+    assert.equal(hp.blocks[0].requirejs.name, 'main');
   });
 
   it('should take into consideration path of the source file', function () {
@@ -83,7 +84,8 @@ describe('htmlprocessor', function () {
     assert.equal('build/scripts/amd-app.js', hp.blocks[0].dest);
     assert.ok(hp.blocks[0].requirejs);
     assert.equal(hp.blocks[0].requirejs.dest, 'build/scripts/amd-app.js');
-    assert.equal(hp.blocks[0].requirejs.name, 'build/scripts/main');
+    assert.equal(hp.blocks[0].requirejs.baseUrl, 'build/scripts');
+    assert.equal(hp.blocks[0].requirejs.name, 'main');
   });
 
   it('should take into consideration source files referenced from root', function () {

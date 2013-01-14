@@ -92,8 +92,8 @@ describe('usemin', function () {
     var changed = grunt.file.read('build/index.html');
 
     // Check replace has performed its duty
-    assert.ok(changed.match(/<script src=\"scripts\/foo.js\"><\/script>/));
-    assert.ok(changed.match(/<script src=\"scripts\/amd-app.js\"><\/script>/));
+    assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
+    assert.ok(changed.match(/<script src=\"scripts\/amd-app\.js\"><\/script>/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -130,12 +130,15 @@ describe('usemin', function () {
       grunt.task.start();
 
       var concat = grunt.config('concat');
+      assert.ok(concat);
       assert.ok(concat['scripts/plugins.js']);
       assert.equal(concat['scripts/plugins.js'].length, 13);
 
       var requirejs = grunt.config('requirejs');
+      assert.ok(requirejs.baseUrl);
+      assert.equal(requirejs.baseUrl, 'scripts');
       assert.ok(requirejs.name);
-      assert.equal(requirejs.name, 'scripts/main');
+      assert.equal(requirejs.name, 'main');
       assert.equal(requirejs.out, 'scripts/amd-app.js');
 
       var min = grunt.config('min');
@@ -153,12 +156,15 @@ describe('usemin', function () {
       grunt.task.start();
 
       var concat = grunt.config('concat');
+      assert.ok(concat);
       assert.ok(concat['build/scripts/foo.js']);
       assert.equal(concat['build/scripts/foo.js'].length, 2);
 
       var requirejs = grunt.config('requirejs');
+      assert.ok(requirejs.baseUrl);
+      assert.equal(requirejs.baseUrl, 'build/scripts');
       assert.ok(requirejs.name);
-      assert.equal(requirejs.name, 'build/scripts/main');
+      assert.equal(requirejs.name, 'main');
       assert.equal(requirejs.out, 'build/scripts/amd-app.js');
 
       var min = grunt.config('min');

@@ -144,6 +144,7 @@ module.exports = function (grunt) {
         // updated it on data-main attribute
         if (block.requirejs) {
           requirejs.out = requirejs.out || block.requirejs.dest;
+          requirejs.baseUrl = requirejs.baseUrl || block.requirejs.baseUrl;
           requirejs.name = requirejs.name || block.requirejs.name;
           grunt.config('requirejs', requirejs);
         }
