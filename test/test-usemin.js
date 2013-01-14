@@ -135,18 +135,67 @@ describe('usemin', function () {
       assert.equal(concat['scripts/plugins.js'].length, 13);
 
       var requirejs = grunt.config('requirejs');
-      assert.ok(requirejs.baseUrl);
-      assert.equal(requirejs.baseUrl, 'scripts');
-      assert.ok(requirejs.name);
-      assert.equal(requirejs.name, 'main');
-      assert.equal(requirejs.out, 'scripts/amd-app.js');
+      assert.ok(requirejs.default.options.baseUrl);
+      assert.equal(requirejs.default.options.baseUrl, 'scripts');
+      assert.ok(requirejs.default.options.name);
+      assert.equal(requirejs.default.options.name, 'main');
+      assert.equal(requirejs.default.options.out, 'scripts/amd-app.js');
+
 
       var min = grunt.config('min');
       assert.equal(min['scripts/amd-app.js'], 'scripts/amd-app.js');
       assert.equal(min['scripts/plugins.js'], 'scripts/plugins.js');
     });
 
-    it('output config for subsequent tasks (requirejs, concat, ..) should be relative to observed file', function () {
+    it('should update all requirejs multitask configs setting name and output', function() {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'index.html'});
+      grunt.config('requirejs', {
+        task1: {},
+        task2: {
+          options: {
+            baseUrl: 'base'
+          }
+        }
+      });
+      grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var requirejs = grunt.config('requirejs');
+      assert.ok(requirejs.task1.options.name);
+      assert.ok(requirejs.task2.options.name);
+
+      assert.equal(requirejs.task1.options.name, 'main');
+      assert.equal(requirejs.task2.options.name, 'main');
+
+      assert.equal(requirejs.task1.options.out, 'scripts/amd-app.js');
+      assert.equal(requirejs.task2.options.out, 'scripts/amd-app.js');
+
+      assert.equal(requirejs.task1.options.baseUrl, 'scripts');
+      assert.equal(requirejs.task2.options.baseUrl, 'base');
+
+
+    });
+
+    it('should create a requirejs multitask config setting with name and output if non settings exists', function() {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'index.html'});
+
+      grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var requirejs = grunt.config('requirejs');
+      assert.ok(requirejs.default.options.name);
+      assert.equal(requirejs.default.options.name, 'main');
+      assert.equal(requirejs.default.options.out, 'scripts/amd-app.js');
+      assert.equal(requirejs.default.options.baseUrl, 'scripts');
+    });
+
+    it('output config for subsequent tasks (requirejs, concat, ..) should be relative to observed file', function() {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'build/index.html'});
@@ -161,11 +210,12 @@ describe('usemin', function () {
       assert.equal(concat['build/scripts/foo.js'].length, 2);
 
       var requirejs = grunt.config('requirejs');
-      assert.ok(requirejs.baseUrl);
-      assert.equal(requirejs.baseUrl, 'build/scripts');
-      assert.ok(requirejs.name);
-      assert.equal(requirejs.name, 'main');
-      assert.equal(requirejs.out, 'build/scripts/amd-app.js');
+
+      assert.ok(requirejs.default.options.baseUrl);
+      assert.equal(requirejs.default.options.baseUrl, 'build/scripts');
+      assert.ok(requirejs.default.options.name);
+      assert.equal(requirejs.default.options.name, 'main');
+      assert.equal(requirejs.default.options.out, 'build/scripts/amd-app.js');
 
       var min = grunt.config('min');
       assert.equal(min['build/scripts/amd-app.js'], 'build/scripts/amd-app.js');
