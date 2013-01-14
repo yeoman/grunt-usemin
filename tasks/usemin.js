@@ -105,7 +105,7 @@ module.exports = function (grunt) {
 
   grunt.registerMultiTask('useminPrepare', 'Using HTML markup as the primary source of information', function () {
     // collect files
-    var files = grunt.file.expandFiles(this.data);
+    var files = grunt.file.expand({filter: 'isFile'}, this.data);
 
     // concat / min / css / requirejs config
     var concat = grunt.config('concat') || {};
