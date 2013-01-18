@@ -120,6 +120,23 @@ describe('usemin', function () {
     assert.ok(changed.match(/url\(\"\.\.\/\.\.\/images\/23012\.test\.png\"/));
   });
 
+  it('should take into account css reference from root', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {html: 'build/index.html'});
+    grunt.file.mkdir('styles');
+    grunt.file.write('styles/23012.main.min.css', 'foo');
+        grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'build/index.html');
+
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+    var changed = grunt.file.read('build/index.html');
+
+    // Check replace has performed its duty
+    assert.ok(changed.match(/<link rel="stylesheet" href="\/styles\/23012\.main\.min\.css">/));
+  });
+
   it('should not replace reference to file not revved', function () {
     grunt.file.write('foo.html', 'foo');
     grunt.file.write('bar-foo.html', 'foo');
@@ -149,6 +166,8 @@ describe('usemin', function () {
       assert.ok(concat);
       assert.ok(concat['scripts/plugins.js']);
       assert.equal(concat['scripts/plugins.js'].length, 13);
+      assert.ok(concat['styles/main.min.css']);
+      assert.equal(concat['styles/main.min.css'].length, 1);
 
       var requirejs = grunt.config('requirejs');
       assert.ok(requirejs.baseUrl);
