@@ -113,7 +113,7 @@ describe('htmlprocessor', function () {
       var htmlcontent = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
       var hp = new HTMLProcessor('myfile.txt', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal(replacestring, '  <link rel="stylesheet" href="foo.css"/>');
+      assert.equal(replacestring, '  <link rel="stylesheet" href="foo.css">');
     });
 
     it('should replace with a path relative to the file', function () {
@@ -129,7 +129,7 @@ describe('htmlprocessor', function () {
       var jsblock = '  <!-- build:js foo.js -->\n   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
       var cssblock = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
       var htmlcontent = jsblock + '\n\n' + cssblock;
-      var awaited = '  <script src="foo.js"></script>\n\n\n  <link rel="stylesheet" href="foo.css"/>\n';
+      var awaited = '  <script src="foo.js"></script>\n\n\n  <link rel="stylesheet" href="foo.css">\n';
       var hp = new HTMLProcessor('myfile.txt', htmlcontent, 3);
       var replaced = hp.replaceBlocks();
       assert.equal(replaced, awaited);

@@ -124,9 +124,9 @@ describe('usemin', function () {
     grunt.log.muted = true;
     grunt.config.init();
     grunt.config('usemin', {html: 'build/index.html'});
-    grunt.file.mkdir('styles');
-    grunt.file.write('styles/23012.main.min.css', 'foo');
-        grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'build/index.html');
+    grunt.file.mkdir('build/styles');
+    grunt.file.write('build/styles/23012.main.min.css', 'foo');
+    grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'build/index.html');
 
     grunt.task.run('usemin');
     grunt.task.start();
