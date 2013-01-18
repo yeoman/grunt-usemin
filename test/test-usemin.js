@@ -47,6 +47,7 @@ describe('usemin', function () {
     var changed = grunt.file.read('index.html');
 
     // Check replace has performed its duty
+    // console.log(changed);
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -119,6 +120,21 @@ describe('usemin', function () {
     assert.ok(changed.match(/url\(\"\.\.\/\.\.\/images\/23012\.test\.png\"/));
   });
 
+  it('should not replace reference to file not revved', function () {
+    grunt.file.write('foo.html', 'foo');
+    grunt.file.write('bar-foo.html', 'foo');
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {html: 'index.html'});
+    grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+    var changed = grunt.file.read('index.html');
+
+    // Check replace has performed its duty
+    assert.ok(changed.match('<a href="foo.html"></a>'));
+  });
 
   describe('useminPrepare', function () {
     it('should update the config (HTML)', function () {
