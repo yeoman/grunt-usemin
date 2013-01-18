@@ -55,5 +55,11 @@ describe('RevvedFinder', function () {
       });
       assert.equal('/1234.foo.png', rf.find('/foo.png', '.'));
     });
+    it('should only looked at revved files', function () {
+      var rf = new RevvedFinder(function () {
+        return ['bar-fred.html'];
+      });
+      assert.equal('fred.html', rf.find('fred.html', '.'));
+    });
   });
 });
