@@ -39,15 +39,19 @@ describe('htmlprocessor', function () {
     var filename = __dirname + '/fixtures/usemin.html';
     var htmlcontent =  grunt.file.read(filename);
     var hp = new HTMLProcessor(filename, htmlcontent, 3);
-    assert.equal(2, hp.blocks.length);
+    assert.equal(3, hp.blocks.length);
     var b1 = hp.blocks[0];
     var b2 = hp.blocks[1];
-    assert.equal(16, b1.raw.length);
-    assert.equal('js', b1.type);
-    assert.equal(13, b1.src.length);
-    assert.equal(3, b2.raw.length);
+    var b3 = hp.blocks[2];
+    assert.equal(3, b1.raw.length);
+    assert.equal('css', b1.type);
+    assert.equal(1, b1.src.length);
+    assert.equal(16, b2.raw.length);
     assert.equal('js', b2.type);
-    assert.equal(2, b2.src.length); // requirejs has been added also
+    assert.equal(13, b2.src.length);
+    assert.equal(3, b3.raw.length);
+    assert.equal('js', b3.type);
+    assert.equal(2, b3.src.length); // requirejs has been added also
   });
 
   it('should detect and handle the usage on RequireJS in blocks', function () {
@@ -109,7 +113,7 @@ describe('htmlprocessor', function () {
       var htmlcontent = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
       var hp = new HTMLProcessor('myfile.txt', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal(replacestring, '  <link rel="stylesheet" href="foo.css"/>');
+      assert.equal(replacestring, '  <link rel="stylesheet" href="foo.css">');
     });
 
     it('should replace with a path relative to the file', function () {
@@ -125,7 +129,7 @@ describe('htmlprocessor', function () {
       var jsblock = '  <!-- build:js foo.js -->\n   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
       var cssblock = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
       var htmlcontent = jsblock + '\n\n' + cssblock;
-      var awaited = '  <script src="foo.js"></script>\n\n\n  <link rel="stylesheet" href="foo.css"/>\n';
+      var awaited = '  <script src="foo.js"></script>\n\n\n  <link rel="stylesheet" href="foo.css">\n';
       var hp = new HTMLProcessor('myfile.txt', htmlcontent, 3);
       var replaced = hp.replaceBlocks();
       assert.equal(replaced, awaited);
