@@ -36,6 +36,13 @@ describe('RevvedFinder', function () {
       assert.equal('bar/2345.image.png', rf.find('bar/image.png', '.'));
     });
 
+    it('should return revved version if it ends hex in characters', function () {
+      var rf = new RevvedFinder(function () {
+        return ['11916fba.image.png'];
+      });
+      assert.equal('11916fba.image.png', rf.find('image.png', '.'));
+    });
+
     it('should return the file if not revved version is found', function () {
       var rf = new RevvedFinder(function () {
         return [];
