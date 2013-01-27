@@ -176,9 +176,9 @@ describe('usemin', function () {
       assert.equal(requirejs.name, 'main');
       assert.equal(requirejs.out, 'scripts/amd-app.js');
 
-      var min = grunt.config('min');
-      assert.equal(min['scripts/amd-app.js'], 'scripts/amd-app.js');
-      assert.equal(min['scripts/plugins.js'], 'scripts/plugins.js');
+      var uglify = grunt.config('uglify');
+      assert.equal(uglify['scripts/amd-app.js'], 'scripts/amd-app.js');
+      assert.equal(uglify['scripts/plugins.js'], 'scripts/plugins.js');
     });
 
     it('output config for subsequent tasks (requirejs, concat, ..) should be relative to observed file', function () {
@@ -202,9 +202,22 @@ describe('usemin', function () {
       assert.equal(requirejs.name, 'main');
       assert.equal(requirejs.out, 'build/scripts/amd-app.js');
 
-      var min = grunt.config('min');
-      assert.equal(min['build/scripts/amd-app.js'], 'build/scripts/amd-app.js');
-      assert.equal(min['build/scripts/foo.js'], 'build/scripts/foo.js');
+      var uglify = grunt.config('uglify');
+      assert.equal(uglify['build/scripts/amd-app.js'], 'build/scripts/amd-app.js');
+      assert.equal(uglify['build/scripts/foo.js'], 'build/scripts/foo.js');
+    });
+
+    it('should have configurable name for ugligy', function () {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'index.html', options: { 'uglify': "foo"}});
+      grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var uglify = grunt.config('foo');
+      assert.equal(uglify['scripts/amd-app.js'], 'scripts/amd-app.js');
+      assert.equal(uglify['scripts/plugins.js'], 'scripts/plugins.js');
     });
   });
 });

@@ -48,8 +48,8 @@ var inspect = function (obj) {
 //
 //
 // Internally, the task parses your HTML markup to find each of these blocks, and
-// initializes for you the corresponding Grunt config for the concat / min tasks
-// when `type=js`, the concat / css tasks when `type=css`.
+// initializes for you the corresponding Grunt config for the concat / uglify tasks
+// when `type=js`, the concat / cssmin tasks when `type=css`.
 //
 // The task also handles use of RequireJS, for the scenario where you specify
 // the main entry point for your application using the "data-main" attribute
@@ -59,7 +59,7 @@ var inspect = function (obj) {
 //     <script data-main="js/main" src="js/vendor/require.js"></script>
 //     <!-- -->
 //
-// One doesn't need to specify a concat/min/css or requirejs configuration anymore.
+// One doesn't need to specify a concat/uglify/cssmin or requirejs configuration anymore.
 //
 // Inspired by previous work in https://gist.github.com/3024891
 // For related sample, see: cli/test/tasks/usemin-handler/index.html
@@ -104,13 +104,16 @@ module.exports = function (grunt) {
   });
 
   grunt.registerMultiTask('useminPrepare', 'Using HTML markup as the primary source of information', function () {
+    var options = this.options();
     // collect files
     var files = grunt.file.expand({filter: 'isFile'}, this.data);
+    var uglifyName = options['uglify'] || 'uglify';
+    var cssminName = options['cssmin'] || 'cssmin';
 
-    // concat / min / css / requirejs config
+    // concat / uglify / cssmin / requirejs config
     var concat = grunt.config('concat') || {};
-    var min = grunt.config('min') || {};
-    var css = grunt.config('css') || {};
+    var uglify = grunt.config(uglifyName) || {};
+    var cssmin = grunt.config(cssminName) || {};
     var requirejs = grunt.config('requirejs') || {};
 
     grunt.log
@@ -149,28 +152,28 @@ module.exports = function (grunt) {
           grunt.config('requirejs', requirejs);
         }
 
-        // min config, only for js type block
+        // uglify config, only for js type block
         if (block.type === 'js') {
-          min[block.dest] = block.dest;
-          grunt.config('min', min);
+          uglify[block.dest] = block.dest;
+          grunt.config(uglifyName, uglify);
         }
 
-        // css config, only for css type block
+        // cssmin config, only for cssmin type block
         if (block.type === 'css') {
-          css[block.dest] = block.dest;
-          grunt.config('css', css);
+          cssmin[block.dest] = block.dest;
+          grunt.config(cssminName, cssmin);
         }
       });
     });
 
     // log a bit what was added to config
     grunt.log.subhead('Configuration is now:')
-      .subhead('  css:')
-      .writeln('  ' + inspect(css))
+      .subhead('  cssmin:')
+      .writeln('  ' + inspect(cssmin))
       .subhead('  concat:')
       .writeln('  ' + inspect(concat))
-      .subhead('  min:')
-      .writeln('  ' + inspect(min))
+      .subhead('  uglify:')
+      .writeln('  ' + inspect(uglify))
       .subhead('  requirejs:')
       .writeln('  ' + inspect(requirejs));
   });
