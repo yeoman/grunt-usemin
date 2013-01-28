@@ -145,10 +145,37 @@ module.exports = function (grunt) {
 
         // update requirejs config as well, as during path lookup we might have
         // updated it on data-main attribute
+
         if (block.requirejs) {
-          requirejs.out = requirejs.out || block.requirejs.dest;
-          requirejs.baseUrl = requirejs.baseUrl || block.requirejs.baseUrl;
-          requirejs.name = requirejs.name || block.requirejs.name;
+
+          var hasTasks;
+          for (var i in requirejs) {
+            if (requirejs.hasOwnProperty(i)) {
+              hasTasks = true
+              var task = requirejs[i];
+              var options = task.options;
+              if (options) {
+                options.name || (options.name = block.requirejs.name);
+                options.out || (options.out = block.requirejs.dest);
+                options.baseUrl || (options.baseUrl = block.requirejs.baseUrl);
+              } else {
+                task.options = {
+                  name: block.requirejs.name,
+                  out: block.requirejs.dest,
+                  baseUrl: block.requirejs.baseUrl
+                }
+              }
+            }
+          }
+          if (!hasTasks) {
+            requirejs.default = {
+              options: {
+                name: block.requirejs.name,
+                out: block.requirejs.dest,
+                baseUrl: block.requirejs.baseUrl
+              }
+            }
+          }
           grunt.config('requirejs', requirejs);
         }
 
