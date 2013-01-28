@@ -1,36 +1,36 @@
 {
   "name": "grunt-usemin",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Grunt task replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
   "keywords": [
-      "gruntplugin",
-      "grunt",
-      "usemin",
-      "yeoman",
-      "html"
+    "gruntplugin",
+    "grunt",
+    "usemin",
+    "yeoman",
+    "html"
   ],
   "homepage": "https://github.com/yeoman/grunt-usemin",
   "bugs": "https://github.com/yeoman/grunt-usemin/issues",
   "author": "Chrome Developer Relations",
   "main": "Gruntfile.js",
   "repository": {
-      "type": "git",
-      "url": "git://github.com/yeoman/grunt-usemin.git"
+    "type": "git",
+    "url": "git://github.com/yeoman/grunt-usemin.git"
   },
   "scripts": {
-      "test": "node node_modules/mocha/bin/mocha test/test-*.js"
+    "test": "node node_modules/mocha/bin/mocha test/test-*.js"
   },
   "devDependencies": {
-      "grunt": "~0.4.0",
-      "mocha": "~1.7.4",
-      "mkdirp": "~0.3.1",
-      "rimraf": "~2.0.1",
-      "grunt-contrib-jshint": "~0.1.1"
+    "grunt": "~0.4.0",
+    "mocha": "~1.7.4",
+    "mkdirp": "~0.3.1",
+    "rimraf": "~2.0.1",
+    "grunt-contrib-jshint": "~0.1.1"
   },
   "engines": {
-      "node": ">=0.8.0"
+    "node": ">=0.8.0"
   },
   "licenses": {
-      "type": "BSD"
+    "type": "BSD"
   }
 }
