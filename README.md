@@ -17,10 +17,10 @@ npm install grunt-usemin --save-dev
 
 usemin is composed of 2 different tasks (`useminPrepare` and `usemin`) that are part of the same workflow:
 
-- **useminPrepare**: detects special construction (blocks) in the HTML files and update the `grunt` config to run `concat`/`min`/`css`/`requirejs` on the files referenced in the block. It does not changes the HTML files it is working on.
+- **useminPrepare**: detects special construction (blocks) in the HTML files and update the `grunt` config to run `concat`/`uglify`/`cssmin`/`requirejs` on the files referenced in the block. It does not changes the HTML files it is working on.
 - **usemin**: in the HTML and CSS files it treats, it replaces the blocks by a reference to a single file, as well as all references to images, scripts, CSS files, by their minified/revved/.. version if it is found on the disk. As such this target rewrites the HTML and CSS files it is working on.
 
-Usually, `useminPrepare` is launched first, then the `concat`, `min`, `css` and `requirejs` tasks are launched (they will created the minified/revved version of the referenced files), and then, in the end `usemin` is launched.
+Usually, `useminPrepare` is launched first, then the `concat`, `uglify`, `cssmin` and `requirejs` tasks are launched (they will created the minified/revved version of the referenced files), and then, in the end `usemin` is launched.
 
 ## The useminPrepare task
 
@@ -48,7 +48,7 @@ An example of this in completed form can be seen below:
 <!-- endbuild -->
 ```
 
-Internally, the task parses your HTML markup to find each of these blocks, and initializes for you the corresponding Grunt config for the concat / min tasks when `type=js`, the concat / css tasks when `type=css`.
+Internally, the task parses your HTML markup to find each of these blocks, and initializes for you the corresponding Grunt config for the concat / uglify tasks when `type=js`, the concat / cssmin tasks when `type=css`.
 
 The task also handles use of RequireJS, for the scenario where you specify the main entry point for your application using the "data-main" attribute as follows:
 
@@ -58,7 +58,7 @@ The task also handles use of RequireJS, for the scenario where you specify the m
 <!-- -->
 ```
 
-One doesn't need to specify a concat/min/css or RequireJS configuration anymore.
+One doesn't need to specify a concat/uglify/cssmin or RequireJS configuration anymore.
 
 It is using only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
 
@@ -68,6 +68,19 @@ It is using only one target: `html`, with a list of the concerned files. For exa
 }
 ```
 
+### Options
+
+#### uglify
+Type: 'string'
+Default: 'uglify'
+
+Name of the tool used to uglify the JavaScript.
+
+#### cssmin
+Type: 'string'
+Default: 'cssmin'
+
+Name of the tool used to minify the CSS.
 
 ## The usemin task
 

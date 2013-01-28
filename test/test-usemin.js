@@ -182,7 +182,7 @@ describe('usemin', function () {
       assert.equal(uglify['scripts/plugins.js'], 'scripts/plugins.js');
     });
 
-    it('should update all requirejs multitask configs setting name and output', function() {
+    it('should update all requirejs multitask configs setting name and output', function () {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'index.html'});
@@ -214,7 +214,7 @@ describe('usemin', function () {
 
     });
 
-    it('should create a requirejs multitask config setting with name and output if non settings exists', function() {
+    it('should create a requirejs multitask config setting with name and output if non settings exists', function () {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'index.html'});
@@ -230,7 +230,7 @@ describe('usemin', function () {
       assert.equal(requirejs.default.options.baseUrl, 'scripts');
     });
 
-    it('output config for subsequent tasks (requirejs, concat, ..) should be relative to observed file', function() {
+    it('output config for subsequent tasks (requirejs, concat, ..) should be relative to observed file', function () {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'build/index.html'});
@@ -260,7 +260,7 @@ describe('usemin', function () {
     it('should have configurable name for ugligy', function () {
       grunt.log.muted = true;
       grunt.config.init();
-      grunt.config('useminPrepare', {html: 'index.html', options: { 'uglify': "foo"}});
+      grunt.config('useminPrepare', {html: 'index.html', options: { 'uglify': 'foo'}});
       grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
       grunt.task.run('useminPrepare');
       grunt.task.start();

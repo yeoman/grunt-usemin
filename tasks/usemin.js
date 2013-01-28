@@ -107,8 +107,8 @@ module.exports = function (grunt) {
     var options = this.options();
     // collect files
     var files = grunt.file.expand({filter: 'isFile'}, this.data);
-    var uglifyName = options['uglify'] || 'uglify';
-    var cssminName = options['cssmin'] || 'cssmin';
+    var uglifyName = options.uglify || 'uglify';
+    var cssminName = options.cssmin || 'cssmin';
 
     // concat / uglify / cssmin / requirejs config
     var concat = grunt.config('concat') || {};
@@ -151,19 +151,19 @@ module.exports = function (grunt) {
           var hasTasks;
           for (var i in requirejs) {
             if (requirejs.hasOwnProperty(i)) {
-              hasTasks = true
+              hasTasks = true;
               var task = requirejs[i];
               var options = task.options;
               if (options) {
-                options.name || (options.name = block.requirejs.name);
-                options.out || (options.out = block.requirejs.dest);
-                options.baseUrl || (options.baseUrl = block.requirejs.baseUrl);
+                options.name = options.name || block.requirejs.name;
+                options.out = options.out || block.requirejs.dest;
+                options.baseUrl = options.baseUrl || block.requirejs.baseUrl;
               } else {
                 task.options = {
                   name: block.requirejs.name,
                   out: block.requirejs.dest,
                   baseUrl: block.requirejs.baseUrl
-                }
+                };
               }
             }
           }
@@ -174,7 +174,7 @@ module.exports = function (grunt) {
                 out: block.requirejs.dest,
                 baseUrl: block.requirejs.baseUrl
               }
-            }
+            };
           }
           grunt.config('requirejs', requirejs);
         }
