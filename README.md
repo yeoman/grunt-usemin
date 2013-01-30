@@ -82,6 +82,12 @@ Default: 'cssmin'
 
 Name of the tool used to minify the CSS.
 
+### dirs
+Type: 'array of strings'
+Default: nil
+
+Used to limit the directories that will be looked for revved files when replacing reference. By default all subdirectories are looked at.
+
 ## The usemin task
 
 This task is responsible for replacing in HTML and CSS files, references to non-minified files with reference to their minified/revved version if they are found on the disk.
@@ -89,7 +95,10 @@ This task is responsible for replacing in HTML and CSS files, references to non-
 ```js
 usemin: {
   html: ['**/*.html'],
-  css: ['**/*.css']
+  css: ['**/*.css'],
+  options: {
+    dirs: ['temp', 'dist']
+  }
 }
 ```
 

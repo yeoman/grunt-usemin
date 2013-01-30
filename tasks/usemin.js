@@ -77,6 +77,7 @@ module.exports = function (grunt) {
     };
     var name = this.target;
     var data = this.data;
+    var options = this.options();
     var files = grunt.file.expand(data);
 
     files.map(grunt.file.read).forEach(function (content, i) {
@@ -90,7 +91,7 @@ module.exports = function (grunt) {
       content = content.toString();
 
       // Our revved version locator
-      var revvedfinder = new RevvedFinder(grunt.file.expand);
+      var revvedfinder = new RevvedFinder(grunt.file.expand, options.dirs);
 
       // ext-specific directives handling and replacement of blocks
       var proc = new processors[name](filepath, content, revvedfinder, function (msg) {

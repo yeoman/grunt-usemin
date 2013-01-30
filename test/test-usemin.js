@@ -153,6 +153,38 @@ describe('usemin', function () {
     assert.ok(changed.match('<a href="foo.html"></a>'));
   });
 
+  it('should limit search to selected directories when asked to', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {html: 'index.html', options: { dirs: ['build']}});
+    grunt.file.mkdir('ape');
+    grunt.file.mkdir('ape/images');
+    grunt.file.mkdir('ape/images/misc');
+    grunt.file.write('ape/images/23013.test.png', 'foo');
+    grunt.file.write('ape/images/misc/2a437.test.png', 'foo');
+
+    grunt.file.mkdir('build');
+    grunt.file.mkdir('build/images');
+    grunt.file.mkdir('build/images/misc');
+    grunt.file.write('build/images/23012.test.png', 'foo');
+    grunt.file.write('build/images/misc/2a436.test.png', 'foo');
+    grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'index.html');
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+
+    var changed = grunt.file.read('index.html');
+
+    // Check replace has performed its duty
+    assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
+    assert.ok(changed.match(/<script src=\"scripts\/amd-app\.js\"><\/script>/));
+    assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
+    assert.ok(changed.match(/img[^\>]+src=['"]\/images\/23012\.test\.png["']/));
+  });
+
+
   describe('useminPrepare', function () {
     it('should update the config (HTML)', function () {
       grunt.log.muted = true;
