@@ -68,5 +68,13 @@ describe('RevvedFinder', function () {
       });
       assert.equal('fred.html', rf.find('fred.html', '.'));
     });
+
+    it('should restrict to the furnished subdirectories', function () {
+      var rf = new RevvedFinder(function (pattern) {
+        assert.equal(pattern, '{temp,dist}/**/*fred.html');
+        return['fred.html'];
+      }, ['temp', 'dist']);
+      rf.find('fred.html', '.');
+    });
   });
 });
