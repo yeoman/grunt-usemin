@@ -179,6 +179,14 @@ describe('htmlprocessor', function () {
       assert.equal(replaced, '<script src="' + filemapping['foo.js'] + '"></script>');
     });
 
+    it('should replace accept additional parameters to script', function () {
+      var content = '<script src="foo.js" type="text/javascript"></script>';
+      var hp = new HTMLProcessor('myfile.txt', content, revvedfinder);
+      var replaced = hp.replaceWithRevved();
+      assert.equal(replaced, '<script src="' + filemapping['foo.js'] + '" type="text/javascript"></script>');
+    });
+
+
     it('should replace CSS reference with revved version', function () {
       var content = '<link rel="stylesheet" href="bar.css">';
       var hp = new HTMLProcessor('myfile.txt', content, revvedfinder);
