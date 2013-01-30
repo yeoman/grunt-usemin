@@ -47,7 +47,6 @@ describe('usemin', function () {
     var changed = grunt.file.read('index.html');
 
     // Check replace has performed its duty
-    // console.log(changed);
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -115,7 +114,6 @@ describe('usemin', function () {
 
 
     var changed = grunt.file.read('build/css/style.css');
-
     // Check replace has performed its duty
     assert.ok(changed.match(/url\(\"\.\.\/\.\.\/images\/23012\.test\.png\"/));
   });
@@ -182,6 +180,22 @@ describe('usemin', function () {
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/images\/23012\.test\.png["']/));
+  });
+
+  it('should consider that data-main point to a JS file', function () {
+    grunt.file.mkdir('scripts');
+    grunt.file.write('scripts/23012.main.js', 'foo');
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {html: 'index.html'});
+    grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+    var changed = grunt.file.read('index.html');
+
+    // Check replace has performed its duty
+    assert.ok(changed.match(/data-main="scripts\/23012.main.js"/));
   });
 
 
