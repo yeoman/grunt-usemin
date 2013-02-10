@@ -90,10 +90,11 @@ describe('usemin', function () {
 
 
     var changed = grunt.file.read('build/index.html');
+    console.log('should take into account original file location when replacing ' + changed);
 
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
-    assert.ok(changed.match(/<script src=\"scripts\/amd-app\.js\"><\/script>/));
+    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app.js\" src=\"scripts\/vendor\/require.js\"><\/script>/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -172,10 +173,11 @@ describe('usemin', function () {
 
 
     var changed = grunt.file.read('index.html');
+    console.log('should limit search to selected directories when asked to ' + changed);
 
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
-    assert.ok(changed.match(/<script src=\"scripts\/amd-app\.js\"><\/script>/));
+    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app.js\" src=\"scripts\/vendor\/require.js\"><\/script>/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -193,6 +195,7 @@ describe('usemin', function () {
     grunt.task.start();
 
     var changed = grunt.file.read('index.html');
+    console.log('should consider that data-main point to a JS file ' + changed);
 
     // Check replace has performed its duty
     assert.ok(changed.match(/data-main="scripts\/23012.main.js"/));

@@ -51,7 +51,7 @@ describe('htmlprocessor', function () {
     assert.equal(13, b2.src.length);
     assert.equal(3, b3.raw.length);
     assert.equal('js', b3.type);
-    assert.equal(2, b3.src.length); // requirejs has been added also
+    assert.equal(1, b3.src.length); // requirejs has been added also
   });
 
   it('should detect and handle the usage on RequireJS in blocks', function () {
@@ -62,9 +62,10 @@ describe('htmlprocessor', function () {
     var hp = new HTMLProcessor('myfile.html', htmlcontent, 3);
     assert.equal(1, hp.blocks.length);
     assert.ok(hp.blocks[0].requirejs);
-    assert.equal(hp.blocks[0].requirejs.dest, 'scripts/amd-app.js');
-    assert.equal(hp.blocks[0].requirejs.baseUrl, 'scripts');
-    assert.equal(hp.blocks[0].requirejs.name, 'main');
+    assert.equal('scripts/amd-app.js', hp.blocks[0].requirejs.dest);
+    assert.equal('scripts', hp.blocks[0].requirejs.baseUrl);
+    assert.equal('scripts/vendor/require.js', hp.blocks[0].requirejs.src);
+    assert.equal('main', hp.blocks[0].requirejs.name);
   });
 
   it('should take into consideration path of the source file', function () {
@@ -87,9 +88,9 @@ describe('htmlprocessor', function () {
     assert.equal(1, hp.blocks.length);
     assert.equal('build/scripts/amd-app.js', hp.blocks[0].dest);
     assert.ok(hp.blocks[0].requirejs);
-    assert.equal(hp.blocks[0].requirejs.dest, 'build/scripts/amd-app.js');
-    assert.equal(hp.blocks[0].requirejs.baseUrl, 'build/scripts');
-    assert.equal(hp.blocks[0].requirejs.name, 'main');
+    assert.equal('build/scripts/amd-app.js', hp.blocks[0].requirejs.dest);
+    assert.equal('build/scripts', hp.blocks[0].requirejs.baseUrl);
+    assert.equal('main', hp.blocks[0].requirejs.name);
   });
 
   it('should take into consideration source files referenced from root', function () {
@@ -106,7 +107,14 @@ describe('htmlprocessor', function () {
       var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
       var hp = new HTMLProcessor('myfile.txt', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal(replacestring, '  <script src="foo.js"></script>');
+      assert.equal('  <script src="foo.js"></script>', replacestring);
+    });
+
+    it('should return a string that will replace the furnished block (RequireJS)', function () {
+      var htmlcontent = '  <!-- build:js foo -->   <script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n  <!-- endbuild -->\n';
+      var hp = new HTMLProcessor('myfile.txt', htmlcontent, 3);
+      var replacestring = hp.replaceWith(hp.blocks[0]);
+      assert.equal('  <script data-main="foo" src="scripts/vendor/require.js"></script>', replacestring);
     });
 
     it('should return a string that will replace the furnished block (CSS)', function () {
@@ -184,6 +192,13 @@ describe('htmlprocessor', function () {
       var hp = new HTMLProcessor('myfile.txt', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="' + filemapping['foo.js'] + '" type="text/javascript"></script>');
+    });
+
+    it('should not add .js to data-main for requirejs', function () {
+      var content = '<script data-main="bar" src="require.js"></script>';
+      var hp = new HTMLProcessor('myfile.txt', content, revvedfinder);
+      var replaced = hp.replaceWithRevved();
+      assert.equal(replaced, '<script data-main="bar.js" src="require.js"></script>');
     });
 
 
