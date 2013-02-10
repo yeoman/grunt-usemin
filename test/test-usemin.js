@@ -90,7 +90,6 @@ describe('usemin', function () {
 
 
     var changed = grunt.file.read('build/index.html');
-    console.log('should take into account original file location when replacing ' + changed);
 
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
@@ -173,7 +172,6 @@ describe('usemin', function () {
 
 
     var changed = grunt.file.read('index.html');
-    console.log('should limit search to selected directories when asked to ' + changed);
 
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
@@ -195,7 +193,6 @@ describe('usemin', function () {
     grunt.task.start();
 
     var changed = grunt.file.read('index.html');
-    console.log('should consider that data-main point to a JS file ' + changed);
 
     // Check replace has performed its duty
     assert.ok(changed.match(/data-main="scripts\/23012.main.js"/));
