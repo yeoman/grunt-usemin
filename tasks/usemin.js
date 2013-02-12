@@ -200,7 +200,7 @@ module.exports = function (grunt) {
 
         // cssmin config, only for cssmin type block
         if (block.type === 'css') {
-          outputDestination(cssmin, block.dest, block.src);
+          outputDestination(cssmin, block.dest, block.dest);
           grunt.config(cssminName, cssmin);
         }
       });
