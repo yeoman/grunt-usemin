@@ -303,6 +303,20 @@ describe('usemin', function () {
       assert.equal(uglify['build/scripts/foo.js'], 'build/scripts/foo.js');
     });
 
+    it('should take dest option into consideration', function() {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'index.html', options: { 'dest': 'foo'}});
+      grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var uglify = grunt.config('uglify');
+      assert.equal(uglify['foo/scripts/amd-app.js'], 'scripts/amd-app.js');
+      assert.equal(uglify['foo/scripts/plugins.js'], 'scripts/plugins.js');
+
+    });
+
     it('should have configurable name for ugligy', function () {
       grunt.log.muted = true;
       grunt.config.init();
