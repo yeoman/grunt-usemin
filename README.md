@@ -82,12 +82,6 @@ Default: 'cssmin'
 
 Name of the tool used to minify the CSS.
 
-### dirs
-Type: 'array of strings'
-Default: nil
-
-Used to limit the directories that will be looked for revved files when replacing reference. By default all subdirectories are looked at.
-
 ### dest
 Type: 'string'
 Default: nil
@@ -107,7 +101,27 @@ usemin: {
   }
 }
 ```
+### dirs
+Type: 'array of strings'
+Default: nil
 
+Used to limit the directories that will be looked for revved files when replacing reference. By default all subdirectories are looked at.
+
+### Basedir
+Type: 'string'
+Default: nil
+
+Change the basedir that represent the location of the transformed file. For example, let's imagine you have someting like:
+
+```
+|
++--- styles
+    \ main.css
++--- views
+    \ index.html
+```
+
+By default, if the file to be transformed is `index.html`, the images, scripts, ... referenced by this file will be considered are being in the `views` directory, whereas they must be linked to the `styles` directory.
 
 ## License
 
