@@ -198,6 +198,31 @@ describe('usemin', function () {
     assert.ok(changed.match(/data-main="scripts\/23012.main.js"/));
   });
 
+  it('should use a basedir if configured', function () {
+    grunt.file.mkdir('basedir');
+    grunt.file.mkdir('basedir/subdir');
+    grunt.file.mkdir('otherdir');
+    grunt.file.write('basedir/54632.test1.png', 'foo');
+    grunt.file.write('basedir/subdir/2131.test2.png', 'foo');
+    grunt.file.write('otherdir/test.html', '<img src="test1.png"><img src="subdir/test2.png">');
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {
+      html: 'otherdir/test.html',
+      options: {
+        basedir: 'basedir'
+      }
+    });
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+    var changed = grunt.file.read('otherdir/test.html');
+
+    // Check replace has performed its duty
+    assert.ok(changed.match(/src="54632.test1.png"/));
+    assert.ok(changed.match(/src="subdir\/2131.test2.png"/));
+  });
+
 
   describe('useminPrepare', function () {
     it('should update the config (HTML)', function () {

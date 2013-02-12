@@ -83,6 +83,7 @@ module.exports = function (grunt) {
 
     files.map(grunt.file.read).forEach(function (content, i) {
       var filepath = files[i];
+      var filedir = options.basedir || path.dirname(filepath);
 
       grunt.log.subhead('usemin:' + name + ' - ' + filepath);
 
@@ -95,7 +96,7 @@ module.exports = function (grunt) {
       var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p);}, options.dirs);
 
       // ext-specific directives handling and replacement of blocks
-      var proc = new processors[name]({dir: path.dirname(filepath), content: content}, revvedfinder, function (msg) {
+      var proc = new processors[name]({dir: filedir, content: content}, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 
