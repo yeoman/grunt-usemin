@@ -1,5 +1,6 @@
 'use strict';
 var util = require('util');
+var path = require('path');
 
 var inspect = function (obj) {
   return util.inspect(obj, false, 4, true);
@@ -94,7 +95,7 @@ module.exports = function (grunt) {
       var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p);}, options.dirs);
 
       // ext-specific directives handling and replacement of blocks
-      var proc = new processors[name](filepath, content, revvedfinder, function (msg) {
+      var proc = new processors[name]({dir: path.dirname(filepath), content: content}, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 
@@ -110,6 +111,7 @@ module.exports = function (grunt) {
     var files = grunt.file.expand({filter: 'isFile'}, this.data);
     var uglifyName = options.uglify || 'uglify';
     var cssminName = options.cssmin || 'cssmin';
+    var dest = options.dest;
 
     // concat / uglify / cssmin / requirejs config
     var concat = grunt.config('concat') || {};
@@ -130,7 +132,7 @@ module.exports = function (grunt) {
 
     files.forEach(function (file) {
       var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p); } );
-      var proc = new HTMLProcessor(file.path, file.body, revvedfinder, function (msg) {
+      var proc = new HTMLProcessor({dir: path.dirname(file.path), content: file.body}, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 
@@ -140,8 +142,15 @@ module.exports = function (grunt) {
           .writeln('Updating config with the following assets:')
           .writeln('    - ' + grunt.log.wordlist(block.src, { separator: '\n    - ' }));
 
+        var outputDestination = function (obj, dst, input) {
+          if (dest) {
+            dst = path.join(dest, dst);
+          }
+          obj[dst] = input;
+        };
+
         // update concat config for this block
-        concat[block.dest] = block.src;
+        outputDestination(concat, block.dest, block.src);
         grunt.config('concat', concat);
 
         // update requirejs config as well, as during path lookup we might have
@@ -182,13 +191,15 @@ module.exports = function (grunt) {
 
         // uglify config, only for js type block
         if (block.type === 'js') {
-          uglify[block.dest] = block.dest;
+          // TODO: we should differentiate whether or not we're
+          // using concat before ... Option ?
+          outputDestination(uglify, block.dest, block.dest);
           grunt.config(uglifyName, uglify);
         }
 
         // cssmin config, only for cssmin type block
         if (block.type === 'css') {
-          cssmin[block.dest] = block.dest;
+          outputDestination(cssmin, block.dest, block.src);
           grunt.config(cssminName, cssmin);
         }
       });

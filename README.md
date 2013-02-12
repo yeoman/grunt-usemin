@@ -88,6 +88,12 @@ Default: nil
 
 Used to limit the directories that will be looked for revved files when replacing reference. By default all subdirectories are looked at.
 
+### dest
+Type: 'string'
+Default: nil
+
+Base directory where the transformed files should be output.
+
 ## The usemin task
 
 This task is responsible for replacing in HTML and CSS files, references to non-minified files with reference to their minified/revved version if they are found on the disk.
