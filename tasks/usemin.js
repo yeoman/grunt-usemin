@@ -92,7 +92,7 @@ module.exports = function (grunt) {
       content = content.toString();
 
       // Our revved version locator
-      var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p);}, options.dirs, options.basedir);
+      var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p);}, options.dirs);
 
       // ext-specific directives handling and replacement of blocks
       var proc = new processors[name](filedir, content, revvedfinder, function (msg) {
