@@ -96,7 +96,7 @@ module.exports = function (grunt) {
       var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p);}, options.dirs);
 
       // ext-specific directives handling and replacement of blocks
-      var proc = new processors[name]({dir: filedir, content: content}, revvedfinder, function (msg) {
+      var proc = new processors[name](filedir, '', content, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 
@@ -133,7 +133,7 @@ module.exports = function (grunt) {
 
     files.forEach(function (file) {
       var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p); } );
-      var proc = new HTMLProcessor({dir: path.dirname(file.path), content: file.body}, revvedfinder, function (msg) {
+      var proc = new HTMLProcessor(path.dirname(file.path), dest, file.body, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 
@@ -143,15 +143,8 @@ module.exports = function (grunt) {
           .writeln('Updating config with the following assets:')
           .writeln('    - ' + grunt.log.wordlist(block.src, { separator: '\n    - ' }));
 
-        var outputDestination = function (obj, dst, input) {
-          if (dest) {
-            dst = path.join(dest, dst);
-          }
-          obj[dst] = input;
-        };
-
         // update concat config for this block
-        outputDestination(concat, block.dest, block.src);
+        concat[block.dest] = block.src;
         grunt.config('concat', concat);
 
         // update requirejs config as well, as during path lookup we might have
@@ -194,13 +187,13 @@ module.exports = function (grunt) {
         if (block.type === 'js') {
           // TODO: we should differentiate whether or not we're
           // using concat before ... Option ?
-          outputDestination(uglify, block.dest, block.dest);
+          uglify[block.dest] = block.dest;
           grunt.config(uglifyName, uglify);
         }
 
         // cssmin config, only for cssmin type block
         if (block.type === 'css') {
-          outputDestination(cssmin, block.dest, block.dest);
+          cssmin[block.dest] = block.dest;
           grunt.config(cssminName, cssmin);
         }
       });

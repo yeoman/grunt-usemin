@@ -88,7 +88,6 @@ describe('usemin', function () {
     grunt.task.run('usemin');
     grunt.task.start();
 
-
     var changed = grunt.file.read('build/index.html');
 
     // Check replace has performed its duty
@@ -337,8 +336,8 @@ describe('usemin', function () {
       grunt.task.start();
 
       var uglify = grunt.config('uglify');
-      assert.equal(uglify['foo/scripts/amd-app.js'], 'scripts/amd-app.js');
-      assert.equal(uglify['foo/scripts/plugins.js'], 'scripts/plugins.js');
+      assert.equal(uglify['foo/scripts/amd-app.js'], 'foo/scripts/amd-app.js');
+      assert.equal(uglify['foo/scripts/plugins.js'], 'foo/scripts/plugins.js');
 
     });
 

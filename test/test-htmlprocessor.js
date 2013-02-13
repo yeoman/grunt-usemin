@@ -19,7 +19,7 @@ describe('htmlprocessor', function () {
   };
 
   it('should initialize correctly', function () {
-    var hp = new HTMLProcessor({name: 'myfile.html',dir: '', content:''}, 3);
+    var hp = new HTMLProcessor('', '', '', 3);
     assert(hp !== null);
     assert.equal(3, hp.revvedfinder);
     assert.equal('\n', hp.linefeed);
@@ -28,7 +28,7 @@ describe('htmlprocessor', function () {
 
   it('should *not* skip blank lines', function () {
     var htmlcontent = '  <!-- build:css foo.css -->\n  <link rel="stylesheet" href="bar.css">\n\n  <link rel="stylesheet" href="foo.css">\n  <!-- endbuild -->\n';
-    var hp = new HTMLProcessor({name:'myfile.html', dir: '', content: htmlcontent}, 3);
+    var hp = new HTMLProcessor('', '', htmlcontent, 3);
     assert.equal(1, hp.blocks.length);
     assert.equal('foo.css', hp.blocks[0].dest);
     assert.equal(5, hp.blocks[0].raw.length);
@@ -39,7 +39,7 @@ describe('htmlprocessor', function () {
   it('should return the right number of blocks with the right number of lines', function () {
     var filename = __dirname + '/fixtures/usemin.html';
     var htmlcontent =  grunt.file.read(filename);
-    var hp = new HTMLProcessor({name: filename, dir: path.dirname(filename), content: htmlcontent}, 3);
+    var hp = new HTMLProcessor(path.dirname(filename), '', htmlcontent, 3);
     assert.equal(3, hp.blocks.length);
     var b1 = hp.blocks[0];
     var b2 = hp.blocks[1];
@@ -60,7 +60,7 @@ describe('htmlprocessor', function () {
     '<script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n' +
     '<script src="foo.js"></script>\n' +
     '<!-- endbuild -->';
-    var hp = new HTMLProcessor({name: 'myfile.html', dir: '', content: htmlcontent}, 3);
+    var hp = new HTMLProcessor('', '', htmlcontent, 3);
     assert.equal(1, hp.blocks.length);
     assert.ok(hp.blocks[0].requirejs);
     assert.equal('scripts/amd-app.js', hp.blocks[0].requirejs.dest);
@@ -73,7 +73,7 @@ describe('htmlprocessor', function () {
     var htmlcontent = '<!-- build:css bar/foo.css -->\n' +
     '<link rel="stylesheet" href="bar.css">\n' +
     '<!-- endbuild -->';
-    var hp = new HTMLProcessor({name:'build/myfile.html', dir: 'build', content: htmlcontent}, 3);
+    var hp = new HTMLProcessor('build', '', htmlcontent, 3);
     assert.equal(1, hp.blocks.length);
     assert.equal('build/bar/foo.css', hp.blocks[0].dest);
     assert.equal(1, hp.blocks[0].src.length);
@@ -85,7 +85,7 @@ describe('htmlprocessor', function () {
     '<script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n' +
     '<script src="foo.js"></script>\n' +
     '<!-- endbuild -->';
-    var hp = new HTMLProcessor({name: 'build/myfile.html', dir: 'build', content: htmlcontent}, 3);
+    var hp = new HTMLProcessor('build', '', htmlcontent, 3);
     assert.equal(1, hp.blocks.length);
     assert.equal('build/scripts/amd-app.js', hp.blocks[0].dest);
     assert.ok(hp.blocks[0].requirejs);
@@ -98,7 +98,7 @@ describe('htmlprocessor', function () {
     var htmlcontent = '<!-- build:css /bar/foo.css -->\n' +
     '<link rel="stylesheet" href="bar.css">\n' +
     '<!-- endbuild -->';
-    var hp = new HTMLProcessor({name: 'myfile.html', dir: '', content: htmlcontent}, 3);
+    var hp = new HTMLProcessor('', '', htmlcontent, 3);
     assert.equal(1, hp.blocks.length);
     assert.equal('bar/foo.css', hp.blocks[0].dest);
   });
@@ -106,28 +106,28 @@ describe('htmlprocessor', function () {
   describe('replaceWith', function () {
     it('should return a string that will replace the furnished block (JS)', function () {
       var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir: '', content:htmlcontent}, 3);
+      var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
       assert.equal('  <script src="foo.js"></script>', replacestring);
     });
 
     it('should return a string that will replace the furnished block (RequireJS)', function () {
       var htmlcontent = '  <!-- build:js foo -->   <script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n  <!-- endbuild -->\n';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir: '', content: htmlcontent}, 3);
+      var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
       assert.equal('  <script data-main="foo" src="scripts/vendor/require.js"></script>', replacestring);
     });
 
     it('should return a string that will replace the furnished block (CSS)', function () {
       var htmlcontent = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir: '', content: htmlcontent}, 3);
+      var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
       assert.equal(replacestring, '  <link rel="stylesheet" href="foo.css">');
     });
 
     it('should replace with a path relative to the file', function () {
       var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
-      var hp = new HTMLProcessor({name: 'build/myfile.txt', dir: 'build', content: htmlcontent}, 3);
+      var hp = new HTMLProcessor('build', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
       assert.equal(replacestring, '  <script src="foo.js"></script>');
     });
@@ -139,7 +139,7 @@ describe('htmlprocessor', function () {
       var cssblock = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
       var htmlcontent = jsblock + '\n\n' + cssblock;
       var awaited = '  <script src="foo.js"></script>\n\n\n  <link rel="stylesheet" href="foo.css">\n';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir: '', content: htmlcontent}, 3);
+      var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replaced = hp.replaceBlocks();
       assert.equal(replaced, awaited);
     });
@@ -148,56 +148,56 @@ describe('htmlprocessor', function () {
   describe('replaceWithRevved', function () {
     it('should replace file referenced from root', function () {
       var content = '<script src="/foo.js"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="/1234.foo.js"></script>');
     });
 
     it('should not replace file if no revved version is found', function () {
       var content = '<script src="bar.js"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content:  content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="bar.js"></script>');
     });
 
     it('should not treat file reference that are coming from templating', function () {
       var content = '<script src="<% my_func() %>"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content:  content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="<% my_func() %>"></script>');
     });
 
     it('should not replace the root (i.e /)', function () {
       var content = '<script src="/"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="/"></script>');
     });
 
     it('should not replace external references', function () {
       var content = '<script src="http://bar/foo.js"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content:  content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="http://bar/foo.js"></script>');
     });
 
     it('should replace script source with revved version', function () {
       var content = '<script src="foo.js"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content:  content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="' + filemapping['foo.js'] + '"></script>');
     });
 
     it('should replace accept additional parameters to script', function () {
       var content = '<script src="foo.js" type="text/javascript"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script src="' + filemapping['foo.js'] + '" type="text/javascript"></script>');
     });
 
     it('should not add .js to data-main for requirejs', function () {
       var content = '<script data-main="bar" src="require.js"></script>';
-      var hp = new HTMLProcessor({name: 'myfile.txt', dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<script data-main="bar.js" src="require.js"></script>');
     });
@@ -205,42 +205,42 @@ describe('htmlprocessor', function () {
 
     it('should replace CSS reference with revved version', function () {
       var content = '<link rel="stylesheet" href="bar.css">';
-      var hp = new HTMLProcessor({name: 'myfile.txt',  dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<link rel="stylesheet" href="' + filemapping['bar.css'] + '">');
     });
 
     it('should replace img reference with revved version', function () {
       var content = '<img src="image.png">';
-      var hp = new HTMLProcessor({name: 'myfile.txt',  dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<img src="' + filemapping['image.png'] + '">');
     });
 
     it('should replace data reference with revved version', function () {
       var content = '<li data-lang="fr" data-src="image.png"></li>';
-      var hp = new HTMLProcessor({name: 'myfile.txt',  dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<li data-lang="fr" data-src="' + filemapping['image.png'] + '"></li>');
     });
 
     it('should replace image reference in inlined style', function () {
       var content = '<li style="background: url("image.png");"></li>';
-      var hp = new HTMLProcessor({name: 'myfile.txt',  dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<li style="background: url("' + filemapping['image.png'] + '");"></li>');
     });
 
     it('should replace image reference in anchors', function () {
       var content = '<a href="image.png"></a>';
-      var hp = new HTMLProcessor({name:'myfile.txt',  dir:'', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<a href="' + filemapping['image.png'] + '"></a>');
     });
 
     it('should replace image reference in input', function () {
       var content = '<input type="image" src="image.png" />';
-      var hp = new HTMLProcessor({ name: 'myfile.txt', dir: '', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<input type="image" src="' + filemapping['image.png'] + '" />');
     });
@@ -256,7 +256,7 @@ describe('htmlprocessor', function () {
       '  <img src="image.png">';
       var awaited = '  <script src="' + filemapping['foo.js'] + '"></script>\n' +
       '  <img src="' + filemapping['image.png'] + '">';
-      var hp = new HTMLProcessor({ name: 'myfile.txt', dir: '', content: content}, revvedfinder);
+      var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.process();
       assert.equal(replaced, awaited);
     });
