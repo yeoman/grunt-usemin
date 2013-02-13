@@ -93,7 +93,7 @@ module.exports = function (grunt) {
       content = content.toString();
 
       // Our revved version locator
-      var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p);}, options.dirs);
+      var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'}, p); }, options.dirs);
 
       // ext-specific directives handling and replacement of blocks
       var proc = new processors[name](filedir, '', content, revvedfinder, function (msg) {
@@ -132,7 +132,7 @@ module.exports = function (grunt) {
     });
 
     files.forEach(function (file) {
-      var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'},p); } );
+      var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'}, p); });
       var proc = new HTMLProcessor(path.dirname(file.path), dest, file.body, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
@@ -188,6 +188,10 @@ module.exports = function (grunt) {
           // TODO: we should differentiate whether or not we're
           // using concat before ... Option ?
           uglify[block.dest] = block.dest;
+
+          if (block.requirejs) {
+            uglify[block.requirejs.srcDest] = block.requirejs.src;
+          }
           grunt.config(uglifyName, uglify);
         }
 

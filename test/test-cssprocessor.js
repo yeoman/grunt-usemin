@@ -4,7 +4,7 @@ var CSSProcessor = require('../lib/cssprocessor');
 
 describe('cssprocessor', function () {
   it('should initialize correctly', function () {
-    var cp = new CSSProcessor('', '','\n', 3);
+    var cp = new CSSProcessor('', '', '\n', 3);
     assert(cp !== null);
     assert.equal(3, cp.revvedfinder);
     assert.equal('\n', cp.linefeed);
@@ -24,7 +24,7 @@ describe('cssprocessor', function () {
 
     it('should update the CSS with new img filenames', function () {
       var content = 'background-image:url(images/pic.png);';
-      var cp = new CSSProcessor('', '',content, revvedfinder);
+      var cp = new CSSProcessor('', '', content, revvedfinder);
       var awaited = 'background-image:url(images/2123.pic.png);';
       assert.equal(awaited, cp.process());
     });

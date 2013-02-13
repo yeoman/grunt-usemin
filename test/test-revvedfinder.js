@@ -72,7 +72,7 @@ describe('RevvedFinder', function () {
     it('should restrict to the furnished subdirectories', function () {
       var rf = new RevvedFinder(function (pattern) {
         assert.equal(pattern, '{temp,dist}/**/*fred.html');
-        return['fred.html'];
+        return ['fred.html'];
       }, ['temp', 'dist']);
       rf.find('fred.html', '.');
     });

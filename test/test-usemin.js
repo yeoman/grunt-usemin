@@ -92,7 +92,7 @@ describe('usemin', function () {
 
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
-    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app.js\" src=\"scripts\/vendor\/require.js\"><\/script>/));
+    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app\.js\" src=\"scripts\/vendor\/require\.js\"><\/script>/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -174,7 +174,7 @@ describe('usemin', function () {
 
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
-    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app.js\" src=\"scripts\/vendor\/require.js\"><\/script>/));
+    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app\.js\" src=\"scripts\/vendor\/require\.js\"><\/script>/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -194,7 +194,7 @@ describe('usemin', function () {
     var changed = grunt.file.read('index.html');
 
     // Check replace has performed its duty
-    assert.ok(changed.match(/data-main="scripts\/23012.main.js"/));
+    assert.ok(changed.match(/data-main="scripts\/23012\.main\.js"/));
   });
 
   it('should use a basedir if configured', function () {
@@ -218,8 +218,8 @@ describe('usemin', function () {
     var changed = grunt.file.read('otherdir/test.html');
 
     // Check replace has performed its duty
-    assert.ok(changed.match(/src="54632.test1.png"/));
-    assert.ok(changed.match(/src="subdir\/2131.test2.png"/));
+    assert.ok(changed.match(/src="54632\.test1\.png"/));
+    assert.ok(changed.match(/src="subdir\/2131\.test2\.png"/));
   });
 
 
@@ -327,7 +327,7 @@ describe('usemin', function () {
       assert.equal(uglify['build/scripts/foo.js'], 'build/scripts/foo.js');
     });
 
-    it('should take dest option into consideration', function() {
+    it('should take dest option into consideration', function () {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'index.html', options: { 'dest': 'foo'}});
