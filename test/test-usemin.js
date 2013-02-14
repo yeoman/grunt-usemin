@@ -89,10 +89,9 @@ describe('usemin', function () {
     grunt.task.start();
 
     var changed = grunt.file.read('build/index.html');
-
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
-    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app\.js\" src=\"scripts\/vendor\/require\.js\"><\/script>/));
+    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app\" src=\"scripts\/vendor\/require\.js\"><\/script>/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -174,7 +173,7 @@ describe('usemin', function () {
 
     // Check replace has performed its duty
     assert.ok(changed.match(/<script src=\"scripts\/foo\.js\"><\/script>/));
-    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app\.js\" src=\"scripts\/vendor\/require\.js\"><\/script>/));
+    assert.ok(changed.match(/<script data-main=\"scripts\/amd-app\" src=\"scripts\/vendor\/require\.js\"><\/script>/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/23012\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]images\/misc\/2a436\.test\.png["']/));
     assert.ok(changed.match(/img[^\>]+src=['"]\/\/images\/test\.png["']/));
@@ -194,7 +193,7 @@ describe('usemin', function () {
     var changed = grunt.file.read('index.html');
 
     // Check replace has performed its duty
-    assert.ok(changed.match(/data-main="scripts\/23012\.main\.js"/));
+    assert.ok(changed.match(/data-main="scripts\/23012\.main"/));
   });
 
   it('should use a basedir if configured', function () {
