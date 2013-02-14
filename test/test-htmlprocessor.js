@@ -199,7 +199,7 @@ describe('htmlprocessor', function () {
       var content = '<script data-main="bar" src="require.js"></script>';
       var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.replaceWithRevved();
-      assert.equal(replaced, '<script data-main="bar.js" src="require.js"></script>');
+      assert.equal(replaced, '<script data-main="bar" src="require.js"></script>');
     });
 
 
