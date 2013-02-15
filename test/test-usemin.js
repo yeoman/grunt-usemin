@@ -280,7 +280,32 @@ describe('usemin', function () {
       assert.equal(requirejs.task1.options.baseUrl, 'scripts');
       assert.equal(requirejs.task2.options.baseUrl, 'base');
 
+      assert.equal(requirejs.task1.options.mainConfigFile, 'scripts/main.js');
+      // assert.equal(requirejs.task2.options.mainConfigFile, 'base');
+    });
 
+    it('should handle correctly files in subdir (requirejs)', function () {
+      grunt.log.muted = false;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'app/index.html'});
+      grunt.config('requirejs', {
+        task1: {}
+      });
+      grunt.file.mkdir('app');
+      grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'app/index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var requirejs = grunt.config('requirejs');
+      assert.ok(requirejs.task1.options.name);
+
+      assert.equal(requirejs.task1.options.name, 'main');
+
+      assert.equal(requirejs.task1.options.out, 'app/scripts/amd-app.js');
+
+      assert.equal(requirejs.task1.options.baseUrl, 'app/scripts');
+
+      assert.equal(requirejs.task1.options.mainConfigFile, 'app/scripts/main.js');
     });
 
     it('should create a requirejs multitask config setting with name and output if non settings exists', function () {

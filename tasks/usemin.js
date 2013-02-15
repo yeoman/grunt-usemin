@@ -162,11 +162,13 @@ module.exports = function (grunt) {
                 options.name = options.name || block.requirejs.name;
                 options.out = options.out || block.requirejs.dest;
                 options.baseUrl = options.baseUrl || block.requirejs.baseUrl;
+                options.mainConfigFile = path.join( options.baseUrl, options.name) + '.js';
               } else {
                 task.options = {
                   name: block.requirejs.name,
                   out: block.requirejs.dest,
-                  baseUrl: block.requirejs.baseUrl
+                  baseUrl: block.requirejs.baseUrl,
+                  mainConfigFile: path.join( block.requirejs.baseUrl, block.requirejs.name) + '.js'
                 };
               }
             }
