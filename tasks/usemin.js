@@ -72,37 +72,41 @@ module.exports = function (grunt) {
   var RevvedFinder = require('../lib/revvedfinder');
 
   grunt.registerMultiTask('usemin', 'Replaces references to non-minified scripts / stylesheets', function () {
+    var options = this.options({
+      type: this.target
+    });
+
     var processors = {
       css: CSSProcessor,
       html: HTMLProcessor
     };
-    var name = this.target;
-    var data = this.data;
-    var options = this.options();
-    var files = grunt.file.expand({filter: 'isFile'}, data);
 
-    files.map(grunt.file.read).forEach(function (content, i) {
-      var filepath = files[i];
-      var filedir = options.basedir || path.dirname(filepath);
+    this.files.forEach(function(fileObj) {
+      var files = grunt.file.expand({nonull: true}, fileObj.src);
 
-      grunt.log.subhead('usemin:' + name + ' - ' + filepath);
+      files.map(grunt.file.read).forEach(function (content, i) {
+        var filepath = files[i];
+        var filedir = options.basedir || path.dirname(filepath);
 
-      // make sure to convert back into utf8, `file.read` when used as a
-      // forEach handler will take additional arguments, and thus trigger the
-      // raw buffer read
-      content = content.toString();
+        grunt.log.subhead('Processing as ' + options.type.toUpperCase() + ' - ' + filepath);
 
-      // Our revved version locator
-      var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'}, p); }, options.dirs);
+        // make sure to convert back into utf8, `file.read` when used as a
+        // forEach handler will take additional arguments, and thus trigger the
+        // raw buffer read
+        content = content.toString();
 
-      // ext-specific directives handling and replacement of blocks
-      var proc = new processors[name](filedir, '', content, revvedfinder, function (msg) {
-        grunt.log.writeln(msg);
+        // Our revved version locator
+        var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'}, p); }, options.dirs);
+
+        // ext-specific directives handling and replacement of blocks
+        var proc = new processors[options.type](filedir, '', content, revvedfinder, function (msg) {
+          grunt.log.writeln(msg);
+        });
+
+        content = proc.process();
+        // write the new content to disk
+        grunt.file.write(filepath, content);
       });
-
-      content = proc.process();
-      // write the new content to disk
-      grunt.file.write(filepath, content);
     });
   });
 
