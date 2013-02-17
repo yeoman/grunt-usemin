@@ -81,7 +81,7 @@ module.exports = function (grunt) {
       html: HTMLProcessor
     };
 
-    this.files.forEach(function(fileObj) {
+    this.files.forEach(function (fileObj) {
       var files = grunt.file.expand({nonull: true}, fileObj.src);
 
       files.map(grunt.file.read).forEach(function (content, i) {
@@ -166,13 +166,13 @@ module.exports = function (grunt) {
                 options.name = options.name || block.requirejs.name;
                 options.out = options.out || block.requirejs.dest;
                 options.baseUrl = options.baseUrl || block.requirejs.baseUrl;
-                options.mainConfigFile = path.join( options.baseUrl, options.name) + '.js';
+                options.mainConfigFile = path.join(options.baseUrl, options.name) + '.js';
               } else {
                 task.options = {
                   name: block.requirejs.name,
                   out: block.requirejs.dest,
                   baseUrl: block.requirejs.baseUrl,
-                  mainConfigFile: path.join( block.requirejs.baseUrl, block.requirejs.name) + '.js'
+                  mainConfigFile: path.join(block.requirejs.baseUrl, block.requirejs.name) + '.js'
                 };
               }
             }
