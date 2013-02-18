@@ -55,6 +55,26 @@ describe('htmlprocessor', function () {
     assert.equal(1, b3.src.length); // requirejs has been added also
   });
 
+  it('should also detect block that use alternate search dir', function () {
+    var filename = __dirname + '/fixtures/alternate_search_path.html';
+    var htmlcontent =  grunt.file.read(filename);
+    var hp = new HTMLProcessor(path.dirname(filename), '', htmlcontent, 3);
+    assert.equal(2, hp.blocks.length);
+    var b1 = hp.blocks[0];
+    var b2 = hp.blocks[1];
+
+    assert.equal(4, b1.raw.length);
+    assert.equal('js', b1.type);
+    assert.equal(2, b1.src.length);
+    assert.equal(b1.src[0], 'build/scripts/bar.js');
+    assert.equal(b1.src[1], 'build/scripts/baz.js');
+    assert.equal(3, b2.raw.length);
+    assert.equal('js', b2.type);
+
+    assert.equal(2, b1.src.length);
+  });
+
+
   it('should detect and handle the usage on RequireJS in blocks', function () {
     var htmlcontent = '<!-- build:js scripts/amd-app.js -->\n' +
     '<script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n' +

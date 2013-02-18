@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+    <head>
+        <link rel="stylesheet" href="styles/main.css">
+        <script src="scripts/vendor/modernizr.min.js"></script>
+    </head>
+    <body>
+
+    <!-- build:js(build) scripts/foo.js -->
+    <script src="scripts/bar.js"></script>
+    <script src="scripts/baz.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/amd-app.js -->
+    <script data-main="scripts/main" src="scripts/vendor/require.js"></script>
+    <!-- endbuild -->
+
+    <img src="images/test.png">
+    <img src="images/misc/test.png">
+    <img src="//images/test.png">
+    <img src="/images/test.png">
+    <a href="http://foo/bar"></a><a href="ftp://bar"></a><a href="images/test.png"></a><a href="/images/test.png"></a><a href="#local"></a>
+</body>
+</html>
