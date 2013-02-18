@@ -30,12 +30,13 @@ A special task which uses the build block HTML comments in markup to get back th
 Custom HTML "block" comments are provided as an API for interacting with the build script. These comments adhere to the following pattern:
 
 ```html
-<!-- build:<type> <path> -->
+<!-- build:<type>(alternate search path) <path> -->
 ... HTML Markup, list of script / link tags.
 <!-- endbuild -->
 ```
 
 - **type**: either `js` or `css`
+- ** alternate search path **: (optional) By default the input files are relative to the treated file. Alternate search path allow to change that
 - **path**: the file path of the optimized file, the target output
 
 An example of this in completed form can be seen below:

@@ -251,6 +251,25 @@ describe('usemin', function () {
       assert.equal(uglify['scripts/plugins.js'], 'scripts/plugins.js');
     });
 
+    it('should use alternate search dir if asked to', function() {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'index.html'});
+      grunt.file.copy(path.join(__dirname, 'fixtures/alternate_search_path.html'), 'index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var concat = grunt.config('concat');
+      assert.ok(concat);
+      assert.ok(concat['scripts/foo.js']);
+      assert.equal(concat['scripts/foo.js'].length, 2);
+      assert.equal(concat['scripts/foo.js'][0], 'build/scripts/bar.js');
+      assert.equal(concat['scripts/foo.js'][1], 'build/scripts/baz.js');
+
+      var uglify = grunt.config('uglify');
+      assert.equal(uglify['scripts/foo.js'], 'scripts/foo.js');
+    });
+
     it('should update all requirejs multitask configs setting name and output', function () {
       grunt.log.muted = true;
       grunt.config.init();
@@ -285,7 +304,7 @@ describe('usemin', function () {
     });
 
     it('should handle correctly files in subdir (requirejs)', function () {
-      grunt.log.muted = false;
+      grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'app/index.html'});
       grunt.config('requirejs', {
