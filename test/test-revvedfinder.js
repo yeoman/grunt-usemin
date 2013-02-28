@@ -36,11 +36,11 @@ describe('RevvedFinder', function () {
       assert.equal('bar/2345.image.png', rf.find('bar/image.png', '.'));
     });
 
-    it('should regexp quote the looked-after file', function(done) {
+    it('should regexp quote the looked-after file', function (done) {
       var rf = new RevvedFinder(function (pattern) {
         assert.equal('**/*image\\.png', pattern);
         done();
-        return[];
+        return [];
       });
       rf.find('image.png', '.');
     });
