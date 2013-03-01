@@ -9,7 +9,8 @@ module.exports = function (grunt) {
         'Gruntfile.js',
         'lib/*.js',
         'tasks/*.js',
-        'test/**/*.js'
+        'test/**/*.js',
+        '!test/temp/scripts/*.js',
       ]
     }
   });

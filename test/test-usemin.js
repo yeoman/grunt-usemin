@@ -251,7 +251,7 @@ describe('usemin', function () {
       assert.equal(uglify['scripts/plugins.js'], 'scripts/plugins.js');
     });
 
-    it('should use alternate search dir if asked to', function() {
+    it('should use alternate search dir if asked to', function () {
       grunt.log.muted = true;
       grunt.config.init();
       grunt.config('useminPrepare', {html: 'index.html'});
