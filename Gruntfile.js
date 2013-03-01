@@ -18,5 +18,19 @@ module.exports = function (grunt) {
 
   grunt.loadTasks('tasks');
 
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('test', 'Run tests', function () {
+    var done = this.async();
+    var spawnOpts = {
+      cmd: 'node_modules/mocha/bin/mocha',
+      args: grunt.file.expand('test/test-*.js')
+    };
+    grunt.util.spawn(spawnOpts, function(err, res, code) {
+      grunt.log.write(res.stdout);
+      if (code) {
+        throw res.stderr;
+      }
+      done();
+    });
+  });
+  grunt.registerTask('default', ['jshint','test']);
 };
