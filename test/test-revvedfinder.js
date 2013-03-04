@@ -71,6 +71,12 @@ describe('RevvedFinder', function () {
       });
       assert.equal('/1234.foo.png', rf.find('/foo.png', '.'));
     });
+    it('should rev files starting at root regardless of file location', function () {
+      var rf = new RevvedFinder(function () {
+        return ['1234.foo.png'];
+      });
+      assert.equal('/1234.foo.png', rf.find('/foo.png', 'bar/baz'));
+    });
     it('should only looked at revved files', function () {
       var rf = new RevvedFinder(function () {
         return ['bar-fred.html'];
