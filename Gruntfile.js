@@ -25,7 +25,7 @@ module.exports = function (grunt) {
       cmd: 'node_modules/mocha/bin/mocha',
       args: grunt.file.expand('test/test-*.js')
     };
-    grunt.util.spawn(spawnOpts, function(err, res, code) {
+    grunt.util.spawn(spawnOpts, function (err, res, code) {
       grunt.log.write(res.stdout);
       if (code) {
         throw res.stderr;
@@ -33,5 +33,5 @@ module.exports = function (grunt) {
       done();
     });
   });
-  grunt.registerTask('default', ['jshint','test']);
+  grunt.registerTask('default', ['jshint', 'test']);
 };
