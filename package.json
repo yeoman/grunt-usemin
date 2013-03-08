@@ -18,7 +18,7 @@
     "url": "git://github.com/yeoman/grunt-usemin.git"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha test/test-*.js"
+    "test": "grunt"
   },
   "devDependencies": {
     "grunt": "~0.4.0",
