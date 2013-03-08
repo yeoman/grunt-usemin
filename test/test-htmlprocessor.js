@@ -123,6 +123,18 @@ describe('htmlprocessor', function () {
     assert.equal('bar/foo.css', hp.blocks[0].dest);
   });
 
+  it('should keep track of require.js location', function () {
+    var htmlcontent = '<!-- build:js scripts/amd-app.js -->\n' +
+    '<script data-main="scripts/main" src="foo/require.js"></script>\n' +
+    '<script src="foo.js"></script>\n' +
+    '<!-- endbuild -->';
+    var hp = new HTMLProcessor('build', 'dest', htmlcontent, 3);
+    assert.equal(1, hp.blocks.length);
+    assert.ok(hp.blocks[0].requirejs);
+    assert.equal('foo/require.js', hp.blocks[0].requirejs.origScript);
+    assert.equal('dest/foo/require.js', hp.blocks[0].requirejs.srcDest);
+  });
+
   describe('replaceWith', function () {
     it('should return a string that will replace the furnished block (JS)', function () {
       var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';

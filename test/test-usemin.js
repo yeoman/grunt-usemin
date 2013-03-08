@@ -221,6 +221,21 @@ describe('usemin', function () {
     assert.ok(changed.match(/src="subdir\/2131\.test2\.png"/));
   });
 
+  it('should use the furnished require.js source when replacing', function () {
+    grunt.file.mkdir('scripts');
+    grunt.file.write('scripts/23012.amd-app.js', 'foo');
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {html: 'index.html'});
+    grunt.file.copy(path.join(__dirname, 'fixtures/requirejs.html'), 'index.html');
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+    var changed = grunt.file.read('index.html');
+    // Check replace has performed its duty
+    assert.ok(changed.match(/data-main="scripts\/23012\.amd-app"\s+src="foo\/require\.js"/));
+
+  });
 
   describe('useminPrepare', function () {
     it('should update the config (HTML)', function () {
