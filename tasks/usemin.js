@@ -148,7 +148,15 @@ module.exports = function (grunt) {
           .writeln('    - ' + grunt.log.wordlist(block.src, { separator: '\n    - ' }));
 
         // update concat config for this block
-        concat[block.dest] = block.src;
+        if (block.dest.match(/^_/)) {
+          // grunt does not allow tasks with _, so conver to complex method
+          concat[block.dest.replace('_', '')] = {
+            src: block.src,
+            dest: block.dest
+          };
+        } else {
+          concat[block.dest] = block.src;
+        }
         grunt.config('concat', concat);
 
         // update requirejs config as well, as during path lookup we might have

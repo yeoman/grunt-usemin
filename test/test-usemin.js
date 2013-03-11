@@ -411,5 +411,22 @@ describe('usemin', function () {
       assert.equal(uglify['scripts/amd-app.js'], 'scripts/amd-app.js');
       assert.equal(uglify['scripts/plugins.js'], 'scripts/plugins.js');
     });
+
+    it('should not fail when output directory starts with _', function () {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'index.html'});
+      grunt.file.copy(path.join(__dirname, 'fixtures/underscore_dest.html'), 'index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var concat = grunt.config('concat');
+      assert.ok(concat);
+      Object.keys(concat).forEach(function (taskName) {
+        assert.ok(!taskName.match(/^_/));
+      });
+      assert.ok(concat['styles/main.min.css']);
+      assert.equal(concat['styles/main.min.css'].dest, '_styles/main.min.css');
+    });
   });
 });
