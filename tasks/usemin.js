@@ -149,7 +149,7 @@ module.exports = function (grunt) {
 
         // update concat config for this block
         if (block.dest.match(/^_/)) {
-          // grunt does not allow tasks with _, so conver to complex method
+          // grunt does not allow tasks with _, so convert to complex method
           concat[block.dest.replace('_', '')] = {
             src: block.src,
             dest: block.dest
