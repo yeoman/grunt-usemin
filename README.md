@@ -109,7 +109,7 @@ Default: nil
 
 Used to limit the directories that will be looked for revved files when replacing reference. By default all subdirectories are looked at.
 
-### Basedir
+### basedir
 Type: 'string'
 Default: nil
 
