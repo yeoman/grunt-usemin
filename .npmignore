@@ -1,7 +1,8 @@
+.npmignore
 .editorconfig
-*.sublime-project
-*.sublime-workspace
+.travis.yml
+.jshintrc
+.gitattributes
+contributing.md
 test
-grunt.js
-readme.md
-
+Gruntfile.js
