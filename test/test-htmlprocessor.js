@@ -136,6 +136,15 @@ describe('htmlprocessor', function () {
   });
 
   describe('replaceWith', function () {
+    it('should handle Windows-style paths', function () {
+      var htmlcontent = '<!-- build:js bar\\foo.js -->\n' +
+      '<script src="foo\\bar.js"></script>\n' +
+      '<!-- endbuild -->';
+      var hp = new HTMLProcessor('', '', htmlcontent, 3);
+      var replacestring = hp.replaceWith(hp.blocks[0]);
+      assert.equal('<script src="bar/foo.js"></script>', replacestring);
+    });
+
     it('should return a string that will replace the furnished block (JS)', function () {
       var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
       var hp = new HTMLProcessor('', '', htmlcontent, 3);
