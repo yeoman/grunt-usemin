@@ -27,13 +27,16 @@ describe('htmlprocessor', function () {
   });
 
   it('should *not* skip blank lines', function () {
-    var htmlcontent = '  <!-- build:css foo.css -->\n  <link rel="stylesheet" href="bar.css">\n\n  <link rel="stylesheet" href="foo.css">\n  <!-- endbuild -->\n';
+    var htmlcontent = '<!-- build:css foo.css -->\n' +
+    '<link rel="stylesheet" href="bar.css">\n\n' +
+    '<link rel="stylesheet" href="foo.css">\n' +
+    '<!-- endbuild -->\n';
     var hp = new HTMLProcessor('', '', htmlcontent, 3);
     assert.equal(1, hp.blocks.length);
     assert.equal('foo.css', hp.blocks[0].dest);
     assert.equal(5, hp.blocks[0].raw.length);
     assert.equal(2, hp.blocks[0].src.length);
-    assert.equal('  ', hp.blocks[0].indent);
+    assert.equal('', hp.blocks[0].indent);
   });
 
   it('should return the right number of blocks with the right number of lines', function () {
@@ -55,7 +58,7 @@ describe('htmlprocessor', function () {
     assert.equal(1, b3.src.length); // requirejs has been added also
   });
 
-  it('should also detect block that use alternate search dir', function () {
+  it('should also detect blocks that use alternate search dir', function () {
     var filename = __dirname + '/fixtures/alternate_search_path.html';
     var htmlcontent =  grunt.file.read(filename);
     var hp = new HTMLProcessor(path.dirname(filename), '', htmlcontent, 3);
@@ -73,7 +76,6 @@ describe('htmlprocessor', function () {
 
     assert.equal(2, b1.src.length);
   });
-
 
   it('should detect and handle the usage on RequireJS in blocks', function () {
     var htmlcontent = '<!-- build:js scripts/amd-app.js -->\n' +
@@ -137,40 +139,57 @@ describe('htmlprocessor', function () {
 
   describe('replaceWith', function () {
     it('should return a string that will replace the furnished block (JS)', function () {
-      var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
+      var htmlcontent = '<!-- build:js foo.js -->\n' +
+      '<script src="scripts/bar.js"></script>\n' +
+      '<script src="baz.js"></script>\n' +
+      '<!-- endbuild -->\n';
       var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal('  <script src="foo.js"></script>', replacestring);
+      assert.equal('<script src="foo.js"></script>', replacestring);
     });
 
     it('should return a string that will replace the furnished block (RequireJS)', function () {
-      var htmlcontent = '  <!-- build:js foo -->   <script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n  <!-- endbuild -->\n';
+      var htmlcontent = '<!-- build:js foo -->\n' +
+      '<script data-main="scripts/main" src="scripts/vendor/require.js"></script>\n' +
+      '<!-- endbuild -->\n';
       var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal('  <script data-main="foo" src="scripts/vendor/require.js"></script>', replacestring);
+      assert.equal('<script data-main="foo" src="scripts/vendor/require.js"></script>', replacestring);
     });
 
     it('should return a string that will replace the furnished block (CSS)', function () {
-      var htmlcontent = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
+      var htmlcontent = '<!-- build:css foo.css -->\n' +
+      '<link rel="stylesheet" href="bar.css">\n' +
+      '<link rel="stylesheet" href="baz.css">\n' +
+      '<!-- endbuild -->\n';
       var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal(replacestring, '  <link rel="stylesheet" href="foo.css">');
+      assert.equal(replacestring, '<link rel="stylesheet" href="foo.css">');
     });
 
     it('should replace with a path relative to the file', function () {
-      var htmlcontent = '  <!-- build:js foo.js -->   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
+      var htmlcontent = '<!-- build:js foo.js -->' +
+      '<script src="scripts/bar.js"></script>\n' +
+      '<script src="baz.js"></script>\n' +
+      '<!-- endbuild -->\n';
       var hp = new HTMLProcessor('build', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal(replacestring, '  <script src="foo.js"></script>');
+      assert.equal(replacestring, '<script src="foo.js"></script>');
     });
   });
 
   describe('replaceBlocks', function () {
     it('should replace blocks based on their types', function () {
-      var jsblock = '  <!-- build:js foo.js -->\n   <script src="scripts/bar.js"></script>\n  <script src="baz.js"></script>\n  <!-- endbuild -->\n';
-      var cssblock = '  <!-- build:css foo.css -->\n<link rel="stylesheet" href="bar.css">\n\n<link rel="stylesheet" href="baz.css">\n<!-- endbuild -->\n';
+      var jsblock = '<!-- build:js foo.js -->\n' +
+      '<script src="scripts/bar.js"></script>\n' +
+      '<script src="baz.js"></script>\n' +
+      '<!-- endbuild -->\n';
+      var cssblock = '<!-- build:css foo.css -->\n' +
+      '<link rel="stylesheet" href="bar.css">\n' +
+      '<link rel="stylesheet" href="baz.css">\n' +
+      '<!-- endbuild -->\n';
       var htmlcontent = jsblock + '\n\n' + cssblock;
-      var awaited = '  <script src="foo.js"></script>\n\n\n  <link rel="stylesheet" href="foo.css">\n';
+      var awaited = '<script src="foo.js"></script>\n\n\n<link rel="stylesheet" href="foo.css">\n';
       var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replaced = hp.replaceBlocks();
       assert.equal(replaced, awaited);
@@ -276,18 +295,17 @@ describe('htmlprocessor', function () {
       var replaced = hp.replaceWithRevved();
       assert.equal(replaced, '<input type="image" src="' + filemapping['image.png'] + '" />');
     });
-
   });
 
   describe('process', function () {
     it('should replace blocks by targets and references by revved versions', function () {
-      var content = '  <!-- build:js foo.js -->\n'  +
-      '   <script src="scripts/bar.js"></script>\n' +
-      '  <script src="baz.js"></script>\n' +
-      '  <!-- endbuild -->\n' +
-      '  <img src="image.png">';
-      var awaited = '  <script src="' + filemapping['foo.js'] + '"></script>\n' +
-      '  <img src="' + filemapping['image.png'] + '">';
+      var content = '<!-- build:js foo.js -->\n'  +
+      '<script src="scripts/bar.js"></script>\n' +
+      '<script src="baz.js"></script>\n' +
+      '<!-- endbuild -->\n' +
+      '<img src="image.png">';
+      var awaited = '<script src="' + filemapping['foo.js'] + '"></script>\n' +
+      '<img src="' + filemapping['image.png'] + '">';
       var hp = new HTMLProcessor('', '', content, revvedfinder);
       var replaced = hp.process();
       assert.equal(replaced, awaited);
