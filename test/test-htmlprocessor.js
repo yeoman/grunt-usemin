@@ -36,6 +36,14 @@ describe('htmlprocessor', function () {
     assert.equal('  ', hp.blocks[0].indent);
   });
 
+  it('should return the correct indentation', function () {
+    var htmlcontent = '  <!-- build:css foo.css -->\n' +
+    '  <link rel="stylesheet" href="foo.css">\n' +
+    '  <!-- endbuild -->\n';
+    var hp = new HTMLProcessor('', '', htmlcontent, 3);
+    assert.equal('  ', hp.blocks[0].indent);
+  });
+
   it('should return the right number of blocks with the right number of lines', function () {
     var filename = __dirname + '/fixtures/usemin.html';
     var htmlcontent =  grunt.file.read(filename);
