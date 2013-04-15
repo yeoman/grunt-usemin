@@ -36,15 +36,6 @@ describe('RevvedFinder', function () {
       assert.equal('bar/2345.image.png', rf.find('bar/image.png', '.'));
     });
 
-    it('should regexp quote the looked-after file', function (done) {
-      var rf = new RevvedFinder(function (pattern) {
-        assert.equal('**/*image\\.png', pattern);
-        done();
-        return [];
-      });
-      rf.find('image.png', '.');
-    });
-
     it('should return revved version if it ends hex in characters', function () {
       var rf = new RevvedFinder(function () {
         return ['11916fba.image.png'];
@@ -86,7 +77,7 @@ describe('RevvedFinder', function () {
 
     it('should restrict to the furnished subdirectories', function () {
       var rf = new RevvedFinder(function (pattern) {
-        assert.equal(pattern, '{temp,dist}/**/*fred\\.html');
+        assert.equal(pattern, '{temp,dist}/**/*fred.html');
         return ['fred.html'];
       }, ['temp', 'dist']);
       rf.find('fred.html', '.');
