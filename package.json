@@ -1,6 +1,6 @@
 {
   "name": "grunt-usemin",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Grunt task replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
   "keywords": [
     "gruntplugin",
