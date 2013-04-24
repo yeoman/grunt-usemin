@@ -318,6 +318,26 @@ describe('usemin', function () {
       // assert.equal(requirejs.task2.options.mainConfigFile, 'base');
     });
 
+    it('should not ovewrite predefined mainConfigFile setting', function () {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('useminPrepare', {html: 'index.html'});
+      grunt.config('requirejs', {
+        task: {
+          options: {
+            baseUrl: 'base',
+            mainConfigFile: 'scripts/bootstrap.js'
+          }
+        }
+      });
+      grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+      grunt.task.run('useminPrepare');
+      grunt.task.start();
+
+      var requirejs = grunt.config('requirejs');
+      assert.equal(requirejs.task.options.mainConfigFile, 'scripts/bootstrap.js');
+    });
+
     it('should handle correctly files in subdir (requirejs)', function () {
       grunt.log.muted = true;
       grunt.config.init();
