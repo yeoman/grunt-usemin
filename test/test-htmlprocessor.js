@@ -99,6 +99,16 @@ describe('htmlprocessor', function () {
     assert.equal('main', hp.blocks[0].requirejs.name);
   });
 
+  it('should detect media attribute', function() {
+    var htmlcontent = '<!-- build:css foo.css -->\n' +
+    '<link rel="stylesheet" href="foo.css" media="(min-width:980px)">\n' +
+    '<!-- endbuild -->\n';
+    var hp = new HTMLProcessor('', '', htmlcontent, 3);
+    assert.equal(1, hp.blocks.length);
+    assert.ok(hp.blocks[0].media);
+    assert.equal('(min-width:980px)', hp.blocks[0].media);
+  });
+
   it('should take into consideration path of the source file', function () {
     var htmlcontent = '<!-- build:css bar/foo.css -->\n' +
     '<link rel="stylesheet" href="bar.css">\n' +
@@ -182,6 +192,15 @@ describe('htmlprocessor', function () {
       var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
       assert.equal(replacestring, '<link rel="stylesheet" href="foo.css">');
+    });
+
+    it('should preserve media attribue (CSS)', function () {
+      var htmlcontent = '<!-- build:css foo.css -->\n' +
+      '<link rel="stylesheet" href="bar.css" media="(min-width:980px)">\n' +
+      '<!-- endbuild -->\n';
+      var hp = new HTMLProcessor('', '', htmlcontent, 3);
+      var replacestring = hp.replaceWith(hp.blocks[0]);
+      assert.equal(replacestring, '<link rel="stylesheet" href="foo.css" media="(min-width:980px)">');
     });
 
     it('should replace with a path relative to the file', function () {
