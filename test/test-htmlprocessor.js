@@ -99,7 +99,7 @@ describe('htmlprocessor', function () {
     assert.equal('main', hp.blocks[0].requirejs.name);
   });
 
-  it('should detect media attribute', function() {
+  it('should detect media attribute', function () {
     var htmlcontent = '<!-- build:css foo.css -->\n' +
     '<link rel="stylesheet" href="foo.css" media="(min-width:980px)">\n' +
     '<!-- endbuild -->\n';
