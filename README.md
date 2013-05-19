@@ -21,7 +21,7 @@ usemin is composed of 2 different tasks (`useminPrepare` and `usemin`) that are 
 - **useminPrepare**: detects special construction (blocks) in the HTML files and update the `grunt` config to run `concat`/`uglify`/`cssmin`/`requirejs` on the files referenced in the block. It does not changes the HTML files it is working on.
 - **usemin**: in the HTML and CSS files it treats, it replaces the blocks by a reference to a single file, as well as all references to images, scripts, CSS files, by their minified/revved/.. version if it is found on the disk. As such this target rewrites the HTML and CSS files it is working on.
 
-Usually, `useminPrepare` is launched first, then the `concat`, `uglify`, `cssmin` and `requirejs` tasks are launched (they will created the minified/revved version of the referenced files), and then, in the end `usemin` is launched.
+Usually, `useminPrepare` is launched first, then the `concat`, `uglify`, `cssmin` and `requirejs` tasks are launched (they will create the minified/revved version of the referenced files), and then, in the end `usemin` is launched.
 
 ## The useminPrepare task
 
