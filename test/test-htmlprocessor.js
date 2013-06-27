@@ -99,6 +99,44 @@ describe('htmlprocessor', function () {
     assert.equal('main', hp.blocks[0].requirejs.name);
   });
 
+  it('should detect the defer attribute', function () {
+    var htmlcontent = '<!-- build:js foo.js -->\n' +
+    '<script defer src="bar.js"></script>\n' +
+    '<!-- endbuild -->';
+    var hp = new HTMLProcessor('', '', htmlcontent, 3);
+    assert.equal(1, hp.blocks.length);
+    assert.ok(hp.blocks[0].defer);
+    assert.equal(true, hp.blocks[0].defer);
+  });
+
+  it('should throw error if non-deferred script follows a deferred one in one block', function () {
+    var htmlcontent = '<!-- build:js foo.js -->\n' +
+    '<script defer src="bar.js"></script>\n' +
+    '<script src="baz.js"></script>\n' +
+    '<!-- endbuild -->';
+    try {
+      new HTMLProcessor('', '', htmlcontent, 3);
+    } catch (e) {
+      assert.ok(true);
+      return;
+    }
+    assert.ok(false);
+  });
+
+  it('should throw error if deferred script follows a non-deferred one in one block', function () {
+    var htmlcontent = '<!-- build:js foo.js -->\n' +
+    '<script src="bar.js"></script>\n' +
+    '<script defer src="baz.js"></script>\n' +
+    '<!-- endbuild -->';
+    try {
+      new HTMLProcessor('', '', htmlcontent, 3);
+    } catch (e) {
+      assert.ok(true);
+      return;
+    }
+    assert.ok(false);
+  });
+
   it('should detect media attribute', function () {
     var htmlcontent = '<!-- build:css foo.css -->\n' +
     '<link rel="stylesheet" href="foo.css" media="(min-width:980px)">\n' +
@@ -173,6 +211,15 @@ describe('htmlprocessor', function () {
       var hp = new HTMLProcessor('', '', htmlcontent, 3);
       var replacestring = hp.replaceWith(hp.blocks[0]);
       assert.equal('<script src="foo.js"></script>', replacestring);
+    });
+
+    it('should preserve defer attribue (JS)', function () {
+      var htmlcontent = '<!-- build:js foo.js -->\n' +
+      '<script defer src="bar.js"></script>\n' +
+      '<!-- endbuild -->';
+      var hp = new HTMLProcessor('', '', htmlcontent, 3);
+      var replacestring = hp.replaceWith(hp.blocks[0]);
+      assert.equal('<script defer src="foo.js"></script>', replacestring);
     });
 
     it('should return a string that will replace the furnished block (RequireJS)', function () {
