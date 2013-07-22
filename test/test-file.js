@@ -82,4 +82,43 @@ describe('File', function() {
     assert.equal('/scripts/foo.js', file.blocks[0].dest);
   });
 
+  it('should detect the defer attribute', function () {
+    var filename = __dirname + '/fixtures/block_with_defer.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+    assert.ok(file.blocks[0].defer);
+    assert.equal(true, file.blocks[0].defer);
+  });
+
+  it('should throw error if non-deferred script follows a deferred one in one block', function () {
+    var filename = __dirname + '/fixtures/block_with_mixed_defer.html';
+    try {
+      new File(filename);
+    } catch (e) {
+      assert.ok(true);
+      return;
+    }
+    assert.ok(false);
+  });
+
+  it('should throw error if deferred script follows a non-deferred one in one block', function () {
+    var filename = __dirname + '/fixtures/block_with_mixed_defer.html';
+    try {
+      new File(filename);
+    } catch (e) {
+      assert.ok(true);
+      return;
+    }
+    assert.ok(false);
+  });
+
+  it('should detect the media attribute', function () {
+    var filename = __dirname + '/fixtures/block_with_media.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+    assert.ok(file.blocks[0].media);
+    assert.equal('(min-width:980px)', file.blocks[0].media);
+  });
+
+
 });

@@ -79,6 +79,32 @@ describe('FileProcessor', function() {
 			assert.equal(result, '  <script src="foo.js"><\/script>');
 		});
 
+    it('should preserve defer attribute (JS)', function () {
+      var fp = new FileProcessor('html',{});
+      var block = {
+        dest: 'foo.js',
+        type: 'js',
+        defer: true,
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  <script defer src="foo.js"><\/script>');
+    });
+
+    it('should preserve media attribute', function () {
+      var fp = new FileProcessor('html',{});
+      var block = {
+        dest: 'foo.css',
+        type: 'css',
+        media: '(min-width:980px)',
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  <link rel="stylesheet" href="foo.css" media="(min-width:980px)"/>');
+    });
+
 	});
 
 	describe('replaceWithRevved', function() {
