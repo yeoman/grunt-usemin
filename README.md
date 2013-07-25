@@ -61,7 +61,7 @@ An example of this in completed form can be seen below:
 
 ### Transformation flow
 
-The transformation flow is made of sequential steps: each of the step transform the file, and useminPrepare will modify the configuration in order to described steps are correctly performed.
+The transformation flow is made of sequential steps: each of the step transform the file, and useminPrepare will modify the configuration in order ifor the described steps to be correctly performed.
 
 By default the flow is: `concat -> uglifyjs`.
 Additionnally to the flow, at the end, some postprocessors can be launched to alter further the configuration.
@@ -115,19 +115,19 @@ If you need to change the 'root' dir, use the `root` option (see bellow).
 
 ### dest
 Type: 'string'
-Default: nil
+Default: `nil`
 
 Base directory where the transformed files should be output.
 
 ### root
 Type: 'string'
-Default: nil
+Default: `nil`
 
 The root directory from which your files will be resolved.
 
 ### flow
 Type: 'object'
-Default: { steps: ['concat', 'uglify'], post: ['foobar']}
+Default: `{ steps: ['concat', 'uglify'], post: ['foobar']}`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
 You can change separately the `steps` or the post-processors (`post`).
