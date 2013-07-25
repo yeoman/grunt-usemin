@@ -315,8 +315,9 @@ describe('useminPrepare', function () {
     assert.equal(concat.generated.files[0].src.length, 1);
 
     var uglify = grunt.config('uglify');
-    assert.equal(uglify.generated.files[1].dest, 'dist/scripts/plugins.js');
-    assert.deepEqual(uglify.generated.files[1].src, [path.normalize('.tmp/concat/scripts/plugins.js')]);
+
+    assert.equal(uglify.generated.files[0].dest, 'dist/scripts/plugins.js');
+    assert.deepEqual(uglify.generated.files[0].src, [path.normalize('.tmp/concat/scripts/plugins.js')]);
   });
 
   it('should use alternate search dir if asked to', function () {
@@ -397,8 +398,8 @@ describe('useminPrepare', function () {
     grunt.task.start();
 
     var uglify = grunt.config('uglify');
-    assert.equal(uglify.generated.files[1].dest, 'foo/scripts/plugins.js');
-    assert.deepEqual(uglify.generated.files[1].src, [path.normalize('.tmp/concat/scripts/plugins.js')]);
+    assert.equal(uglify.generated.files[0].dest, 'foo/scripts/plugins.js');
+    assert.deepEqual(uglify.generated.files[0].src, [path.normalize('.tmp/concat/scripts/plugins.js')]);
 
   });
 
@@ -409,7 +410,7 @@ describe('useminPrepare', function () {
       html: 'index.html',
       options: {
         flow: {
-          steps: ['uglifyjs'],
+          steps: {'js': ['uglifyjs']},
           post: []
         }
       }
@@ -423,11 +424,11 @@ describe('useminPrepare', function () {
 
     assert.equal(concat, null);
     assert.ok(uglify);
-    assert.equal(uglify.generated.files.length, 2);
+
+    assert.equal(uglify.generated.files.length, 1);
     var files = uglify.generated.files[0];
 
-    assert.equal(files.dest, path.normalize('dist/styles/main.min.css'));
-    assert.deepEqual(files.src, [path.normalize('styles/main.css')]);
+    assert.equal(files.dest, path.normalize('dist/scripts/plugins.js'));
 
   });
 
@@ -439,7 +440,7 @@ describe('useminPrepare', function () {
       options: {
         flow: {
           'html': {
-            steps: ['uglifyjs'],
+            steps: {'js': ['uglifyjs']},
             post: []
           }
         }
@@ -454,10 +455,9 @@ describe('useminPrepare', function () {
 
     assert.equal(concat, null);
     assert.ok(uglify);
-    assert.equal(uglify.generated.files.length, 2);
+    assert.equal(uglify.generated.files.length, 1);
     var files = uglify.generated.files[0];
-    assert.equal(files.dest, 'dist/styles/main.min.css');
-    assert.deepEqual(files.src, [path.normalize('styles/main.css')]);
+    assert.equal(files.dest, 'dist/scripts/plugins.js');
 
   });
 
@@ -482,7 +482,7 @@ describe('useminPrepare', function () {
       html: 'index.html',
       options: {
         flow: {
-            steps: [copy],
+            steps: {'js': [copy]},
             post: []
           }
         }
@@ -494,8 +494,7 @@ describe('useminPrepare', function () {
     var copyCfg = grunt.config('copy');
 
     assert.ok(copyCfg);
-    assert.equal(copyCfg.generated.files[0].dest, path.normalize('dist/styles/main.min.css'));
-    assert.equal(copyCfg.generated.files[1].dest, path.normalize('dist/scripts/plugins.js'));
+    assert.equal(copyCfg.generated.files[0].dest, path.normalize('dist/scripts/plugins.js'));
   });
 });
 

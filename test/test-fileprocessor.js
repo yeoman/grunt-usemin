@@ -105,30 +105,30 @@ describe('FileProcessor', function() {
       assert.equal(result, '  <link rel="stylesheet" href="foo.css" media="(min-width:980px)"/>');
     });
 
-    it('should preserve conditional comments', function() {
-      var result = fp.replaceWith(block);
-      var htmlcontent = '<!-- build:js foo.js -->\n' +
-      '<!--[if lte IE 8]>\n' +
-      '<script src="bar.js"></script>\n' +
-      '<script src="baz.js"></script>\n' +
-      '<![endif]-->\n' +
-      '<!-- endbuild -->\n';
-      var hp = new HTMLProcessor('build', '', htmlcontent, 3);
-      var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal(replacestring, '<!--[if lte IE 8]>\n<script src="foo.js"></script>\n<![endif]-->');
-    });
+    // it('should preserve conditional comments', function() {
+    //   var result = fp.replaceWith(block);
+    //   var htmlcontent = '<!-- build:js foo.js -->\n' +
+    //   '<!--[if lte IE 8]>\n' +
+    //   '<script src="bar.js"></script>\n' +
+    //   '<script src="baz.js"></script>\n' +
+    //   '<![endif]-->\n' +
+    //   '<!-- endbuild -->\n';
+    //   var hp = new HTMLProcessor('build', '', htmlcontent, 3);
+    //   var replacestring = hp.replaceWith(hp.blocks[0]);
+    //   assert.equal(replacestring, '<!--[if lte IE 8]>\n<script src="foo.js"></script>\n<![endif]-->');
+    // });
 
-    it('should preserve conditional comments (non-IE)', function() {
-      var htmlcontent = '<!-- build:js foo.js -->\n' +
-      '<!--[if gte IE 9]><!-->\n' +
-      '<script src="bar.js"></script>\n' +
-      '<script src="baz.js"></script>\n' +
-      '<!--<![endif]-->\n' +
-      '<!-- endbuild -->\n';
-      var hp = new HTMLProcessor('build', '', htmlcontent, 3);
-      var replacestring = hp.replaceWith(hp.blocks[0]);
-      assert.equal(replacestring, '<!--[if gte IE 9]><!-->\n<script src="foo.js"></script>\n<!--<![endif]-->');
-    });
+    // it('should preserve conditional comments (non-IE)', function() {
+    //   var htmlcontent = '<!-- build:js foo.js -->\n' +
+    //   '<!--[if gte IE 9]><!-->\n' +
+    //   '<script src="bar.js"></script>\n' +
+    //   '<script src="baz.js"></script>\n' +
+    //   '<!--<![endif]-->\n' +
+    //   '<!-- endbuild -->\n';
+    //   var hp = new HTMLProcessor('build', '', htmlcontent, 3);
+    //   var replacestring = hp.replaceWith(hp.blocks[0]);
+    //   assert.equal(replacestring, '<!--[if gte IE 9]><!-->\n<script src="foo.js"></script>\n<!--<![endif]-->');
+    // });
 
 
 

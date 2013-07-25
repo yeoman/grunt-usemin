@@ -114,27 +114,30 @@ If you need to change the 'root' dir, use the `root` option (see bellow).
 ### Options
 
 ### dest
+
 Type: 'string'
 Default: `nil`
 
 Base directory where the transformed files should be output.
 
 ### root
+
 Type: 'string'
 Default: `nil`
 
 The root directory from which your files will be resolved.
 
 ### flow
+
 Type: 'object'
-Default: `{ steps: ['concat', 'uglify'], post: ['foobar']}`
+Default: `{ steps: { 'js': ['concat', 'uglify'], 'cs': ['concat', 'cssmin']}, post: {}}`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
 You can change separately the `steps` or the post-processors (`post`).
 
 For example:
 
-* to change the `steps` and `post` for the target `html`:
+* to change the `js` `steps` and `post` for the target `html`:
 
 ```js
 'useminPrepare', {
@@ -142,22 +145,22 @@ For example:
       options: {
         flow: {
           html: {
-            steps: ['uglifyjs'],
-            post: []
+            steps: {'js': ['uglifyjs']},
+            post: {}
           }
         }
       }
     }
 ```
 
-* to change the `steps` and `post` for all targets:
+* to change the `js` `steps` and `post` for all targets:
 
 ```js
 'useminPrepare', {
       html: 'index.html',
       options: {
         flow: {
-          steps: ['uglifyjs'],
+          steps: {'js' : ['uglifyjs'] },
           post: []
         }
       }

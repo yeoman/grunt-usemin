@@ -9,15 +9,16 @@ var inspect = function (obj) {
 //  - a dedicated one for the furnished target
 //  - a general one
 //  - the default one
-var getFlowFromConfig = function(config,target) {
-  var flow = { steps: ['concat', 'uglifyjs'], post: []};
+var getFlowFromConfig = function(config, target) {
+  var Flow = require('../lib/flow');
+  var flow = new Flow({ steps: {'js': ['concat', 'uglifyjs'], 'css': ['concat', 'cssmin']}, post: {}});
   if (config.options && config.options.flow) {
     if (config.options.flow[target]) {
-      flow.steps = config.options.flow[target].steps;
-      flow.post = config.options.flow[target].post;
+      flow.setSteps(config.options.flow[target].steps);
+      flow.setPost(config.options.flow[target].post);
     } else {
-      flow.steps = config.options.flow.steps;
-      flow.post = config.options.flow.post;
+      flow.setSteps(config.options.flow.steps);
+      flow.setPost(config.options.flow.post);
     }
   }
   return flow;
@@ -149,12 +150,11 @@ module.exports = function (grunt) {
 
     var flow = getFlowFromConfig(grunt.config('useminPrepare'), this.target);
 
-    var c = new ConfigWriter( flow.steps, flow.post, {root: root, dest: dest, staging: '.tmp'} );
+    var c = new ConfigWriter( flow, {root: root, dest: dest, staging: '.tmp'} );
 
     var cfgNames = [];
-    c.steps.forEach(function(i) { cfgNames.push(i.name);});
-    c.postprocessors.forEach(function(i) { cfgNames.push(i.name);});
-
+    c.stepWriters().forEach(function(i) { cfgNames.push(i.name);});
+    c.postWriters().forEach(function(i) { cfgNames.push(i.name);});
     var gruntConfig = {};
     _.each(cfgNames, function(name) {
       gruntConfig[name] = grunt.config(name) || {};
