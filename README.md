@@ -130,7 +130,7 @@ The root directory from which your files will be resolved.
 ### flow
 
 Type: 'object'
-Default: `{ steps: { 'js': ['concat', 'uglify'], 'cs': ['concat', 'cssmin']}, post: {}}`
+Default: `{ steps: { 'js': ['concat', 'uglify'], 'css': ['concat', 'cssmin']}, post: {}}`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
 You can change separately the `steps` or the post-processors (`post`).
