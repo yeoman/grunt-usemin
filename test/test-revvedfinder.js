@@ -61,7 +61,7 @@ describe('RevvedFinder', function () {
 
       it('should regexp quote the looked-after file', function (done) {
         var rf = new RevvedFinder(function (pattern) {
-          assert.equal('image.*.png', pattern);
+          assert.deepEqual(['image.*.png','*.image.png'], pattern);
           done();
           return [];
         });
@@ -127,7 +127,7 @@ describe('RevvedFinder', function () {
 
       it('should only look under the furnished directory', function () {
         var rf = new RevvedFinder(function (pattern) {
-          assert.equal(pattern, helpers.normalize('bar/fred.*.html'));
+          assert.deepEqual(pattern, [helpers.normalize('bar/fred.*.html'), helpers.normalize('bar/*.fred.html')]);
           return ['fred.html'];
         });
         var rfile = rf.find('fred.html', 'bar');
