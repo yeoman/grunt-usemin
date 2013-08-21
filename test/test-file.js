@@ -57,6 +57,26 @@ describe('File', function() {
     assert.equal(2, b1.src.length);
   });
 
+  it('should also detect block that has IE conditionals on same line', function() {
+    var filename = __dirname + '/fixtures/block_with_IEconditionals_inline.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+    assert.ok(file.blocks[0].conditionalStart);
+    assert.ok(file.blocks[0].conditionalEnd);
+    assert.equal('<!--[if (lt IE 9) & (!IEmobile)]>', file.blocks[0].conditionalStart);
+    assert.equal('<![endif]-->', file.blocks[0].conditionalEnd);
+  });
+
+  it('should also detect block that has IE conditionals within block', function() {
+    var filename = __dirname + '/fixtures/block_with_IEconditionals_within.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+    assert.ok(file.blocks[0].conditionalStart);
+    assert.ok(file.blocks[0].conditionalEnd);
+    assert.equal('<!--[if (lt IE 9) & (!IEmobile)]>', file.blocks[0].conditionalStart);
+    assert.equal('<![endif]-->', file.blocks[0].conditionalEnd);
+  });
+
   it('should throw an exception if it finds RequireJS blocks', function() {
     var filename = __dirname + '/fixtures/requirejs.html';
     assert.throws( function() {

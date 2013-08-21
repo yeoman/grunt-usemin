@@ -105,33 +105,33 @@ describe('FileProcessor', function() {
       assert.equal(result, '  <link rel="stylesheet" href="foo.css" media="(min-width:980px)"/>');
     });
 
-    // it('should preserve conditional comments', function() {
-    //   var result = fp.replaceWith(block);
-    //   var htmlcontent = '<!-- build:js foo.js -->\n' +
-    //   '<!--[if lte IE 8]>\n' +
-    //   '<script src="bar.js"></script>\n' +
-    //   '<script src="baz.js"></script>\n' +
-    //   '<![endif]-->\n' +
-    //   '<!-- endbuild -->\n';
-    //   var hp = new HTMLProcessor('build', '', htmlcontent, 3);
-    //   var replacestring = hp.replaceWith(hp.blocks[0]);
-    //   assert.equal(replacestring, '<!--[if lte IE 8]>\n<script src="foo.js"></script>\n<![endif]-->');
-    // });
+    it('should preserve IE conditionals for js blocks', function () {
+      var fp = new FileProcessor('html',{});
+      var block = {
+        dest: 'foo.js',
+        type: 'js',
+        conditionalStart: '<!--[if (lt IE 9) & (!IEmobile)]>',
+        conditionalEnd: '<![endif]-->',
+        indent: '  '
+      };
 
-    // it('should preserve conditional comments (non-IE)', function() {
-    //   var htmlcontent = '<!-- build:js foo.js -->\n' +
-    //   '<!--[if gte IE 9]><!-->\n' +
-    //   '<script src="bar.js"></script>\n' +
-    //   '<script src="baz.js"></script>\n' +
-    //   '<!--<![endif]-->\n' +
-    //   '<!-- endbuild -->\n';
-    //   var hp = new HTMLProcessor('build', '', htmlcontent, 3);
-    //   var replacestring = hp.replaceWith(hp.blocks[0]);
-    //   assert.equal(replacestring, '<!--[if gte IE 9]><!-->\n<script src="foo.js"></script>\n<!--<![endif]-->');
-    // });
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  <!--[if (lt IE 9) & (!IEmobile)]>\n  <script src="foo.js"><\/script>\n  <![endif]-->');
+    });
 
+    it('should preserve IE conditionals for css blocks', function () {
+      var fp = new FileProcessor('html',{});
+      var block = {
+        dest: 'foo.css',
+        type: 'css',
+        conditionalStart: '<!--[if (lt IE 9) & (!IEmobile)]>',
+        conditionalEnd: '<![endif]-->',
+        indent: '  '
+      };
 
-
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  <!--[if (lt IE 9) & (!IEmobile)]>\n  <link rel="stylesheet" href="foo.css"/>\n  <![endif]-->');
+    });
 	});
 
 	describe('replaceWithRevved', function() {
