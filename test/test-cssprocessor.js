@@ -71,5 +71,12 @@ describe('cssprocessor', function () {
       var awaited = 'background-image:url(fonts/2123.awesome-font.svg?#iefix);';
       assert.equal(awaited, cp.process());
     });
+
+    it('should support src attributes', function () {
+      var content = 'filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'images/pic.png\',sizingMethod=\'scale\');';
+      var cp = new CSSProcessor('', 'build/css', content, revvedfinder);
+      var awaited = 'filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'images/2123.pic.png\',sizingMethod=\'scale\');';
+      assert.equal(awaited, cp.process());
+    });
   });
 });
