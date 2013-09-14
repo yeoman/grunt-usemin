@@ -302,13 +302,14 @@ describe('FileProcessor', function() {
 		var cp;
 
     describe('absolute path', function() {
-			var content = '.myclass {\nbackground: url("/images/test.png") no-repeat center center;\nbackground: url("/images/misc/test.png") no-repeat center center;\nbackground: url("//images/foo.png") no-repeat center center;}';
+			var content = '.myclass {\nbackground: url("/images/test.png") no-repeat center center;\nbackground: url("/images/misc/test.png") no-repeat center center;\nbackground: url("//images/foo.png") no-repeat center center;\nfilter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/pic.png",sizingMethod="scale");}';
 			var filemapping = {
 	      'build/images/test.png': '/images/test.23012.png',
 	      'build/images/foo.png': '//images/foo.23012.png',
 	      'build/images/misc/test.png': '/images/misc/test.23012.png',
 	      'foo/images/test.png': '/images/test.23012.png',
 	      'foo/images/foo.png': '//images/foo.23012.png',
+        'foo/images/pic.png': '/images/pic.23012.png',
 	      'foo/images/misc/test.png': '/images/misc/test.23012.png'
 			};
 
@@ -320,7 +321,6 @@ describe('FileProcessor', function() {
 
 	    it('should replace with revved files when found', function(){
 		      var changed = cp.replaceWithRevved(content,['build']);
-
 		      assert.ok(changed.match(/\/images\/test\.23012\.png/));
 		      assert.ok(changed.match(/\/images\/misc\/test\.23012\.png/));
 		      assert.ok(changed.match(/\/\/images\/foo\.23012\.png/));
@@ -334,6 +334,15 @@ describe('FileProcessor', function() {
 		      assert.ok(changed.match(/\/\/images\/foo\.23012\.png/));
 
 		    });
+
+      it('should take into account src attribute', function(){
+          var changed = cp.replaceWithRevved(content, ['foo']);
+
+          assert.ok(changed.match(/\/images\/pic\.23012\.png/));
+          assert.ok(changed.match(/\/images\/misc\/test\.23012\.png/));
+          assert.ok(changed.match(/\/\/images\/foo\.23012\.png/));
+
+        });
 
     });
 
