@@ -63,7 +63,7 @@ The task also handles use of RequireJS, for the scenario where you specify the m
 ```html
 <!-- build:js js/app.min.js -->
 <script data-main="js/main" src="js/vendor/require.js"></script>
-<!-- -->
+<!-- endbuild -->
 ```
 
 One doesn't need to specify a concat/uglify/cssmin or RequireJS configuration anymore.
