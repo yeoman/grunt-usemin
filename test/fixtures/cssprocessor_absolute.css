@@ -1,0 +1,5 @@
+.myclass {
+  background: url("/images/test.png") no-repeat center center;
+  background: url("/images/misc/test.png") no-repeat center center;
+  background: url("//images/foo.png") no-repeat center center;
+}
