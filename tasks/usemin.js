@@ -140,12 +140,11 @@ module.exports = function (grunt) {
   grunt.registerMultiTask('useminPrepare', 'Using HTML markup as the primary source of information', function () {
     var options = this.options();
     // collect files
-    var files = grunt.file.expand({filter: 'isFile'}, this.data);
     var dest = options.dest || 'dist';
     var root = options.root;
 
     grunt.log
-      .writeln('Going through ' + grunt.log.wordlist(files) + ' to update the config')
+      .writeln('Going through ' + grunt.log.wordlist(this.filesSrc) + ' to update the config')
       .writeln('Looking for build script HTML comment blocks');
 
     var flow = getFlowFromConfig(grunt.config('useminPrepare'), this.target);
@@ -160,7 +159,7 @@ module.exports = function (grunt) {
       gruntConfig[name] = grunt.config(name) || {};
     });
 
-    files.forEach(function (filepath) {
+    this.filesSrc.forEach(function (filepath) {
       var config;
       try {
         config = c.process(filepath, grunt.config());
