@@ -356,8 +356,8 @@ When the reference is relative, by default the referenced item is looked in the 
 |   +- index.html
 |   +- assets
 |       +- js
-|       +- foo.js
-|       +- bar.js
+|          +- foo.js
+|          +- bar.js
 +- dist
 
 ```
@@ -413,8 +413,8 @@ app
 |   +- index.html
 +- assets
 |   +- js
-|   +- foo.js
-|   +- bar.js
+|      +- foo.js
+|      +- bar.js
 +- dist
 
 ```
