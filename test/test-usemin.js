@@ -403,6 +403,20 @@ describe('useminPrepare', function () {
 
   });
 
+  it('should take staging option into consideration', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('useminPrepare', {html: 'index.html', options: { 'staging': 'foo'}});
+    grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+    grunt.task.run('useminPrepare');
+    grunt.task.start();
+
+    var uglify = grunt.config('uglify');
+    assert.equal(uglify.generated.files[0].dest, 'dist/scripts/plugins.js');
+    assert.deepEqual(uglify.generated.files[0].src, [path.normalize('foo/concat/scripts/plugins.js')]);
+
+  });
+
   it('should have configurable flow', function () {
     grunt.log.muted = true;
     grunt.config.init();
