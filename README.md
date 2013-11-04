@@ -4,7 +4,7 @@
 
 Development branch is currently `v2.0`.
 
-You wanna help ?? Help us testing `v2.0`. Propose pull requests on `v2.0`.
+You wanna help ?? Help us test `v2.0`. Propose pull requests on `v2.0`.
 
 > Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).
 
@@ -22,17 +22,17 @@ npm install grunt-usemin --save-dev
 
 ## Tasks
 
-`usemin` is exporting 2 different tasks:
+`usemin` exports 2 different tasks:
 
- - `useminPrepare` is preparing the configuration to transform specific construction (blocks) in the scrutinized file into a single line, targetting optimized version of the files (e.g concatenated, uglifyjs-ed ...)
+ - `useminPrepare` prepares the configuration to transform specific construction (blocks) in the scrutinized file into a single line, targeting an optimized version of the files (e.g concatenated, uglifyjs-ed ...)
 
- - `usemin` which purpose is to replace blocks by the file they reference, and replace all references to assets by their revisioned version , if it is found on the disk. This target modifies the files it is working on.
+ - `usemin` replaces the blocks by the file they reference, and replaces all references to assets by their revisioned version if it is found on the disk. This target modifies the files it is working on.
 
 Usually, `useminPrepare` is launched first, then the steps of the transformation flow (for example, `concat`, `uglify`, and `cssmin`), and then, in the end `usemin` is launched.
 
 ## The useminPrepare task
 
-`useminPrepare` task is updating the grunt configuration to apply a configured transformation flow to tagged files (i.e. blocks).
+`useminPrepare` task updates the grunt configuration to apply a configured transformation flow to tagged files (i.e. blocks).
 By default the transformation flow is composed of `concat` and `uglifyjs` for JS files, but it can be configured.
 
 ### Blocks
@@ -45,7 +45,7 @@ Blocks are expressed as:
 ```
 
 - **type**: either `js` or `css`
-- **alternate search path**: (optional) By default the input files are relative to the treated file. Alternate search path allow to change that
+- **alternate search path**: (optional) By default the input files are relative to the treated file. Alternate search path allows one to change that
 - **path**: the file path of the optimized file, the target output
 
 An example of this in completed form can be seen below:
@@ -61,10 +61,10 @@ An example of this in completed form can be seen below:
 
 ### Transformation flow
 
-The transformation flow is made of sequential steps: each of the step transform the file, and useminPrepare will modify the configuration in order ifor the described steps to be correctly performed.
+The transformation flow is made of sequential steps: each of the steps transform the file, and useminPrepare will modify the configuration in order for the described steps to be correctly performed.
 
 By default the flow is: `concat -> uglifyjs`.
-Additionnally to the flow, at the end, some postprocessors can be launched to alter further the configuration.
+Additionally to the flow, at the end, some postprocessors can be launched to further alter the configuration.
 
 Let's have an example, using the default flow (we're just going to look at the steps), `app` for input dir, `dist` for output dir,  and the following block:
 
@@ -96,11 +96,11 @@ The produced configuration will look like:
 
 ### Directories
 
-Internally, the task parses your HTML markup to find each of these blocks, and initializes for you the corresponding Grunt config for the concat / uglify tasks when `type=js`, the concat / cssmin tasks when `type=css`.
+Internally, the task parses your HTML markup to find each of these blocks, and initializes the corresponding Grunt config for the concat / uglify tasks when `type=js`, the concat / cssmin tasks when `type=css`.
 
 One doesn't need to specify a concat/uglify/cssmin configuration anymore.
 
-It is using only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
+It uses only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
 
 By default, it will consider the directory where the looked-at file is located as the 'root' filesystem. Each relative path (for example to a javascript file) will be resolved from this path. Same goes for the absolute ones.
 If you need to change the 'root' dir, use the `root` option (see bellow).
@@ -146,7 +146,7 @@ Type: 'object'
 Default: `{ steps: { 'js': ['concat', 'uglify'], 'css': ['concat', 'cssmin']}, post: {}}`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
-You can change separately the `steps` or the post-processors (`post`).
+You can change the `steps` or the post-processors (`post`) separately.
 
 For example:
 
@@ -179,7 +179,7 @@ For example:
       }
     }
 ```
-The given steps or post-processors may be given by strings (for the default steps and post-processors), or as object (for the user-defined ones).
+The given steps or post-processors may be specified as strings (for the default steps and post-processors), or as an object (for the user-defined ones).
 
 #### User-defined steps and post-processors
 
@@ -188,7 +188,7 @@ User-defined steps and post-processors must have 2 attributes:
 * `name`: name of the `Gruntfile` attribute that holds the corresponding config
 * `createConfig` which is a 2 arguments function ( a `context` and the treated `block`)
 
-For example of steps/post-processors, you can have a look at `concat` and `uglifyjs` in the `lib/config` directory of this repository.
+For an example of steps/post-processors, you can have a look at `concat` and `uglifyjs` in the `lib/config` directory of this repository.
 
 ##### `createConfig`
 
@@ -196,7 +196,7 @@ The `createConfig` function is responsible for creating (or updating) the config
 It takes 2 arguments ( a `context` and the treated `block`), and returns a configuration object.
 
 ###### `context`
-The `context` object represent the current context the step/post-processor is running in. As the step/post-processor is a step of a flow, it must be listed the input files and directory it must write a configuration for, potentially the already existing configuration. It must also indicate to the other steps/post-processor which files it will output in which directory. All this information is hold by the `context` object.
+The `context` object represent the current context the step/post-processor is running in. As the step/post-processor is a step of a flow, it must be listed in the input files and directory it must write a configuration for, potentially the already existing configuration. It must also indicate to the other steps/post-processor which files it will output in which directory. All this information is held by the `context` object.
 Attributes:
 
 * `inDir`: the directory where the `input` file for the step/post-processors will be
@@ -204,7 +204,7 @@ Attributes:
 * `outDir`: where the files created by the step/post-processors will be
 * `outFiles`: the files that are going to be created
 * `last`: whether or not we're the last step of the flow
-* `options`: options of the `Grubntfile.js` for this step (e.g. if the step is named `foo`, holds configuration of teh `Gruntfile.js` associated to the attribute `foo`)
+* `options`: options of the `Grubntfile.js` for this step (e.g. if the step is named `foo`, holds configuration of the `Gruntfile.js` associated to the attribute `foo`)
 
 ###### `block`
 The actual looked-at block, parsed an put in a structure.
@@ -245,19 +245,19 @@ var block = {
 
 The `usemin` task has 2 actions:
 
-- First it replaces all the blocks with a single "summary" line, pointing at a file creating by the transformation flow.
+- First it replaces all the blocks with a single "summary" line, pointing to a file creating by the transformation flow.
 - Then it looks for references to assets (i.e. images, scripts, ...), and tries to replace them with their revved version if it can find one on disk
 
 ### Finding assets
 
-By default `usemin` will look for a map object created by [grunt-filerev](https://github.com/yeoman/grunt-filerev), located in `grunt.filerev.summary`. If it doesn not find it it will revert to disk lookup which is longer.
+By default `usemin` will look for a map object created by [grunt-filerev](https://github.com/yeoman/grunt-filerev), located in `grunt.filerev.summary`. If it does not find it it will revert to disk lookup which is longer.
 
-Note that using the `options.revmap` (see bellow), you can furnish a map object.
+Note that by using the `options.revmap` (see below), you can furnish a map object.
 
 ### On directories
 
-When `usemin` tries to replace referenced assets with their revved version it has to look at a collection of directories (asset search paths): for each of the directory of this collection it will look at the bellow tree, and try to find the revved version.
-This asset search directories collection is by default set to the location of the file that is scrutinized but can be modified (see Options bellow).
+When `usemin` tries to replace referenced assets with their revved version it has to look at a collection of directories (asset search paths): for each of the directories of this collection it will look at the below tree, and try to find the revved version.
+This asset search directories collection is by default set to the location of the file that is scrutinized but can be modified (see Options below).
 
 #### Example 1: file `dist/html/index.html` has the following content:
 
@@ -276,7 +276,7 @@ By default `usemin` will look under `dist/html` for revved versions of:
     <link rel="stylesheet" href="/styles/main.css">
     <img src="/images/test.png">
 ```
-By default `usemin` will look under `dist/html` for revved versions of `styles/main.css` and `images/test.png`. Now let's suppose our assets are scattered in `dist/assets`. By changing the asset search path list to `['dist/assets']`, the revved versions of the files will be looked under `dist/assets` (and thus, for example, `dist/assets/images/test.875487.png` and `dist/assets/styles/main.98090.css`) will be found.
+By default `usemin` will look under `dist/html` for revved versions of `styles/main.css` and `images/test.png`. Now let's suppose our assets are scattered in `dist/assets`. By changing the asset search path list to `['dist/assets']`, the revved versions of the files will be searched for under `dist/assets` (and thus, for example, `dist/assets/images/test.875487.png` and `dist/assets/styles/main.98090.css`) will be found.
 
 ### Options
 
@@ -344,19 +344,34 @@ which attributes are the original file and associated value is the transformed f
 This map will be used instead of looking for file on the disk.
 
 ## On directories
-The main difference to be kept in mind, regarding directories and tasks, is that for `useminPrepare`, the directories needs to indicate the input, transient and output path needed to output the right configuration for the processors pipeline, whereas in the case of `usemin` it only reflects the output paths, as all the needed assets should have been output to the destination dir (either transformed or just copied)
+The main difference to be kept in mind, regarding directories and tasks, is that for `useminPrepare`, the directories needs to indicate the input,
+transient and output path needed to output the right configuration for the processors pipeline, 
+whereas in the case of `usemin` it only reflects the output paths, as all the needed assets should have 
+been output to the destination dir (either transformed or just copied)
 
 ### useminPrepare
-`useminPrepare` is trying to prepare the right configuration for the pipeline of actions that are going to be applied on the blocks (for example concatenation and uglify-cation). As such it needs to have the input directory, temporary directories (staging) and destination directory.
+`useminPrepare` is trying to prepare the right configuration for the pipeline of actions that are going to be 
+applied on the blocks (for example concatenation and uglify-cation). As such it needs to have the input
+directory, temporary directories (staging) and destination directory.
 The files referenced in the block are either absolute or relative (`/images/foo.png` or `../../images/foo.png`).
-Absolute files references are looked in a given set of search path (input), which by default is set to the directory where the html/css file examined is located (can be overriden per block, or more generally through `root` option).
+Absolute files references are looked in a given set of search path (input), which by default is set 
+to the directory where the html/css file examined is located (can be overriden per block, or more
+generally through `root` option).
 Relative files references are also looked at from location of the examined file, unless stated otherwise.
 
 
 ### usemin
-`usemin` target is replacing references to images, scrips, css, ... in the furnished files (html, css, ...). These references may be either absolute (i.e. `/images/foo.png`) or relative (i.e. `image/foo.png` or `../images/foo.png`).
-When the reference is absolute a set of asset search paths should be looked at under the destination directory (for example, using the previous example, and `searchpath` equal to `['assets']`, `usemin` would try to find either a revved version of the image of the image bellow the `assets` directory: for example `dest/assets/images/foo.1223443.png`).
-When the reference is relative, by default the referenced item is looked in the path relative *to the current file location* in the destination directory (e.g. with the preceding example, if the file is `build/bar/index.html`, then transformed `index.html` will be in `dist/bar`, and `usemin` will look for `dist/bar/../images/foo.32323.png`).
+`usemin` target replaces references to images, scrips, css, ... in the furnished files (html, css, ...).
+These references may be either absolute (i.e. `/images/foo.png`) or relative (i.e. `image/foo.png`
+or `../images/foo.png`).
+When the reference is absolute a set of asset search paths should be looked at under the 
+destination directory (for example, using the previous example, and `searchpath` 
+equal to `['assets']`, `usemin` would try to find either a revved version of the image 
+of the image bellow the `assets` directory: for example `dest/assets/images/foo.1223443.png`).
+When the reference is relative, by default the referenced item is looked in the path 
+relative *to the current file location* in the destination directory (e.g. with the 
+preceding example, if the file is `build/bar/index.html`, then transformed `index.html` 
+will be in `dist/bar`, and `usemin` will look for `dist/bar/../images/foo.32323.png`).
 
 
 ## Use cases
