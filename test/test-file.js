@@ -110,6 +110,14 @@ describe('File', function() {
     assert.equal(true, file.blocks[0].defer);
   });
 
+  it('should not detect the defer string in file path', function () {
+    var filename = __dirname + '/fixtures/block_with_fake_defer_in_path.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+    assert.ok(!file.blocks[0].defer);
+    assert.equal(false, file.blocks[0].defer);
+  });
+
   it('should throw error if non-deferred script follows a deferred one in one block', function () {
     var filename = __dirname + '/fixtures/block_with_mixed_defer.html';
     try {
