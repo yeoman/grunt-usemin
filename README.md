@@ -133,6 +133,13 @@ Default: `nil`
 
 Base directory where the transformed files should be output.
 
+### staging
+
+Type: 'string'
+Default: `.tmp`
+
+Base directory where the temporary files should be output (e.g. concatenated files).
+
 ### root
 
 Type: 'string'
