@@ -142,6 +142,7 @@ module.exports = function (grunt) {
     // collect files
     var files = grunt.file.expand({filter: 'isFile'}, this.data);
     var dest = options.dest || 'dist';
+    var staging = options.staging || '.tmp';
     var root = options.root;
 
     grunt.log
@@ -150,7 +151,7 @@ module.exports = function (grunt) {
 
     var flow = getFlowFromConfig(grunt.config('useminPrepare'), this.target);
 
-    var c = new ConfigWriter( flow, {root: root, dest: dest, staging: '.tmp'} );
+    var c = new ConfigWriter( flow, {root: root, dest: dest, staging: staging} );
 
     var cfgNames = [];
     c.stepWriters().forEach(function(i) { cfgNames.push(i.name);});

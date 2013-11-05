@@ -402,6 +402,20 @@ describe('useminPrepare', function () {
     assert.deepEqual(uglify.generated.files[0].src, [path.normalize('.tmp/concat/scripts/plugins.js')]);
 
   });
+  it('should take staging option into consideration', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('useminPrepare', {html: 'index.html', options: { 'staging': 'foo'}});
+    grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+    grunt.task.run('useminPrepare');
+    grunt.task.start();
+
+    var concat = grunt.config('concat');
+    var uglify = grunt.config('uglify');
+    assert.equal(concat.generated.files[0].dest, 'foo/concat/styles/main.min.css');
+    assert.deepEqual(uglify.generated.files[0].src, [path.normalize('foo/concat/scripts/plugins.js')]);
+
+  });
 
   it('should have configurable flow', function () {
     grunt.log.muted = true;
