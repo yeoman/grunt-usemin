@@ -211,7 +211,7 @@ Attributes:
 * `outDir`: where the files created by the step/post-processors will be
 * `outFiles`: the files that are going to be created
 * `last`: whether or not we're the last step of the flow
-* `options`: options of the `Grubntfile.js` for this step (e.g. if the step is named `foo`, holds configuration of the `Gruntfile.js` associated to the attribute `foo`)
+* `options`: options of the `Gruntfile.js` for this step (e.g. if the step is named `foo`, holds configuration of the `Gruntfile.js` associated to the attribute `foo`)
 
 ###### `block`
 The actual looked-at block, parsed an put in a structure.
