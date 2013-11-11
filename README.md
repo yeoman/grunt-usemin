@@ -1,11 +1,5 @@
 # grunt-usemin [![Build Status](https://secure.travis-ci.org/yeoman/grunt-usemin.png?branch=master)](http://travis-ci.org/yeoman/grunt-usemin)
 
-## Warning
-
-Development branch is currently `v2.0`.
-
-You wanna help ?? Help us test `v2.0`. Propose pull requests on `v2.0`.
-
 > Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).
 
 Watch out, this task is designed for Grunt 0.4 and upwards.
