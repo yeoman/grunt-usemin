@@ -334,7 +334,7 @@ describe('useminPrepare', function () {
     assert.deepEqual(concat.generated.files[0].src, [path.normalize('build/scripts/bar.js'), path.normalize('build/scripts/baz.js')]);
 
     var uglify = grunt.config('uglify');
-    assert.equal(uglify.generated.files[0].dest, path.normalize('dist/scripts/foo.js'));
+    assert.equal(uglify.generated.files[0].dest, path.normalize('dist/build/scripts/foo.js'));
     assert.deepEqual(uglify.generated.files[0].src, [path.normalize('.tmp/concat/scripts/foo.js')]);
   });
 
