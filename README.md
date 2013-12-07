@@ -362,7 +362,7 @@ Relative files references are also looked at from location of the examined file,
 
 
 ### usemin
-`usemin` target replaces references to images, scrips, css, ... in the furnished files (html, css, ...).
+`usemin` target replaces references to images, scripts, css, ... in the furnished files (html, css, ...).
 These references may be either absolute (i.e. `/images/foo.png`) or relative (i.e. `image/foo.png`
 or `../images/foo.png`).
 When the reference is absolute a set of asset search paths should be looked at under the 
