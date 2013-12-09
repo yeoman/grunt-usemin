@@ -209,6 +209,7 @@ describe('FileProcessor', function() {
       'app/bar.css': 'bar.5678.css',
       'app/baz.css': '/baz.8910.css',
       'app/image.png': 'image.1234.png',
+      'app/video.webm': 'video.1234.webm',
       'tmp/bar.css': 'bar.1234.css',
       'app/foo.js': 'foo.1234.js',
       '/styles/main.css': '/styles/main.1234.css'
@@ -318,6 +319,18 @@ describe('FileProcessor', function() {
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '">');
     });
+
+    it('should replace video reference with revved version', function () {
+	      var content = '<video src="video.webm">';
+	      var replaced = fp.replaceWithRevved(content, ['app']);
+	      assert.equal(replaced, '<video src="' + filemapping['app/video.webm'] + '">');
+	    });
+
+    it('should replace source reference with revved version', function () {
+	      var content = '<source src="video.webm">';
+	      var replaced = fp.replaceWithRevved(content, ['app']);
+	      assert.equal(replaced, '<source src="' + filemapping['app/video.webm'] + '">');
+	    });
 
     it('should replace data reference with revved version', function () {
       var content = '<li data-lang="fr" data-src="image.png"></li>';
