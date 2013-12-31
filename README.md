@@ -421,15 +421,15 @@ This will, on the fly, generate the following configuration:
 {
   concat:
   {
-    '.tmp/concat/assets/js/scripts.js': [ 
-      'app/assets/js/app.js',
-      'app/assets/js/services.js' 
+    '.tmp/concat/assets/js/optimized.js': [ 
+      'app/assets/js/foo.js',
+      'app/assets/js/bar.js' 
     ] 
   },
 
   uglify:
   { 
-    'dist/assets/js/scripts.js': [ '.tmp/concat/assets/js/scripts.js' ] 
+    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ] 
   }
 }
 ```
@@ -479,15 +479,15 @@ This will, on the fly, generate the following configuration:
 {
   concat:
   {
-    '.tmp/concat/assets/js/scripts.js': [ 
-      'app/assets/js/app.js',
-      'app/assets/js/services.js' 
+    '.tmp/concat/assets/js/optimized.js': [ 
+      'app/assets/js/foo.js',
+      'app/assets/js/bar.js' 
     ] 
   },
 
   uglify:
   { 
-    'dist/assets/js/scripts.js': [ '.tmp/concat/assets/js/scripts.js' ] 
+    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ] 
   }
 }
 ```
