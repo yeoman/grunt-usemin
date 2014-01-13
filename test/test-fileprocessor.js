@@ -92,6 +92,19 @@ describe('FileProcessor', function() {
       assert.equal(result, '  <script defer src="foo.js"><\/script>');
     });
 
+    it('should preserve async attribute (JS)', function () {
+      var fp = new FileProcessor('html',{});
+      var block = {
+        dest: 'foo.js',
+        type: 'js',
+        async: true,
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  <script async src="foo.js"><\/script>');
+    });
+
     it('should preserve media attribute', function () {
       var fp = new FileProcessor('html',{});
       var block = {
