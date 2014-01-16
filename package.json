@@ -1,7 +1,7 @@
 {
   "name": "grunt-usemin",
   "version": "2.0.1",
-  "description": "Grunt task replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
+  "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
   "keywords": [
     "gruntplugin",
     "usemin",
@@ -33,18 +33,13 @@
     "grunt-mocha-cli": "~1.0.5"
   },
   "peerDependencies": {
-    "grunt": "~0.4.0"
+    "grunt": ">=0.4.0"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   },
   "licenses": {
     "type": "BSD"
-  },
-  "gitHead": "a26f298b69220eb22996cf02391710f32c4615c4",
-  "readmeFilename": "README.md",
-  "directories": {
-    "test": "test"
   },
   "license": "BSD"
 }
