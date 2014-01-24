@@ -12,7 +12,7 @@
   ],
   "homepage": "https://github.com/yeoman/grunt-usemin",
   "bugs": "https://github.com/yeoman/grunt-usemin/issues",
-  "author": "Chrome Developer Relations",
+  "author": "The Yeoman Team",
   "main": "Gruntfile.js",
   "repository": {
     "type": "git",
