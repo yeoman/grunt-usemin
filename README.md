@@ -136,7 +136,7 @@ Base directory where the temporary files should be output (e.g. concatenated fil
 
 ### root
 
-Type: 'string'
+Type: 'string' or 'Array'
 Default: `nil`
 
 The root directory from which your files will be resolved.
