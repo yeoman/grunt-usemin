@@ -332,6 +332,12 @@ describe('FileProcessor', function() {
 	      assert.equal(replaced, '<source src="' + filemapping['app/video.webm'] + '">');
 	    });
 
+    it('should replace videos\'s poster with revved version', function() {
+        var content = '<video poster="image.png">';
+        var replaced = fp.replaceWithRevved(content, ['app']);
+        assert.equal(replaced, '<video poster="'+ filemapping['app/image.png'] + '">');
+    })
+
     it('should replace data reference with revved version', function () {
       var content = '<li data-lang="fr" data-src="image.png"></li>';
       var replaced = fp.replaceWithRevved(content, ['app']);
