@@ -22,7 +22,22 @@ npm install grunt-usemin --save-dev
 
  - `usemin` replaces the blocks by the file they reference, and replaces all references to assets by their revisioned version if it is found on the disk. This target modifies the files it is working on.
 
-Usually, `useminPrepare` is launched first, then the steps of the transformation flow (for example, `concat`, `uglify`, and `cssmin`), and then, in the end `usemin` is launched.
+In addition, `useminPrepare` dynamically generates the configuration for `concat`, `uglify`, and `cssmin`.  
+**Important**: _you still need to manually manage these dependencies and call each task_.
+
+Usually, `useminPrepare` is launched first, then the steps of the transformation flow (e.g. `concat`, `uglify`, and `cssmin`), and then, in the end `usemin` is launched. For example:
+
+```
+// simple build task
+grunt.registerTask('build', [
+  'useminPrepare',
+  'concat',
+  'cssmin',
+  'uglify',
+  'rev',
+  'usemin'
+]);
+```
 
 ## The useminPrepare task
 
