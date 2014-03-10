@@ -60,6 +60,7 @@ describe('FileProcessor', function() {
       var block = {
         dest: 'foo.css',
         type: 'css',
+        src: ['bar.css'],
         indent: '  '
       };
 
@@ -67,11 +68,25 @@ describe('FileProcessor', function() {
       assert.equal(result, '  <link rel="stylesheet" href="foo.css"/>');
     });
 
+    it('should remove css blocks which have no stylesheets linked in them', function() {
+      var fp = new FileProcessor('html', {});
+      var block = {
+        dest: 'foo.css',
+        type: 'css',
+        src: [],
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '');
+    });
+
     it('should replace js blocks with a link to a javascript file', function() {
       var fp = new FileProcessor('html',{});
       var block = {
         dest: 'foo.js',
         type: 'js',
+        src: ['bar.js'],
         indent: '  '
       };
 
@@ -79,11 +94,25 @@ describe('FileProcessor', function() {
       assert.equal(result, '  <script src="foo.js"><\/script>');
     });
 
+    it('should remove js blocks which have no javascripts linked in the block', function() {
+      var fp = new FileProcessor('html',{});
+      var block = {
+        dest: 'foo.js',
+        type: 'js',
+        src: [],
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '');
+    });
+
     it('should preserve defer attribute (JS)', function () {
       var fp = new FileProcessor('html',{});
       var block = {
         dest: 'foo.js',
         type: 'js',
+        src: ['bar.js'],
         defer: true,
         indent: '  '
       };
@@ -97,6 +126,7 @@ describe('FileProcessor', function() {
       var block = {
         dest: 'foo.css',
         type: 'css',
+        src: ['bar.css'],
         media: '(min-width:980px)',
         indent: '  '
       };
@@ -110,6 +140,7 @@ describe('FileProcessor', function() {
       var block = {
         dest: 'foo.js',
         type: 'js',
+        src: ['bar.js'],
         conditionalStart: '<!--[if (lt IE 9) & (!IEmobile)]>',
         conditionalEnd: '<![endif]-->',
         indent: '  '
@@ -124,6 +155,7 @@ describe('FileProcessor', function() {
       var block = {
         dest: 'foo.css',
         type: 'css',
+        src: ['bar.css'],
         conditionalStart: '<!--[if (lt IE 9) & (!IEmobile)]>',
         conditionalEnd: '<![endif]-->',
         indent: '  '
