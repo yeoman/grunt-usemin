@@ -102,6 +102,25 @@ describe('File', function() {
     assert.equal('/scripts/foo.js', file.blocks[0].dest);
   });
 
+  it('should detect the async attribute', function () {
+    var filename = __dirname + '/fixtures/block_with_async.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+    assert.ok(file.blocks[0].async);
+    assert.equal(true, file.blocks[0].async);
+  });
+
+  it('should throw error if non-asynced script follows a asynced one in one block', function () {
+    var filename = __dirname + '/fixtures/block_with_mixed_async.html';
+    try {
+      new File(filename);
+    } catch (e) {
+      assert.ok(true);
+      return;
+    }
+    assert.ok(false);
+  });
+
   it('should detect the defer attribute', function () {
     var filename = __dirname + '/fixtures/block_with_defer.html';
     var file = new File(filename);
