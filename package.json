@@ -26,7 +26,7 @@
     "debug": "~0.7.2"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
+    "grunt": "0.4.1",
     "mkdirp": "~0.3.5",
     "rimraf": "~2.1.4",
     "grunt-contrib-jshint": "~0.4.1",
