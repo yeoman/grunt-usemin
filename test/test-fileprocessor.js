@@ -126,6 +126,7 @@ describe('FileProcessor', function() {
       var block = {
         dest: 'foo.js',
         type: 'js',
+        src: ['bar.js'],
         async: true,
         indent: '  '
       };
