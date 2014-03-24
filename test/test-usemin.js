@@ -439,7 +439,7 @@ describe('useminPrepare', function () {
       options: {
         flow: {
           steps: {'js': ['uglifyjs']},
-          post: []
+          post: {}
         }
       }
     });
@@ -469,7 +469,7 @@ describe('useminPrepare', function () {
         flow: {
           'html': {
             steps: {'js': ['uglifyjs']},
-            post: []
+            post: {}
           }
         }
       }
@@ -511,7 +511,7 @@ describe('useminPrepare', function () {
       options: {
         flow: {
             steps: {'js': [copy]},
-            post: []
+            post: {}
           }
         }
       });
@@ -524,5 +524,44 @@ describe('useminPrepare', function () {
     assert.ok(copyCfg);
     assert.equal(copyCfg.generated.files[0].dest, path.normalize('dist/scripts/plugins.js'));
   });
-});
 
+  it('should allow to post configure generated steps', function() {
+
+    var concatPostConfig = {
+        name: 'concat',
+        createConfig: function(context) {
+            var generated = context.options.generated;
+            generated.options = {
+                foo: 'bar'
+              };
+          }
+      };
+
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('useminPrepare', {
+        html: 'index.html',
+        options: {
+            flow: {
+                steps: {'js': ['concat']},
+                post: {
+                    'js': [
+                        concatPostConfig
+                      ]
+                    }
+                  }
+                }
+              });
+
+    grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+    grunt.task.run('useminPrepare');
+    grunt.task.start();
+
+    var concatCfg = grunt.config('concat');
+    var options = concatCfg.generated.options;
+
+    assert.ok(options);
+    assert.equal(options.foo, 'bar');
+
+  });
+});

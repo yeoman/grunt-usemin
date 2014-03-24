@@ -175,11 +175,37 @@ useminPrepare, {
       options: {
         flow: {
           steps: {'js' : ['uglifyjs'] },
-          post: []
+          post: {}
         }
       }
     }
 ```
+
+* to customize the generated configuraion via post-processors:
+
+```js
+'useminPrepare', {
+      html: 'index.html',
+      options: {
+        flow: {
+          steps: {'js' : ['uglifyjs'] },
+          post: {
+            'js': [{
+              name: 'uglifyjs',
+              createConfig: function(context, block) {
+                  var generated = context.options.generated;
+                  generated.options = {
+                      foo: 'bar'
+                  };
+              }
+            }]
+          }
+        }
+      }
+    }
+}
+```
+
 The given steps or post-processors may be specified as strings (for the default steps and post-processors), or as an object (for the user-defined ones).
 
 #### User-defined steps and post-processors
