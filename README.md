@@ -1,4 +1,4 @@
-# grunt-usemin [![Build Status](https://secure.travis-ci.org/yeoman/grunt-usemin.svg?branch=master)](http://travis-ci.org/yeoman/grunt-usemin) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+# grunt-usemin [![Build Status](https://secure.travis-ci.org/yeoman/grunt-usemin.svg?branch=master)](http://travis-ci.org/yeoman/grunt-usemin)
 
 > Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).
 
