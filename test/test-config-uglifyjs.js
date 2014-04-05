@@ -36,7 +36,7 @@ describe('Uglifyjs config write', function () {
     cfg.files.forEach(function (files,idx) {
       assert.ok(files.src);
       assert.ok(files.dest);
-      assert.equal(files.dest, dests[idx]);
+      assert.equal(files.dest, path.normalize(dests[idx]));
       assert.deepEqual(files.src, [path.normalize(srcs[idx])]);
     });
 
