@@ -51,7 +51,7 @@ Blocks are expressed as:
 <!-- endbuild -->
 ```
 
-* **type**: either `js` or `css`
+* **type**: can be `js`, `css` or a custom type with a [block replacement function](#blockreplacements) defined
  * If another type, the block will be ignored.  Useful for "development only" blocks that won't appear in your build
 * **alternate search path**: (optional) By default the input files are relative to the treated file. Alternate search path allows one to change that
 * **path**: the file path of the optimized file, the target output
@@ -327,7 +327,7 @@ By default `usemin` will look under `dist/html` for revved versions of `styles/m
 
 #### assetsDirs
 
-Type: 'Array'
+Type: 'Array' <br/>
 Default: Single item array set to the value of the directory where the currently looked at file is.
 
 List of directories where we should start to look for revved version of the assets referenced in the currently looked at file.
@@ -344,7 +344,7 @@ usemin: {
 
 #### patterns
 
-Type: 'Object'
+Type: 'Object' <br/>
 Default: Empty
 
 Allows for user defined pattern to replace reference to files. For example, let's suppose that you want to replace
@@ -375,9 +375,36 @@ So in short:
     * FIXME
     * FIXME
 
+#### blockReplacements
+
+Type: 'Object' <br/>
+Default: `{ css: function (block) { ... }, js: function (block) { ... } }`
+
+This lets you define how blocks get their content replaced. Useful to have block types other that `css` and `js`.
+
+* Object key matches a block type
+* Value is the replacement function for that block type.
+  * The replacement function gets called with a single argument: a [block](#block) object.
+  * Must return a `String`, the "summary" line that will replace the block content.
+
+For example, to create a `less` block you could define its replacement function like this:
+
+```js
+usemin: {
+  html: index.html,
+  options: {
+    blockReplacements: {
+      less: function (block) {
+          return '<link rel="stylesheet" href="' + block.dest + '" />';
+      }
+    }
+  }
+}
+```
+
 #### revmap
 
-Type: 'String'
+Type: 'String' <br/>
 Default: Empty
 
 Indicate the location of a map file, as produced by `grunt-filerev` for example. This map file is a simple JSON file, holding an object

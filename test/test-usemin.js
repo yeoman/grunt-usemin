@@ -331,6 +331,27 @@ describe('usemin', function () {
     assert.ok(changed.match('<img src="images/test.2134.png">'));
   });
 
+  it('should allow for custom block replacement functions', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('usemin', {
+      html: 'index.html',
+      options: {
+        blockReplacements: {
+          less: function (block) {
+            return '<link rel="stylesheet" href="' + block.dest + '" />';
+          }
+        }
+      }
+    });
+    grunt.file.copy(path.join(__dirname, 'fixtures/block_with_custom_type.html'), 'index.html');
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+    var changed = grunt.file.read('index.html');
+    // Check replace has performed its duty
+    assert.equal(changed, '<link rel="stylesheet" href="styles/main.css" />');
+  });
 });
 
 describe('useminPrepare', function () {

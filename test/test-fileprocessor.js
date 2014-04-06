@@ -108,6 +108,24 @@ describe('FileProcessor', function () {
       assert.equal(result, '');
     });
 
+    it('should replace cutsom blocks using provided replacement function', function () {
+      var blockReplacements = {
+        less: function (block) {
+          return 'custom replacement for ' + block.dest;
+        }
+      };
+      var fp = new FileProcessor('html', {}, function () {}, blockReplacements);
+      var block = {
+        dest: 'foo.css',
+        type: 'less',
+        src: ['bar.less'],
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  custom replacement for foo.css');
+    });
+
     it('should preserve defer attribute (JS)', function () {
       var fp = new FileProcessor('html', {});
       var block = {
