@@ -97,7 +97,7 @@ One doesn't need to specify a concat/uglify/cssmin configuration anymore.
 It uses only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
 
 By default, it will consider the directory where the looked-at file is located as the 'root' filesystem. Each relative path (for example to a javascript file) will be resolved from this path. Same goes for the absolute ones.
-If you need to change the 'root' dir, use the `root` option (see bellow).
+If you need to change the 'root' dir, use the `root` option (see below).
 
 ```js
 useminPrepare: {
@@ -330,7 +330,7 @@ Type: 'Object'
 Default: Empty
 
 Allows for user defined pattern to replace reference to files. For example, let's suppose that you want to replace
-all references to `'image.png'` in your Javascript files by the revved version of `image.png` found bellow the directory `images`.
+all references to `'image.png'` in your Javascript files by the revved version of `image.png` found below the directory `images`.
 By specifying something along the lines of:
 
 ```js
@@ -394,7 +394,7 @@ or `../images/foo.png`).
 When the reference is absolute a set of asset search paths should be looked at under the 
 destination directory (for example, using the previous example, and `searchpath` 
 equal to `['assets']`, `usemin` would try to find either a revved version of the image 
-of the image bellow the `assets` directory: for example `dest/assets/images/foo.1223443.png`).
+of the image below the `assets` directory: for example `dest/assets/images/foo.1223443.png`).
 When the reference is relative, by default the referenced item is looked in the path 
 relative *to the current file location* in the destination directory (e.g. with the 
 preceding example, if the file is `build/bar/index.html`, then transformed `index.html` 
