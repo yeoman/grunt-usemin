@@ -321,22 +321,22 @@ describe('FileProcessor', function() {
     });
 
     it('should replace video reference with revved version', function () {
-	      var content = '<video src="video.webm">';
-	      var replaced = fp.replaceWithRevved(content, ['app']);
-	      assert.equal(replaced, '<video src="' + filemapping['app/video.webm'] + '">');
-	    });
+      var content = '<video src="video.webm">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<video src="' + filemapping['app/video.webm'] + '">');
+    });
 
     it('should replace source reference with revved version', function () {
-	      var content = '<source src="video.webm">';
-	      var replaced = fp.replaceWithRevved(content, ['app']);
-	      assert.equal(replaced, '<source src="' + filemapping['app/video.webm'] + '">');
-	    });
+      var content = '<source src="video.webm">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<source src="' + filemapping['app/video.webm'] + '">');
+    });
 
     it('should replace videos\'s poster with revved version', function() {
-        var content = '<video poster="image.png">';
-        var replaced = fp.replaceWithRevved(content, ['app']);
-        assert.equal(replaced, '<video poster="'+ filemapping['app/image.png'] + '">');
-    })
+      var content = '<video poster="image.png">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<video poster="'+ filemapping['app/image.png'] + '">');
+    });
 
     it('should replace data reference with revved version', function () {
       var content = '<li data-lang="fr" data-src="image.png"></li>';
