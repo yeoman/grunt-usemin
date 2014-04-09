@@ -452,6 +452,32 @@ describe('FileProcessor', function() {
 
     });
 
+    describe('font path', function() {
+      var content = '@font-face {\nfont-family:"icons";\nsrc:url("/styles/fonts/icons.eot");\nsrc:url("/styles/fonts/icons.eot#fragment") format("embedded-opentype"),\nurl("/styles/fonts/icons.woff") format("woff"),\nurl("/styles/fonts/icons.ttf") format("truetype"),\nurl("/styles/fonts/icons.svg#icons") format("svg");\nfont-weight:normal;\nfont-style:normal;\n}';
+      var filemapping = {
+        'build/styles/fonts/icons.eot': '/styles/fonts/icons.12345.eot',
+        'build/styles/fonts/icons.woff': '/styles/fonts/icons.12345.woff',
+        'build/styles/fonts/icons.ttf': '/styles/fonts/icons.12345.ttf',
+        'build/styles/fonts/icons.svg': '/styles/fonts/icons.12345.svg',
+      };
+
+      var revvedfinder = helpers.makeFinder(filemapping);
+
+      beforeEach(function() {
+        cp = new FileProcessor('css', revvedfinder);
+      });
+
+      it('should replace but ignore querystrings on revved files when found', function(){
+        var changed = cp.replaceWithRevved(content, ['build']);
+
+        assert.ok(changed.match(/\/styles\/fonts\/icons\.12345\.eot/));
+        assert.ok(changed.match(/\/styles\/fonts\/icons\.12345\.woff/));
+        assert.ok(changed.match(/\/styles\/fonts\/icons\.12345\.ttf/));
+        assert.ok(changed.match(/\/styles\/fonts\/icons\.12345\.svg/));
+      });
+
+    });
+
 
   });
 });
