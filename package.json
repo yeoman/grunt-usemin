@@ -1,6 +1,6 @@
 {
   "name": "grunt-usemin",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
   "keywords": [
     "gruntplugin",
