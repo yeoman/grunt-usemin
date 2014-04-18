@@ -1,14 +1,4 @@
 {
-  "globals": {
-    "before": false,
-    "beforeEach": false,
-    "describe": false,
-    "it": false
-  },
-  "node": true,
-  "browser": true,
-  "es5": true,
-  "esnext": true,
   "bitwise": true,
   "camelcase": true,
   "curly": true,
@@ -16,13 +6,12 @@
   "immed": true,
   "indent": 2,
   "latedef": false,
+  "mocha": true,
   "newcap": true,
   "noarg": true,
+  "node": true,
   "quotmark": "single",
-  "regexp": true,
-  "undef": true,
-  "unused": true,
   "strict": true,
-  "trailing": true,
-  "smarttabs": true
+  "undef": true,
+  "unused": true
 }

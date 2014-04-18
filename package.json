@@ -1,6 +1,8 @@
 {
   "name": "grunt-usemin",
   "version": "2.1.1",
+  "license": "BSD",
+  "author": "The Yeoman Team",
   "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
   "keywords": [
     "gruntplugin",
@@ -11,26 +13,26 @@
     "optimize"
   ],
   "homepage": "https://github.com/yeoman/grunt-usemin",
-  "bugs": "https://github.com/yeoman/grunt-usemin/issues",
-  "author": "The Yeoman Team",
-  "main": "Gruntfile.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/yeoman/grunt-usemin.git"
+    "url": "https://github.com/yeoman/grunt-usemin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yeoman/grunt-usemin/issues"
   },
   "scripts": {
     "test": "grunt"
   },
   "dependencies": {
-    "lodash": "~1.0.1",
-    "debug": "~0.7.2"
+    "debug": "~0.8.0",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
-    "grunt": "~0.4.3",
+    "grunt": "~0.4.4",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-mocha-cli": "~1.8.0",
     "mkdirp": "~0.3.5",
-    "rimraf": "~2.1.4",
-    "grunt-contrib-jshint": "~0.4.1",
-    "grunt-mocha-cli": "~1.0.5"
+    "rimraf": "~2.2.6"
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"
@@ -38,8 +40,8 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "licenses": {
-    "type": "BSD"
-  },
-  "license": "BSD"
+  "files": [
+    "lib",
+    "tasks"
+  ]
 }
