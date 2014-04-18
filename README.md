@@ -17,10 +17,8 @@ npm install grunt-usemin --save-dev
 ## Tasks
 
 `usemin` exports 2 different tasks:
-
- - `useminPrepare` prepares the configuration to transform specific construction (blocks) in the scrutinized file into a single line, targeting an optimized version of the files (e.g concatenated, uglifyjs-ed ...)
-
- - `usemin` replaces the blocks by the file they reference, and replaces all references to assets by their revisioned version if it is found on the disk. This target modifies the files it is working on.
+* `useminPrepare` prepares the configuration to transform specific construction (blocks) in the scrutinized file into a single line, targeting an optimized version of the files (e.g concatenated, uglifyjs-ed ...)
+* `usemin` replaces the blocks by the file they reference, and replaces all references to assets by their revisioned version if it is found on the disk. This target modifies the files it is working on.
 
 Usually, `useminPrepare` is launched first, then the steps of the transformation flow (for example, `concat`, `uglify`, and `cssmin`), and then, in the end `usemin` is launched.
 
@@ -38,9 +36,9 @@ Blocks are expressed as:
 <!-- endbuild -->
 ```
 
-- **type**: either `js` or `css`
-- **alternate search path**: (optional) By default the input files are relative to the treated file. Alternate search path allows one to change that
-- **path**: the file path of the optimized file, the target output
+* **type**: either `js` or `css`
+* **alternate search path**: (optional) By default the input files are relative to the treated file. Alternate search path allows one to change that
+* **path**: the file path of the optimized file, the target output
 
 An example of this in completed form can be seen below:
 
@@ -80,7 +78,7 @@ The produced configuration will look like:
       'app/js/controllers/thing-controller.js',
       'app/js/models/thing-model.js',
       'app/js/views/thing-view.js'
-      ]
+    ]
   },
   uglifyjs: {
     'dist/js/app.js': ['.tmp/concat/js/app.js']
@@ -154,55 +152,54 @@ For example:
 * to change the `js` `steps` and `post` for the target `html`:
 
 ```js
-useminPrepare, {
-      html: 'index.html',
-      options: {
-        flow: {
-          html: {
-            steps: {'js': ['uglifyjs']},
-            post: {}
-          }
-        }
+useminPrepare: {
+  html: 'index.html',
+  options: {
+    flow: {
+      html: {
+        steps: {'js': ['uglifyjs']},
+        post: {}
       }
     }
+  }
+}
 ```
 
 * to change the `js` `steps` and `post` for all targets:
 
 ```js
-useminPrepare, {
-      html: 'index.html',
-      options: {
-        flow: {
-          steps: {'js' : ['uglifyjs'] },
-          post: {}
-        }
-      }
+useminPrepare: {
+  html: 'index.html',
+  options: {
+    flow: {
+      steps: {'js' : ['uglifyjs'] },
+      post: {}
     }
+  }
+}
 ```
 
 * to customize the generated configuraion via post-processors:
 
 ```js
-'useminPrepare', {
-      html: 'index.html',
-      options: {
-        flow: {
-          steps: {'js' : ['uglifyjs'] },
-          post: {
-            'js': [{
-              name: 'uglifyjs',
-              createConfig: function(context, block) {
-                  var generated = context.options.generated;
-                  generated.options = {
-                      foo: 'bar'
-                  };
-              }
-            }]
+useminPrepare: {
+  html: 'index.html',
+  options: {
+    flow: {
+      steps: {'js' : ['uglifyjs'] },
+      post: {
+        'js': [{
+          name: 'uglifyjs',
+          createConfig: function(context, block) {
+              var generated = context.options.generated;
+              generated.options = {
+                  foo: 'bar'
+              };
           }
-        }
+        }]
       }
     }
+  }
 }
 ```
 
@@ -239,11 +236,11 @@ The actual looked-at block, parsed an put in a structure.
 Example:
 The following block
 ```html
-  <!-- build:js scripts/site.js -->',
-  <script src="foo.js"></script>',
-  <script src="bar.js"></script>',
-  <script src="baz.js"></script>',
-  <!-- endbuild -->'
+<!-- build:js scripts/site.js -->',
+<script src="foo.js"></script>',
+<script src="bar.js"></script>',
+<script src="baz.js"></script>',
+<!-- endbuild -->'
 ```
 
 is parsed as, and given to `createConfig` as:
@@ -264,7 +261,7 @@ var block = {
       '    <script src="baz.js"></script>',
       '    <!-- endbuild -->'
     ]
-  };
+};
 
 ```
 
@@ -272,8 +269,8 @@ var block = {
 
 The `usemin` task has 2 actions:
 
-- First it replaces all the blocks with a single "summary" line, pointing to a file creating by the transformation flow.
-- Then it looks for references to assets (i.e. images, scripts, ...), and tries to replace them with their revved version if it can find one on disk
+* First it replaces all the blocks with a single "summary" line, pointing to a file creating by the transformation flow.
+* Then it looks for references to assets (i.e. images, scripts, ...), and tries to replace them with their revved version if it can find one on disk
 
 ### Finding assets
 
@@ -288,20 +285,20 @@ This asset search directories collection is by default set to the location of th
 
 #### Example 1: file `dist/html/index.html` has the following content:
 
-``` html
+```html
 <link rel="stylesheet" href="styles/main.css">
 <img src="../images/test.png">
 ```
 By default `usemin` will look under `dist/html` for revved versions of:
 
-- `styles/main.css`: a revved version of `main.css` will be looked at under the `dist/html/styles` directory. For example a file `dist/html/styles/main.1234.css` will match (although `dist/html/main.1234.css` won't: the path of the referenced file is important)
-- `../images/test.png`: it basically means that a revved version of `test.png` will be looked for under the `dist/images` directory
+* `styles/main.css`: a revved version of `main.css` will be looked at under the `dist/html/styles` directory. For example a file `dist/html/styles/main.1234.css` will match (although `dist/html/main.1234.css` won't: the path of the referenced file is important)
+* `../images/test.png`: it basically means that a revved version of `test.png` will be looked for under the `dist/images` directory
 
 #### Example 2: file `dist/html/index.html` has the following content:
 
-``` html
-    <link rel="stylesheet" href="/styles/main.css">
-    <img src="/images/test.png">
+```html
+<link rel="stylesheet" href="/styles/main.css">
+<img src="/images/test.png">
 ```
 By default `usemin` will look under `dist/html` for revved versions of `styles/main.css` and `images/test.png`. Now let's suppose our assets are scattered in `dist/assets`. By changing the asset search path list to `['dist/assets']`, the revved versions of the files will be searched for under `dist/assets` (and thus, for example, `dist/assets/images/test.875487.png` and `dist/assets/styles/main.98090.css`) will be found.
 
@@ -315,7 +312,7 @@ Default: Single item array set to the value of the directory where the currently
 List of directories where we should start to look for revved version of the assets referenced in the currently looked at file.
 
 Example:
-``` js
+```js
 usemin: {
   html: 'build/index.html',
   options: {
@@ -372,16 +369,16 @@ This map will be used instead of looking for file on the disk.
 
 ## On directories
 The main difference to be kept in mind, regarding directories and tasks, is that for `useminPrepare`, the directories needs to indicate the input,
-transient and output path needed to output the right configuration for the processors pipeline, 
-whereas in the case of `usemin` it only reflects the output paths, as all the needed assets should have 
+transient and output path needed to output the right configuration for the processors pipeline,
+whereas in the case of `usemin` it only reflects the output paths, as all the needed assets should have
 been output to the destination dir (either transformed or just copied)
 
 ### useminPrepare
-`useminPrepare` is trying to prepare the right configuration for the pipeline of actions that are going to be 
+`useminPrepare` is trying to prepare the right configuration for the pipeline of actions that are going to be
 applied on the blocks (for example concatenation and uglify-cation). As such it needs to have the input
 directory, temporary directories (staging) and destination directory.
 The files referenced in the block are either absolute or relative (`/images/foo.png` or `../../images/foo.png`).
-Absolute files references are looked in a given set of search path (input), which by default is set 
+Absolute files references are looked in a given set of search path (input), which by default is set
 to the directory where the html/css file examined is located (can be overriden per block, or more
 generally through `root` option).
 Relative files references are also looked at from location of the examined file, unless stated otherwise.
@@ -391,13 +388,13 @@ Relative files references are also looked at from location of the examined file,
 `usemin` target replaces references to images, scripts, css, ... in the furnished files (html, css, ...).
 These references may be either absolute (i.e. `/images/foo.png`) or relative (i.e. `image/foo.png`
 or `../images/foo.png`).
-When the reference is absolute a set of asset search paths should be looked at under the 
-destination directory (for example, using the previous example, and `searchpath` 
-equal to `['assets']`, `usemin` would try to find either a revved version of the image 
+When the reference is absolute a set of asset search paths should be looked at under the
+destination directory (for example, using the previous example, and `searchpath`
+equal to `['assets']`, `usemin` would try to find either a revved version of the image
 of the image below the `assets` directory: for example `dest/assets/images/foo.1223443.png`).
-When the reference is relative, by default the referenced item is looked in the path 
-relative *to the current file location* in the destination directory (e.g. with the 
-preceding example, if the file is `build/bar/index.html`, then transformed `index.html` 
+When the reference is relative, by default the referenced item is looked in the path
+relative *to the current file location* in the destination directory (e.g. with the
+preceding example, if the file is `build/bar/index.html`, then transformed `index.html`
 will be in `dist/bar`, and `usemin` will look for `dist/bar/../images/foo.32323.png`).
 
 
@@ -419,11 +416,11 @@ will be in `dist/bar`, and `usemin` will look for `dist/bar/../images/foo.32323.
 
 We want to optimize `foo.js` and `bar.js` into `optimized.js`, referenced using relative path. `index.html` should contain the following block:
 
-```
-    <!-- build:js assets/js/optimized.js -->
-    <script src="assets/js/foo.js"></script>
-    <script src="assets/js/bar.js"></script>
-    <!-- endbuild -->
+```html
+<!-- build:js assets/js/optimized.js -->
+<script src="assets/js/foo.js"></script>
+<script src="assets/js/bar.js"></script>
+<!-- endbuild -->
 ```
 
 We want our files to be generated in the `dist` directory.
@@ -447,15 +444,15 @@ This will, on the fly, generate the following configuration:
 {
   concat:
   {
-    '.tmp/concat/assets/js/optimized.js': [ 
+    '.tmp/concat/assets/js/optimized.js': [
       'app/assets/js/foo.js',
-      'app/assets/js/bar.js' 
-    ] 
+      'app/assets/js/bar.js'
+    ]
   },
 
   uglify:
-  { 
-    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ] 
+  {
+    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ]
   }
 }
 ```
@@ -476,11 +473,11 @@ app
 
 We want to optimize `foo.js` and `bar.js` into `optimized.js`, referenced using absolute path. `index.html` should contain the following block:
 
-```
-    <!-- build:js /assets/js/optimized.js -->
-    <script src="/assets/js/foo.js"></script>
-    <script src="/assets/js/bar.js"></script>
-    <!-- endbuild -->
+```html
+<!-- build:js /assets/js/optimized.js -->
+<script src="/assets/js/foo.js"></script>
+<script src="/assets/js/bar.js"></script>
+<!-- endbuild -->
 ```
 
 We want our files to be generated in the `dist` directory.
@@ -505,15 +502,15 @@ This will, on the fly, generate the following configuration:
 {
   concat:
   {
-    '.tmp/concat/assets/js/optimized.js': [ 
+    '.tmp/concat/assets/js/optimized.js': [
       'app/assets/js/foo.js',
-      'app/assets/js/bar.js' 
-    ] 
+      'app/assets/js/bar.js'
+    ]
   },
 
   uglify:
-  { 
-    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ] 
+  {
+    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ]
   }
 }
 ```
