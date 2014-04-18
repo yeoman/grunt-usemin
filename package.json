@@ -41,5 +41,9 @@
   "licenses": {
     "type": "BSD"
   },
-  "license": "BSD"
+  "license": "BSD",
+  "files": [
+    "lib",
+    "tasks"
+  ]
 }
