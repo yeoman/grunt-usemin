@@ -96,7 +96,7 @@ helpers.makeFinder = function(mapping) {
         var dir = _.find(b, function(d) {return mapping[path.join(d,s).replace(/\\/g, '/')]; });
         var file = typeof dir !== 'undefined' ? mapping[path.join(dir,s).replace(/\\/g, '/')] : s;
 
-        if (typeof file === 'array' || file instanceof Array) {
+        if (Array.isArray(file)) {
           output = file[0];
         } else {
           output = file;
