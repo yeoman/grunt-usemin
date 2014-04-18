@@ -94,7 +94,7 @@ module.exports = function (grunt) {
   var FileProcessor = require('../lib/fileprocessor');
   var RevvedFinder = require('../lib/revvedfinder');
   var ConfigWriter = require('../lib/configwriter');
-  var _ = grunt.util._;
+  var _ = require('lodash');
 
   grunt.registerMultiTask('usemin', 'Replaces references to non-minified scripts / stylesheets', function () {
     var debug = require('debug')('usemin:usemin');
@@ -156,7 +156,7 @@ module.exports = function (grunt) {
     c.stepWriters().forEach(function(i) { cfgNames.push(i.name);});
     c.postWriters().forEach(function(i) { cfgNames.push(i.name);});
     var gruntConfig = {};
-    _.each(cfgNames, function(name) {
+    _.forEach(cfgNames, function(name) {
       gruntConfig[name] = grunt.config(name) || {};
     });
 
@@ -169,16 +169,16 @@ module.exports = function (grunt) {
         grunt.fail.fatal(e);
       }
 
-      _.each(cfgNames, function(name) {
+      _.forEach(cfgNames, function(name) {
         gruntConfig[name] = grunt.config(name) || {};
-        grunt.config(name, _.extend(gruntConfig[name], config[name]));
+        grunt.config(name, _.assign(gruntConfig[name], config[name]));
       });
 
     });
 
     // log a bit what was added to config
     grunt.log.subhead('Configuration is now:');
-    _.each(cfgNames, function(name) {
+    _.forEach(cfgNames, function(name) {
       grunt.log.subhead('  ' + name + ':').writeln('  ' + inspect(grunt.config(name)));
     });
   });
