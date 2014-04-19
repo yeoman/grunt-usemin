@@ -21,7 +21,7 @@
     "url": "https://github.com/yeoman/grunt-usemin/issues"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt test"
   },
   "dependencies": {
     "debug": "~0.8.0",
