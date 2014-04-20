@@ -3,60 +3,61 @@ var assert = require('assert');
 var helpers = require('./helpers');
 var FileProcessor = require('../lib/fileprocessor.js');
 
-describe('FileProcessor', function() {
-  describe('constructor', function() {
-    it('should fail if no pattern is furnished', function() {
-      assert.throws(function() {
+describe('FileProcessor', function () {
+  describe('constructor', function () {
+    it('should fail if no pattern is furnished', function () {
+      assert.throws(function () {
         new FileProcessor();
       }, /No pattern given/);
     });
 
-    it('should accept a pattern name', function() {
+    it('should accept a pattern name', function () {
       var fp = new FileProcessor('html', {});
       assert.ok(fp);
     });
 
-    it('should access a pattern object', function() {
-      var foo = {foo: 'bar'};
+    it('should access a pattern object', function () {
+      var foo = {
+        foo: 'bar'
+      };
       var fp = new FileProcessor(foo, {});
       assert.ok(fp);
       assert.deepEqual(fp.patterns, foo);
     });
 
-    it('should fail if pattern name is not known', function() {
-      assert.throws(function() {
+    it('should fail if pattern name is not known', function () {
+      assert.throws(function () {
         new FileProcessor('foo');
       }, /Unsupported pattern: foo/);
     });
 
-    it('should check all needed arguments are furnished', function() {
-      assert.throws(function() {
+    it('should check all needed arguments are furnished', function () {
+      assert.throws(function () {
         new FileProcessor('html');
-      },
-      /Missing parameter: finder/);
+      }, /Missing parameter: finder/);
     });
   });
 
-  describe('replaceBlocks', function(){
-    it('should replace block with the right expression', function() {
-      var fp = new FileProcessor('html',{});
-      fp.replaceWith = function() { return 'foo';};
+  describe('replaceBlocks', function () {
+    it('should replace block with the right expression', function () {
+      var fp = new FileProcessor('html', {});
+      fp.replaceWith = function () {
+        return 'foo';
+      };
       var file = {
         content: 'foo\nbar\nbaz\n',
-        blocks: [
-          {
-            raw: ['bar', 'baz'],
-          }
-        ]
+        blocks: [{
+          raw: ['bar', 'baz']
+        }]
       };
       var result = fp.replaceBlocks(file);
       assert.equal(result, 'foo\nfoo\n');
     });
   });
 
-  describe('replaceWith', function() {
-    it('should replace css blocks with a link to a stylesheet', function() {
-      var fp = new FileProcessor('html',{});
+  describe('replaceWith', function () {
+    it('should replace css blocks with a link to a stylesheet', function () {
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.css',
         type: 'css',
@@ -68,7 +69,7 @@ describe('FileProcessor', function() {
       assert.equal(result, '  <link rel="stylesheet" href="foo.css"/>');
     });
 
-    it('should remove css blocks which have no stylesheets linked in them', function() {
+    it('should remove css blocks which have no stylesheets linked in them', function () {
       var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.css',
@@ -81,8 +82,8 @@ describe('FileProcessor', function() {
       assert.equal(result, '');
     });
 
-    it('should replace js blocks with a link to a javascript file', function() {
-      var fp = new FileProcessor('html',{});
+    it('should replace js blocks with a link to a javascript file', function () {
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -94,8 +95,8 @@ describe('FileProcessor', function() {
       assert.equal(result, '  <script src="foo.js"><\/script>');
     });
 
-    it('should remove js blocks which have no javascripts linked in the block', function() {
-      var fp = new FileProcessor('html',{});
+    it('should remove js blocks which have no javascripts linked in the block', function () {
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -108,7 +109,7 @@ describe('FileProcessor', function() {
     });
 
     it('should preserve defer attribute (JS)', function () {
-      var fp = new FileProcessor('html',{});
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -122,7 +123,7 @@ describe('FileProcessor', function() {
     });
 
     it('should preserve async attribute (JS)', function () {
-      var fp = new FileProcessor('html',{});
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -136,7 +137,7 @@ describe('FileProcessor', function() {
     });
 
     it('should preserve media attribute', function () {
-      var fp = new FileProcessor('html',{});
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.css',
         type: 'css',
@@ -150,7 +151,7 @@ describe('FileProcessor', function() {
     });
 
     it('should preserve IE conditionals for js blocks', function () {
-      var fp = new FileProcessor('html',{});
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -165,7 +166,7 @@ describe('FileProcessor', function() {
     });
 
     it('should preserve IE conditionals for css blocks', function () {
-      var fp = new FileProcessor('html',{});
+      var fp = new FileProcessor('html', {});
       var block = {
         dest: 'foo.css',
         type: 'css',
@@ -180,28 +181,31 @@ describe('FileProcessor', function() {
     });
   });
 
-  describe('replaceWithRevved', function() {
-    it('should use furnished pattern to replace match with reference to revved files', function() {
-      var pattern = [[
-        /(foo\d+)/g,
-        'Replaced numerical foo'
-      ]];
+  describe('replaceWithRevved', function () {
+    it('should use furnished pattern to replace match with reference to revved files', function () {
+      var pattern = [
+        [/(foo\d+)/g, 'Replaced numerical foo']
+      ];
 
-      var finder = { find: function() { return 'toto'; }};
+      var finder = {
+        find: function () {
+          return 'toto';
+        }
+      };
       var fp = new FileProcessor(pattern, finder);
       var content = 'bar\nfoo12345\nfoo8979\nbaz\n';
-      var result = fp.replaceWithRevved(content,['']);
+      var result = fp.replaceWithRevved(content, ['']);
 
       assert.equal(result, 'bar\ntoto\ntoto\nbaz\n');
     });
     // FIXME: add tests on the filterIn / filterOut stuff
   });
 
-  describe('process', function() {
+  describe('process', function () {
     it('should call replaceWithRevved with the right arguments');
   });
 
-  describe('html type', function() {
+  describe('html type', function () {
     var fp;
     var filemapping = {
       'foo.js': 'foo.1234.js',
@@ -217,7 +221,7 @@ describe('FileProcessor', function() {
 
     var revvedfinder = helpers.makeFinder(filemapping);
 
-    beforeEach(function() {
+    beforeEach(function () {
       fp = new FileProcessor('html', revvedfinder);
 
     });
@@ -251,7 +255,7 @@ describe('FileProcessor', function() {
     describe('absolute paths', function () {
       var fp;
 
-      beforeEach(function() {
+      beforeEach(function () {
         fp = new FileProcessor('html', revvedfinder);
       });
 
@@ -286,7 +290,7 @@ describe('FileProcessor', function() {
     describe('relative paths', function () {
       var fp;
 
-      beforeEach(function() {
+      beforeEach(function () {
         fp = new FileProcessor('html', revvedfinder);
       });
 
@@ -320,7 +324,7 @@ describe('FileProcessor', function() {
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '">');
     });
 
-    it('should replace img src regardless of ng-src attribute', function() {
+    it('should replace img src regardless of ng-src attribute', function () {
       var content = '<img src="image.png" ng-src="{{my.image}}">';
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '" ng-src="{{my.image}}">');
@@ -344,10 +348,10 @@ describe('FileProcessor', function() {
       assert.equal(replaced, '<source src="' + filemapping['app/video.webm'] + '">');
     });
 
-    it('should replace videos\'s poster with revved version', function() {
+    it('should replace videos\'s poster with revved version', function () {
       var content = '<video poster="image.png">';
       var replaced = fp.replaceWithRevved(content, ['app']);
-      assert.equal(replaced, '<video poster="'+ filemapping['app/image.png'] + '">');
+      assert.equal(replaced, '<video poster="' + filemapping['app/image.png'] + '">');
     });
 
     it('should replace data reference with revved version', function () {
@@ -382,10 +386,10 @@ describe('FileProcessor', function() {
 
   });
 
-  describe('css type', function() {
+  describe('css type', function () {
     var cp;
 
-    describe('absolute path', function() {
+    describe('absolute path', function () {
       var content = '.myclass {\nbackground: url("/images/test.png") no-repeat center center;\nbackground: url("/images/misc/test.png") no-repeat center center;\nbackground: url("//images/foo.png") no-repeat center center;\nfilter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/pic.png",sizingMethod="scale");}';
       var filemapping = {
         'build/images/test.png': '/images/test.23012.png',
@@ -399,18 +403,18 @@ describe('FileProcessor', function() {
 
       var revvedfinder = helpers.makeFinder(filemapping);
 
-      beforeEach(function() {
+      beforeEach(function () {
         cp = new FileProcessor('css', revvedfinder);
       });
 
-      it('should replace with revved files when found', function(){
-        var changed = cp.replaceWithRevved(content,['build']);
+      it('should replace with revved files when found', function () {
+        var changed = cp.replaceWithRevved(content, ['build']);
         assert.ok(changed.match(/\/images\/test\.23012\.png/));
         assert.ok(changed.match(/\/images\/misc\/test\.23012\.png/));
         assert.ok(changed.match(/\/\/images\/foo\.23012\.png/));
       });
 
-      it('should take into account alternate search paths', function(){
+      it('should take into account alternate search paths', function () {
         var changed = cp.replaceWithRevved(content, ['foo']);
 
         assert.ok(changed.match(/\/images\/test\.23012\.png/));
@@ -419,7 +423,7 @@ describe('FileProcessor', function() {
 
       });
 
-      it('should take into account src attribute', function(){
+      it('should take into account src attribute', function () {
         var changed = cp.replaceWithRevved(content, ['foo']);
 
         assert.ok(changed.match(/\/images\/pic\.23012\.png/));
@@ -430,23 +434,23 @@ describe('FileProcessor', function() {
 
     });
 
-    describe('relative path', function() {
+    describe('relative path', function () {
       var content = '.myclass {\nbackground: url("images/test.png") no-repeat center center;\nbackground: url("../images/misc/test.png") no-repeat center center;\nbackground: url("images/foo.png") no-repeat center center;}';
       var filemapping = {
         'build/images/test.png': 'images/test.23012.png',
         'build/images/foo.png': 'images/foo.23012.png',
         'images/misc/test.png': '../images/misc/test.23012.png',
         'foo/images/test.png': 'images/test.23012.png',
-        'foo/images/foo.png': 'images/foo.23012.png',
+        'foo/images/foo.png': 'images/foo.23012.png'
       };
 
       var revvedfinder = helpers.makeFinder(filemapping);
 
-      beforeEach(function() {
+      beforeEach(function () {
         cp = new FileProcessor('css', revvedfinder);
       });
 
-      it('should replace with revved files when found', function(){
+      it('should replace with revved files when found', function () {
         var changed = cp.replaceWithRevved(content, ['build']);
 
         assert.ok(changed.match(/\"images\/test\.23012\.png/));
@@ -454,7 +458,7 @@ describe('FileProcessor', function() {
         assert.ok(changed.match(/\"images\/foo\.23012\.png/));
       });
 
-      it('should take into account alternate search paths', function(){
+      it('should take into account alternate search paths', function () {
         var changed = cp.replaceWithRevved(content, ['foo']);
 
         assert.ok(changed.match(/\"images\/test\.23012\.png/));
@@ -464,22 +468,22 @@ describe('FileProcessor', function() {
       });
     });
 
-    describe('font path', function() {
+    describe('font path', function () {
       var content = '@font-face {\nfont-family:"icons";\nsrc:url("/styles/fonts/icons.eot");\nsrc:url("/styles/fonts/icons.eot?#iefix") format("embedded-opentype"),\nurl("/styles/fonts/icons.woff") format("woff"),\nurl("/styles/fonts/icons.ttf") format("truetype"),\nurl("/styles/fonts/icons.svg?#icons") format("svg");\nfont-weight:normal;\nfont-style:normal;\n}';
       var filemapping = {
         'build/styles/fonts/icons.eot': '/styles/fonts/icons.12345.eot',
         'build/styles/fonts/icons.woff': '/styles/fonts/icons.12345.woff',
         'build/styles/fonts/icons.ttf': '/styles/fonts/icons.12345.ttf',
-        'build/styles/fonts/icons.svg': '/styles/fonts/icons.12345.svg',
+        'build/styles/fonts/icons.svg': '/styles/fonts/icons.12345.svg'
       };
 
       var revvedfinder = helpers.makeFinder(filemapping);
 
-      beforeEach(function() {
+      beforeEach(function () {
         cp = new FileProcessor('css', revvedfinder);
       });
 
-      it('should replace but ignore querystrings on revved files when found', function(){
+      it('should replace but ignore querystrings on revved files when found', function () {
         var changed = cp.replaceWithRevved(content, ['build']);
 
         assert.ok(changed.match(/\/styles\/fonts\/icons\.12345\.eot/));
@@ -490,22 +494,22 @@ describe('FileProcessor', function() {
 
     });
 
-    describe('font path', function() {
+    describe('font path', function () {
       var content = '@font-face {\nfont-family:"icons";\nsrc:url("/styles/fonts/icons.eot");\nsrc:url("/styles/fonts/icons.eot#fragment") format("embedded-opentype"),\nurl("/styles/fonts/icons.woff") format("woff"),\nurl("/styles/fonts/icons.ttf") format("truetype"),\nurl("/styles/fonts/icons.svg#icons") format("svg");\nfont-weight:normal;\nfont-style:normal;\n}';
       var filemapping = {
         'build/styles/fonts/icons.eot': '/styles/fonts/icons.12345.eot',
         'build/styles/fonts/icons.woff': '/styles/fonts/icons.12345.woff',
         'build/styles/fonts/icons.ttf': '/styles/fonts/icons.12345.ttf',
-        'build/styles/fonts/icons.svg': '/styles/fonts/icons.12345.svg',
+        'build/styles/fonts/icons.svg': '/styles/fonts/icons.12345.svg'
       };
 
       var revvedfinder = helpers.makeFinder(filemapping);
 
-      beforeEach(function() {
+      beforeEach(function () {
         cp = new FileProcessor('css', revvedfinder);
       });
 
-      it('should replace but ignore querystrings on revved files when found', function(){
+      it('should replace but ignore querystrings on revved files when found', function () {
         var changed = cp.replaceWithRevved(content, ['build']);
 
         assert.ok(changed.match(/\/styles\/fonts\/icons\.12345\.eot/));

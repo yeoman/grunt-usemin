@@ -157,7 +157,7 @@ The root directory from which your files will be resolved.
 ### flow
 
 Type: 'object'
-Default: `{ steps: { 'js': ['concat', 'uglifyjs'], 'css': ['concat', 'cssmin']}, post: {}}`
+Default: `{ steps: { js: ['concat', 'uglifyjs'], css: ['concat', 'cssmin'] }, post: {} }`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
 You can change the `steps` or the post-processors (`post`) separately.
@@ -172,7 +172,9 @@ useminPrepare: {
   options: {
     flow: {
       html: {
-        steps: {'js': ['uglifyjs']},
+        steps: {
+          js: ['uglifyjs']
+        },
         post: {}
       }
     }
@@ -187,7 +189,9 @@ useminPrepare: {
   html: 'index.html',
   options: {
     flow: {
-      steps: {'js' : ['uglifyjs'] },
+      steps: {
+        js : ['uglifyjs']
+      },
       post: {}
     }
   }
@@ -201,15 +205,17 @@ useminPrepare: {
   html: 'index.html',
   options: {
     flow: {
-      steps: {'js' : ['uglifyjs'] },
+      steps: {
+        js : ['uglifyjs']
+      },
       post: {
-        'js': [{
+        js: [{
           name: 'uglifyjs',
-          createConfig: function(context, block) {
-              var generated = context.options.generated;
-              generated.options = {
-                  foo: 'bar'
-              };
+          createConfig: function (context, block) {
+            var generated = context.options.generated;
+            generated.options = {
+              foo: 'bar'
+            };
           }
         }]
       }
@@ -262,20 +268,20 @@ is parsed as, and given to `createConfig` as:
 
 ```js
 var block = {
-    type: 'js',
-    dest: 'scripts/site.js',
-    src: [
-      'foo.js',
-      'bar.js',
-      'baz.js'
-    ],
-    raw: [
-      '    <!-- build:js scripts/site.js -->',
-      '    <script src="foo.js"></script>',
-      '    <script src="bar.js"></script>',
-      '    <script src="baz.js"></script>',
-      '    <!-- endbuild -->'
-    ]
+  type: 'js',
+  dest: 'scripts/site.js',
+  src: [
+    'foo.js',
+    'bar.js',
+    'baz.js'
+  ],
+  raw: [
+    '    <!-- build:js scripts/site.js -->',
+    '    <script src="foo.js"></script>',
+    '    <script src="bar.js"></script>',
+    '    <script src="baz.js"></script>',
+    '    <!-- endbuild -->'
+  ]
 };
 ```
 
