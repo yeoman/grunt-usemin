@@ -90,13 +90,13 @@ helpers.makeFinder = function(mapping) {
     return {
       find: function (s,b) {
         var output;
-        if (typeof b === 'string' || b instanceof String) {
+        if (_.isString(b)) {
           b = [b];
         }
         var dir = _.find(b, function(d) {return mapping[path.join(d,s).replace(/\\/g, '/')]; });
         var file = typeof dir !== 'undefined' ? mapping[path.join(dir,s).replace(/\\/g, '/')] : s;
 
-        if (Array.isArray(file)) {
+        if (_.isArray(file)) {
           output = file[0];
         } else {
           output = file;
@@ -115,9 +115,9 @@ helpers.normalize = function (object) {
   }
 
   if (object) {
-    if (typeof object === 'string') {
+    if (_.isString(object)) {
       object = path.normalize(object);
-    } else if (object instanceof Array) {
+    } else if (_.isArray(object)) {
       for (var i = 0; i < object.length; i++) {
         object[i] = helpers.normalize(object[i]);
       }
