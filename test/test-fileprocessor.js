@@ -320,6 +320,12 @@ describe('FileProcessor', function() {
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '">');
     });
 
+    it('should replace img src regardless of ng-src attribute', function() {
+      var content = '<img src="image.png" ng-src="{{my.image}}">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '" ng-src="{{my.image}}">');
+    });
+
     it('should replace video reference with revved version', function () {
       var content = '<video src="video.webm">';
       var replaced = fp.replaceWithRevved(content, ['app']);
