@@ -20,12 +20,12 @@ npm install grunt-usemin --save-dev
 * `useminPrepare` prepares the configuration to transform specific construction (blocks) in the scrutinized file into a single line, targeting an optimized version of the files (e.g concatenated, uglifyjs-ed ...)
 * `usemin` replaces the blocks by the file they reference, and replaces all references to assets by their revisioned version if it is found on the disk. This target modifies the files it is working on.
 
-In addition, `useminPrepare` dynamically generates the configuration for `concat`, `uglify`, and `cssmin`.  
+In addition, `useminPrepare` dynamically generates the configuration for `concat`, `uglify`, and `cssmin`.
 **Important**: _you still need to manually manage these dependencies and call each task_.
 
 Usually, `useminPrepare` is launched first, then the steps of the transformation flow (e.g. `concat`, `uglify`, and `cssmin`), and then, in the end `usemin` is launched. For example:
 
-```
+```js
 // simple build task
 grunt.registerTask('build', [
   'useminPrepare',
@@ -277,7 +277,6 @@ var block = {
       '    <!-- endbuild -->'
     ]
 };
-
 ```
 
 ## The usemin task
