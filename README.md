@@ -194,7 +194,7 @@ useminPrepare: {
 }
 ```
 
-* to customize the generated configuraion via post-processors:
+* to customize the generated configuration via post-processors:
 
 ```js
 useminPrepare: {
