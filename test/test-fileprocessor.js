@@ -326,6 +326,12 @@ describe('FileProcessor', function() {
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '" ng-src="{{my.image}}">');
     });
 
+    it('should replace img src after class attribute', function() {
+      var content = '<img class="myclass" src="image.png">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img class="myclass" src="' + filemapping['app/image.png'] + '">');
+    });
+
     it('should replace video reference with revved version', function () {
       var content = '<video src="video.webm">';
       var replaced = fp.replaceWithRevved(content, ['app']);
