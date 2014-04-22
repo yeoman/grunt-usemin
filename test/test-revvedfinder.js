@@ -209,13 +209,13 @@ describe('RevvedFinder', function () {
     describe('mapping', function() {
       describe('relative paths', function() {
         it('should return the corresponding file', function() {
-          var rf = new RevvedFinder({'dist/images/misc/test.png': 'dist/images/misc/test.34546.png'});
+          var rf = new RevvedFinder(helpers.normalize({'dist/images/misc/test.png': 'dist/images/misc/test.34546.png'}));
           var file = rf.find('images/misc/test.png', ['temp', 'dist']);
           assert.equal(file, 'images/misc/test.34546.png');
         });
 
         it('should handle correctly complicated relative paths', function() {
-          var rf = new RevvedFinder({'images/misc/test.png': 'images/misc/test.34546.png'});
+          var rf = new RevvedFinder(helpers.normalize({'images/misc/test.png': 'images/misc/test.34546.png'}));
           var file = rf.find('../../images/misc/test.png', ['temp/foo', 'dist/bar']);
           assert.equal(file, '../../images/misc/test.34546.png');
         });
@@ -223,7 +223,7 @@ describe('RevvedFinder', function () {
       });
       describe('absolute paths', function() {
         it('should return the corresponding file', function() {
-          var rf = new RevvedFinder({'dist/images/misc/test.png': 'dist/images/misc/test.34546.png'});
+          var rf = new RevvedFinder(helpers.normalize({'dist/images/misc/test.png': 'dist/images/misc/test.34546.png'}));
           var file = rf.find('/images/misc/test.png', ['temp', 'dist']);
           assert.equal(file, '/images/misc/test.34546.png');
         });
