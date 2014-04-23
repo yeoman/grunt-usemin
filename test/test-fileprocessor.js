@@ -373,6 +373,13 @@ describe('FileProcessor', function() {
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<input type="image" src="' + filemapping['app/image.png'] + '" />');
     });
+
+    it('should replace img in meta content', function() {
+      var content = '<meta name="foo" content="image.png">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<meta name="foo" content="' + filemapping['app/image.png'] + '">');
+    });
+
   });
 
   describe('css type', function() {
