@@ -135,28 +135,28 @@ useminPrepare: {
 
 ### dest
 
-Type: 'string'
+Type: 'string' <br/>
 Default: `nil`
 
 Base directory where the transformed files should be output.
 
 ### staging
 
-Type: 'string'
+Type: 'string' <br/>
 Default: `.tmp`
 
 Base directory where the temporary files should be output (e.g. concatenated files).
 
 ### root
 
-Type: 'string' or 'Array'
-Default: `nil`
+Type: 'string' or 'Array' <br/>
+Default: `nil` <br/>
 
 The root directory from which your files will be resolved.
 
 ### flow
 
-Type: 'object'
+Type: 'object' <br/>
 Default: `{ steps: { js: ['concat', 'uglifyjs'], css: ['concat', 'cssmin'] }, post: {} }`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
@@ -190,7 +190,7 @@ useminPrepare: {
   options: {
     flow: {
       steps: {
-        js : ['uglifyjs']
+        js: ['uglifyjs']
       },
       post: {}
     }
@@ -206,7 +206,7 @@ useminPrepare: {
   options: {
     flow: {
       steps: {
-        js : ['uglifyjs']
+        js: ['uglifyjs']
       },
       post: {
         js: [{
@@ -356,7 +356,9 @@ usemin: {
   options: {
     assetsDirs: 'images',
     patterns: {
-      js: [[/(image\.png)/, 'Replacing reference to image.png']]
+      js: [
+        [/(image\.png)/, 'Replacing reference to image.png']
+      ]
     }
   }
 }
@@ -365,7 +367,7 @@ usemin: {
 So in short:
 
 * key in pattern should match the target (e.g `js` key for the target `js`)
-* Each pattern is an array of arrays. These arrays are composed of 4 items (last 2 are optionals):
+* Each pattern is an array of arrays. These arrays are composed of 4 items (last 2 are optional):
   * First one if the regexp to use. The first group is the one that is supposed to represent the file
     reference to replace
   * Second one is a logging string
@@ -399,7 +401,7 @@ applied on the blocks (for example concatenation and uglify-cation). As such it 
 directory, temporary directories (staging) and destination directory.
 The files referenced in the block are either absolute or relative (`/images/foo.png` or `../../images/foo.png`).
 Absolute files references are looked in a given set of search path (input), which by default is set
-to the directory where the html/css file examined is located (can be overriden per block, or more
+to the directory where the html/css file examined is located (can be overridden per block, or more
 generally through `root` option).
 Relative files references are also looked at from location of the examined file, unless stated otherwise.
 
@@ -472,7 +474,7 @@ This will, on the fly, generate the following configuration:
 
   uglify:
   {
-    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ]
+    'dist/assets/js/optimized.js': ['.tmp/concat/assets/js/optimized.js']
   }
 }
 ```
@@ -530,7 +532,7 @@ This will, on the fly, generate the following configuration:
 
   uglify:
   {
-    'dist/assets/js/optimized.js': [ '.tmp/concat/assets/js/optimized.js' ]
+    'dist/assets/js/optimized.js': ['.tmp/concat/assets/js/optimized.js']
   }
 }
 ```
