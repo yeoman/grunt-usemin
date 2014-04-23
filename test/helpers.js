@@ -24,30 +24,28 @@ helpers.directory = function directory(dir) {
   };
 };
 
-helpers.blocks = function() {
-  return [
-      {
-        type: 'js',
-        dest: 'scripts/site.js',
-        searchPath: [],
-        indent: '    ',
-        src: [
-          'foo.js',
-          'bar.js',
-          'baz.js'
-        ],
-        raw: [
-          '    <!-- build:js scripts/site.js -->',
-          '    <script src="foo.js"></script>',
-          '    <script src="bar.js"></script>',
-          '    <script src="baz.js"></script>',
-          '    <!-- endbuild -->'
-        ]
-      }
-    ];
+helpers.blocks = function () {
+  return [{
+    type: 'js',
+    dest: 'scripts/site.js',
+    searchPath: [],
+    indent: '    ',
+    src: [
+      'foo.js',
+      'bar.js',
+      'baz.js'
+    ],
+    raw: [
+      '    <!-- build:js scripts/site.js -->',
+      '    <script src="foo.js"></script>',
+      '    <script src="bar.js"></script>',
+      '    <script src="baz.js"></script>',
+      '    <!-- endbuild -->'
+    ]
+  }];
 };
 
-helpers.cssBlock = function() {
+helpers.cssBlock = function () {
   return {
     type: 'css',
     dest: '/styles/main.min.js',
@@ -66,7 +64,7 @@ helpers.cssBlock = function() {
   };
 };
 
-helpers.createFile = function(name, dir, blocks) {
+helpers.createFile = function (name, dir, blocks) {
   return {
     name: name,
     blocks: blocks,
@@ -76,35 +74,39 @@ helpers.createFile = function(name, dir, blocks) {
 };
 
 helpers.file = {
-  mkdir: function(path, mode) { fs.mkdirSync(path,mode);},
-  write: function(path, content) {
+  mkdir: function (path, mode) {
+    fs.mkdirSync(path, mode);
+  },
+  write: function (path, content) {
     return fs.writeFileSync(path, content);
   },
-  copy: function(srcFile, destFile, encoding) {
+  copy: function (srcFile, destFile, encoding) {
     var content = fs.readFileSync(srcFile, encoding);
     fs.writeFileSync(destFile, content, encoding);
   }
 };
 
-helpers.makeFinder = function(mapping) {
-    return {
-      find: function (s,b) {
-        var output;
-        if (_.isString(b)) {
-          b = [b];
-        }
-        var dir = _.find(b, function(d) {return mapping[path.join(d,s).replace(/\\/g, '/')]; });
-        var file = typeof dir !== 'undefined' ? mapping[path.join(dir,s).replace(/\\/g, '/')] : s;
-
-        if (_.isArray(file)) {
-          output = file[0];
-        } else {
-          output = file;
-        }
-        return output;
+helpers.makeFinder = function (mapping) {
+  return {
+    find: function (s, b) {
+      var output;
+      if (_.isString(b)) {
+        b = [b];
       }
-    };
+      var dir = _.find(b, function (d) {
+        return mapping[path.join(d, s).replace(/\\/g, '/')];
+      });
+      var file = typeof dir !== 'undefined' ? mapping[path.join(dir, s).replace(/\\/g, '/')] : s;
+
+      if (_.isArray(file)) {
+        output = file[0];
+      } else {
+        output = file;
+      }
+      return output;
+    }
   };
+};
 
 helpers.normalize = function (object) {
   // turns {'foo/bar': ['app/bar.js', 'app/baz.js']}
@@ -127,8 +129,7 @@ helpers.normalize = function (object) {
           if (prop.indexOf('/') !== -1) {
             object[path.normalize(prop)] = helpers.normalize(object[prop]);
             delete object[prop];
-          }
-          else {
+          } else {
             object[prop] = helpers.normalize(object[prop]);
           }
         }

@@ -30,6 +30,7 @@
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-contrib-jshint": "~0.10.0",
+    "grunt-jscs-checker": "~0.4.1",
     "grunt-mocha-cli": "~1.8.0",
     "mkdirp": "~0.3.5",
     "rimraf": "~2.2.6"

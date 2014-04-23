@@ -34,80 +34,92 @@ describe('usemin', function () {
     beforeEach(directory('temp'));
 
     it('should replace with revved files when found', function () {
-        grunt.file.mkdir('build');
-        grunt.file.mkdir('build/images');
-        grunt.file.mkdir('build/images/misc');
-        grunt.file.write('build/images/test.23012.png', 'foo');
-        grunt.file.write('build/images/bar.23012.png', 'foo');
-        grunt.file.write('build/images/misc/test.2a436.png', 'foo');
-        grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
+      grunt.file.mkdir('build');
+      grunt.file.mkdir('build/images');
+      grunt.file.mkdir('build/images/misc');
+      grunt.file.write('build/images/test.23012.png', 'foo');
+      grunt.file.write('build/images/bar.23012.png', 'foo');
+      grunt.file.write('build/images/misc/test.2a436.png', 'foo');
+      grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
 
-        grunt.log.muted = true;
-        grunt.config.init();
-        grunt.config('usemin', {html: 'build/index.html'});
-        // grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
-        grunt.task.run('usemin');
-        grunt.task.start();
-
-        var changed = grunt.file.read('build/index.html');
-
-        assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
-
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('usemin', {
+        html: 'build/index.html'
       });
+      // grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+      grunt.task.run('usemin');
+      grunt.task.start();
+
+      var changed = grunt.file.read('build/index.html');
+
+      assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
+
+    });
 
     it('should take into account alternate search path for assets', function () {
-        grunt.file.mkdir('build');
-        grunt.file.mkdir('foo');
-        grunt.file.mkdir('foo/images');
-        grunt.file.mkdir('foo/images/foo');
-        grunt.file.write('foo/images/test.23012.png', 'foo');
-        grunt.file.write('foo/images/bar.23012.png', 'foo');
-        grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
-        grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
+      grunt.file.mkdir('build');
+      grunt.file.mkdir('foo');
+      grunt.file.mkdir('foo/images');
+      grunt.file.mkdir('foo/images/foo');
+      grunt.file.write('foo/images/test.23012.png', 'foo');
+      grunt.file.write('foo/images/bar.23012.png', 'foo');
+      grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
+      grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
 
-        grunt.log.muted = true;
-        grunt.config.init();
-        grunt.config('usemin', {html: 'build/index.html', options: { assetsDirs: ['foo']}});
-        grunt.task.run('usemin');
-        grunt.task.start();
-
-        var changed = grunt.file.read('build/index.html');
-
-        assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
-
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('usemin', {
+        html: 'build/index.html',
+        options: {
+          assetsDirs: ['foo']
+        }
       });
+      grunt.task.run('usemin');
+      grunt.task.start();
+
+      var changed = grunt.file.read('build/index.html');
+
+      assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
+
+    });
 
     it('should allow for several asset dirs', function () {
-        grunt.file.mkdir('build');
-        grunt.file.mkdir('foo');
-        grunt.file.mkdir('foo/images');
-        grunt.file.mkdir('foo/images/misc');
-        grunt.file.write('foo/images/test.23012.png', 'foo');
-        grunt.file.write('foo/images/bar.23012.png', 'foo');
-        grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
-        grunt.file.mkdir('bar');
-        grunt.file.mkdir('bar/scripts');
-        grunt.file.write('bar/scripts/plugins.12345.js', 'bar');
-        grunt.file.write('bar/scripts/amd-app.6789.js', 'bar');
-        grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
+      grunt.file.mkdir('build');
+      grunt.file.mkdir('foo');
+      grunt.file.mkdir('foo/images');
+      grunt.file.mkdir('foo/images/misc');
+      grunt.file.write('foo/images/test.23012.png', 'foo');
+      grunt.file.write('foo/images/bar.23012.png', 'foo');
+      grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
+      grunt.file.mkdir('bar');
+      grunt.file.mkdir('bar/scripts');
+      grunt.file.write('bar/scripts/plugins.12345.js', 'bar');
+      grunt.file.write('bar/scripts/amd-app.6789.js', 'bar');
+      grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
 
-        grunt.log.muted = true;
-        grunt.config.init();
-        grunt.config('usemin', {html: 'build/index.html',  options: { assetsDirs: ['foo', 'bar']}});
-        grunt.task.run('usemin');
-        grunt.task.start();
-
-        var changed = grunt.file.read('build/index.html');
-
-        assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
-        assert.ok(changed.match(/<script src="\/scripts\/plugins\.12345\.js">/));
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('usemin', {
+        html: 'build/index.html',
+        options: {
+          assetsDirs: ['foo', 'bar']
+        }
       });
+      grunt.task.run('usemin');
+      grunt.task.start();
+
+      var changed = grunt.file.read('build/index.html');
+
+      assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
+      assert.ok(changed.match(/<script src="\/scripts\/plugins\.12345\.js">/));
+    });
 
   });
 
@@ -115,79 +127,91 @@ describe('usemin', function () {
     beforeEach(directory('temp'));
 
     it('should replace with revved files when found', function () {
-        grunt.file.mkdir('build');
-        grunt.file.mkdir('build/images');
-        grunt.file.mkdir('build/foo');
-        grunt.file.mkdir('build/images/misc');
-        grunt.file.write('build/images/test.23012.png', 'foo');
-        grunt.file.write('build/images/bar.23012.png', 'foo');
-        grunt.file.write('build/images/misc/test.2a436.png', 'foo');
-        grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_relative.html'), 'build/foo/index.html');
+      grunt.file.mkdir('build');
+      grunt.file.mkdir('build/images');
+      grunt.file.mkdir('build/foo');
+      grunt.file.mkdir('build/images/misc');
+      grunt.file.write('build/images/test.23012.png', 'foo');
+      grunt.file.write('build/images/bar.23012.png', 'foo');
+      grunt.file.write('build/images/misc/test.2a436.png', 'foo');
+      grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_relative.html'), 'build/foo/index.html');
 
-        grunt.log.muted = true;
-        grunt.config.init();
-        grunt.config('usemin', {html: 'build/foo/index.html'});
-        grunt.task.run('usemin');
-        grunt.task.start();
-
-        var changed = grunt.file.read('build/foo/index.html');
-
-        assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png"\>/));
-        assert.ok(changed.match(/<link rel=\"stylesheet\" href=\"styles\/main\.min\.css\"\/>/));
-        assert.ok(changed.match(/<img src=\"\.\.\/images\/misc\/test\.2a436\.png\">/));
-
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('usemin', {
+        html: 'build/foo/index.html'
       });
+      grunt.task.run('usemin');
+      grunt.task.start();
+
+      var changed = grunt.file.read('build/foo/index.html');
+
+      assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png"\>/));
+      assert.ok(changed.match(/<link rel=\"stylesheet\" href=\"styles\/main\.min\.css\"\/>/));
+      assert.ok(changed.match(/<img src=\"\.\.\/images\/misc\/test\.2a436\.png\">/));
+
+    });
 
     it('should take into account alternate path for assets', function () {
-        grunt.file.mkdir('build');
-        grunt.file.mkdir('foo');
-        grunt.file.mkdir('foo/bar');
-        grunt.file.mkdir('foo/images');
-        grunt.file.mkdir('foo/images/foo');
-        grunt.file.write('foo/images/test.23012.png', 'foo');
-        grunt.file.write('foo/images/bar.23012.png', 'foo');
-        grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
-        grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_relative.html'), 'build/index.html');
+      grunt.file.mkdir('build');
+      grunt.file.mkdir('foo');
+      grunt.file.mkdir('foo/bar');
+      grunt.file.mkdir('foo/images');
+      grunt.file.mkdir('foo/images/foo');
+      grunt.file.write('foo/images/test.23012.png', 'foo');
+      grunt.file.write('foo/images/bar.23012.png', 'foo');
+      grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
+      grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_relative.html'), 'build/index.html');
 
-        grunt.log.muted = true;
-        grunt.config.init();
-        grunt.config('usemin', {html: 'build/index.html', options: { assetsDirs: ['foo/bar']}});
-        grunt.task.run('usemin');
-        grunt.task.start();
-
-        var changed = grunt.file.read('build/index.html');
-
-        assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\.\.\/images\/misc\/test\.2a436\.png">/));
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('usemin', {
+        html: 'build/index.html',
+        options: {
+          assetsDirs: ['foo/bar']
+        }
       });
+      grunt.task.run('usemin');
+      grunt.task.start();
+
+      var changed = grunt.file.read('build/index.html');
+
+      assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\.\.\/images\/misc\/test\.2a436\.png">/));
+    });
 
     it('should allow for several asset dirs', function () {
-        grunt.file.mkdir('build');
-        grunt.file.mkdir('foo/bar');
-        grunt.file.mkdir('foo/images');
-        grunt.file.mkdir('foo/images/misc');
-        grunt.file.write('foo/images/test.23012.png', 'foo');
-        grunt.file.write('foo/images/bar.23012.png', 'foo');
-        grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
-        grunt.file.mkdir('bar');
-        grunt.file.mkdir('bar/scripts');
-        grunt.file.write('bar/scripts/plugins.12345.js', 'bar');
-        grunt.file.write('bar/scripts/amd-app.6789.js', 'bar');
-        grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_relative.html'), 'build/index.html');
+      grunt.file.mkdir('build');
+      grunt.file.mkdir('foo/bar');
+      grunt.file.mkdir('foo/images');
+      grunt.file.mkdir('foo/images/misc');
+      grunt.file.write('foo/images/test.23012.png', 'foo');
+      grunt.file.write('foo/images/bar.23012.png', 'foo');
+      grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
+      grunt.file.mkdir('bar');
+      grunt.file.mkdir('bar/scripts');
+      grunt.file.write('bar/scripts/plugins.12345.js', 'bar');
+      grunt.file.write('bar/scripts/amd-app.6789.js', 'bar');
+      grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_relative.html'), 'build/index.html');
 
-        grunt.log.muted = true;
-        grunt.config.init();
-        grunt.config('usemin', {html: 'build/index.html',  options: { assetsDirs: ['foo/bar', 'bar']}});
-        grunt.task.run('usemin');
-        grunt.task.start();
-
-        var changed = grunt.file.read('build/index.html');
-
-        assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png">/));
-        assert.ok(changed.match(/<img src="\.\.\/images\/misc\/test\.2a436\.png">/));
-        assert.ok(changed.match(/<script src="scripts\/plugins\.12345\.js">/));
-
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('usemin', {
+        html: 'build/index.html',
+        options: {
+          assetsDirs: ['foo/bar', 'bar']
+        }
       });
+      grunt.task.run('usemin');
+      grunt.task.start();
+
+      var changed = grunt.file.read('build/index.html');
+
+      assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png">/));
+      assert.ok(changed.match(/<img src="\.\.\/images\/misc\/test\.2a436\.png">/));
+      assert.ok(changed.match(/<script src="scripts\/plugins\.12345\.js">/));
+
+    });
 
   });
 
@@ -200,7 +224,9 @@ describe('usemin', function () {
     grunt.file.write('images/misc/test.2a436.png', 'foo');
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('usemin', {css: 'style.css'});
+    grunt.config('usemin', {
+      css: 'style.css'
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/style.css'), 'style.css');
     grunt.task.run('usemin');
     grunt.task.start();
@@ -219,7 +245,9 @@ describe('usemin', function () {
     grunt.file.write('bar-foo.html', 'foo');
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('usemin', {html: 'index.html'});
+    grunt.config('usemin', {
+      html: 'index.html'
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('usemin');
     grunt.task.start();
@@ -256,14 +284,19 @@ describe('usemin', function () {
     assert.ok(changed.match(/referenceToImage = 'image\.2132\.png'/));
   });
 
-  it('should use revved summary file when given one', function() {
+  it('should use revved summary file when given one', function () {
     grunt.file.mkdir('images');
     grunt.file.write('images/test.2132.png', 'foo');
     grunt.file.write('images/test.2134.png', 'foo');
     grunt.file.write('summary.js', '{"images/test.png": "images/test.2134.png"}');
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('usemin', {html: 'index.html', options: { revmap: 'summary.js'}});
+    grunt.config('usemin', {
+      html: 'index.html',
+      options: {
+        revmap: 'summary.js'
+      }
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('usemin');
     grunt.task.start();
@@ -274,14 +307,20 @@ describe('usemin', function () {
 
   });
 
-  it('should use filerev map object when available', function() {
+  it('should use filerev map object when available', function () {
     // grunt.file.mkdir('images');
     // grunt.file.write('images/test.2132.png', 'foo');
     // grunt.file.write('images/test.2134.png', 'foo');
-    grunt.filerev = {summary: {'images/test.png': 'images/test.2134.png'}};
+    grunt.filerev = {
+      summary: {
+        'images/test.png': 'images/test.2134.png'
+      }
+    };
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('usemin', {html: 'index.html'});
+    grunt.config('usemin', {
+      html: 'index.html'
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('usemin');
     grunt.task.start();
@@ -298,7 +337,9 @@ describe('useminPrepare', function () {
   it('should update the config (HTML)', function () {
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('useminPrepare', {html: 'index.html'});
+    grunt.config('useminPrepare', {
+      html: 'index.html'
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('useminPrepare');
     grunt.task.start();
@@ -323,7 +364,9 @@ describe('useminPrepare', function () {
   it('should use alternate search dir if asked to', function () {
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('useminPrepare', {html: 'index.html'});
+    grunt.config('useminPrepare', {
+      html: 'index.html'
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/alternate_search_path.html'), 'index.html');
     grunt.task.run('useminPrepare');
     grunt.task.start();
@@ -342,7 +385,9 @@ describe('useminPrepare', function () {
   it('output config for subsequent tasks should be relative to observed file', function () {
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('useminPrepare', {html: 'build/index.html'});
+    grunt.config('useminPrepare', {
+      html: 'build/index.html'
+    });
     grunt.file.mkdir('build');
     grunt.file.copy(path.join(__dirname, 'fixtures/relative_path.html'), 'build/index.html');
     grunt.task.run('useminPrepare');
@@ -358,14 +403,19 @@ describe('useminPrepare', function () {
     assert.deepEqual(uglify.generated.files[0].src, [path.normalize('.tmp/concat/scripts/foo.js')]);
   });
 
-  describe('absolute path', function() {
+  describe('absolute path', function () {
     // This is an interesting test case: root file is foo, html file is in foo/build and js
     // sources in foo/scripts
     // we should thus read file in foo/scripts ...
-    it('should accept a root directory', function() {
+    it('should accept a root directory', function () {
       grunt.log.muted = true;
       grunt.config.init();
-      grunt.config('useminPrepare', {html: 'foo/build/index.html', options: { root: 'foo' }});
+      grunt.config('useminPrepare', {
+        html: 'foo/build/index.html',
+        options: {
+          root: 'foo'
+        }
+      });
       grunt.file.mkdir('foo');
       grunt.file.mkdir('foo/build');
       grunt.file.copy(path.join(__dirname, 'fixtures/absolute.html'), 'foo/build/index.html');
@@ -392,7 +442,12 @@ describe('useminPrepare', function () {
   it('should take dest option into consideration', function () {
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('useminPrepare', {html: 'index.html', options: { 'dest': 'foo'}});
+    grunt.config('useminPrepare', {
+      html: 'index.html',
+      options: {
+        dest: 'foo'
+      }
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('useminPrepare');
     grunt.task.start();
@@ -405,7 +460,12 @@ describe('useminPrepare', function () {
   it('should take staging option into consideration', function () {
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('useminPrepare', {html: 'index.html', options: { 'staging': 'foo'}});
+    grunt.config('useminPrepare', {
+      html: 'index.html',
+      options: {
+        staging: 'foo'
+      }
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('useminPrepare');
     grunt.task.start();
@@ -420,7 +480,12 @@ describe('useminPrepare', function () {
   it('should take staging option into consideration', function () {
     grunt.log.muted = true;
     grunt.config.init();
-    grunt.config('useminPrepare', {html: 'index.html', options: { 'staging': 'foo'}});
+    grunt.config('useminPrepare', {
+      html: 'index.html',
+      options: {
+        staging: 'foo'
+      }
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('useminPrepare');
     grunt.task.start();
@@ -438,7 +503,9 @@ describe('useminPrepare', function () {
       html: 'index.html',
       options: {
         flow: {
-          steps: {'js': ['uglifyjs']},
+          steps: {
+            js: ['uglifyjs']
+          },
           post: {}
         }
       }
@@ -467,8 +534,10 @@ describe('useminPrepare', function () {
       html: 'index.html',
       options: {
         flow: {
-          'html': {
-            steps: {'js': ['uglifyjs']},
+          html: {
+            steps: {
+              js: ['uglifyjs']
+            },
             post: {}
           }
         }
@@ -490,31 +559,35 @@ describe('useminPrepare', function () {
   });
 
 
-  it('should allow use to furnish new steps of the flow', function() {
+  it('should allow use to furnish new steps of the flow', function () {
     var copy = {
-        name: 'copy',
-        createConfig: function(context,block) {
-            var cfg = {};
-            var files = {};
-            var inFiles = [];
-            context.inFiles.forEach(function(file) { inFiles.push(path.join(context.inDir, file));});
-            files.dest = path.join(context.outDir, block.dest);
-            files.src = inFiles;
-            cfg.files = [files];
-            return cfg;
-          }
-      };
+      name: 'copy',
+      createConfig: function (context, block) {
+        var cfg = {};
+        var files = {};
+        var inFiles = [];
+        context.inFiles.forEach(function (file) {
+          inFiles.push(path.join(context.inDir, file));
+        });
+        files.dest = path.join(context.outDir, block.dest);
+        files.src = inFiles;
+        cfg.files = [files];
+        return cfg;
+      }
+    };
     grunt.log.muted = true;
     grunt.config.init();
     grunt.config('useminPrepare', {
       html: 'index.html',
       options: {
         flow: {
-            steps: {'js': [copy]},
-            post: {}
-          }
+          steps: {
+            js: [copy]
+          },
+          post: {}
         }
-      });
+      }
+    });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('useminPrepare');
     grunt.task.start();
@@ -525,33 +598,33 @@ describe('useminPrepare', function () {
     assert.equal(copyCfg.generated.files[0].dest, path.normalize('dist/scripts/plugins.js'));
   });
 
-  it('should allow to post configure generated steps', function() {
+  it('should allow to post configure generated steps', function () {
 
     var concatPostConfig = {
-        name: 'concat',
-        createConfig: function(context) {
-            var generated = context.options.generated;
-            generated.options = {
-                foo: 'bar'
-              };
-          }
-      };
+      name: 'concat',
+      createConfig: function (context) {
+        var generated = context.options.generated;
+        generated.options = {
+          foo: 'bar'
+        };
+      }
+    };
 
     grunt.log.muted = true;
     grunt.config.init();
     grunt.config('useminPrepare', {
-        html: 'index.html',
-        options: {
-            flow: {
-                steps: {'js': ['concat']},
-                post: {
-                    'js': [
-                        concatPostConfig
-                      ]
-                    }
-                  }
-                }
-              });
+      html: 'index.html',
+      options: {
+        flow: {
+          steps: {
+            js: ['concat']
+          },
+          post: {
+            js: [concatPostConfig]
+          }
+        }
+      }
+    });
 
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
     grunt.task.run('useminPrepare');

@@ -9,9 +9,15 @@ var inspect = function (obj) {
 //  - a dedicated one for the furnished target
 //  - a general one
 //  - the default one
-var getFlowFromConfig = function(config, target) {
+var getFlowFromConfig = function (config, target) {
   var Flow = require('../lib/flow');
-  var flow = new Flow({ steps: {'js': ['concat', 'uglifyjs'], 'css': ['concat', 'cssmin']}, post: {}});
+  var flow = new Flow({
+    steps: {
+      js: ['concat', 'uglifyjs'],
+      css: ['concat', 'cssmin']
+    },
+    post: {}
+  });
   if (config.options && config.options.flow) {
     if (config.options.flow[target]) {
       flow.setSteps(config.options.flow[target].steps);
@@ -38,7 +44,11 @@ var getLocator = function (grunt, options) {
   } else if (grunt.filerev && grunt.filerev.summary) {
     locator = grunt.filerev.summary;
   } else {
-    locator = function (p) { return grunt.file.expand({filter: 'isFile'}, p); };
+    locator = function (p) {
+      return grunt.file.expand({
+        filter: 'isFile'
+      }, p);
+    };
   }
   return locator;
 };
@@ -107,22 +117,24 @@ module.exports = function (grunt) {
 
     // Check if we have a user defined pattern
     if (options.patterns && options.patterns[this.target]) {
-      debug('Using user defined pattern for %s',this.target);
+      debug('Using user defined pattern for %s', this.target);
       patterns = options.patterns[this.target];
-    }
-    else
-    {
-      debug('Using predefined pattern for %s',this.target);
+    } else {
+      debug('Using predefined pattern for %s', this.target);
       patterns = options.type;
     }
 
     // var locator = options.revmap ? grunt.file.readJSON(options.revmap) : function (p) { return grunt.file.expand({filter: 'isFile'}, p); };
     var locator = getLocator(grunt, options);
     var revvedfinder = new RevvedFinder(locator);
-    var handler = new FileProcessor(patterns, revvedfinder, function (msg) { grunt.log.writeln(msg);});
+    var handler = new FileProcessor(patterns, revvedfinder, function (msg) {
+      grunt.log.writeln(msg);
+    });
 
     this.files.forEach(function (fileObj) {
-      var files = grunt.file.expand({nonull: true}, fileObj.src);
+      var files = grunt.file.expand({
+        nonull: true
+      }, fileObj.src);
       files.forEach(function (filename) {
         debug('looking at file %s', filename);
 
@@ -150,13 +162,21 @@ module.exports = function (grunt) {
 
     var flow = getFlowFromConfig(grunt.config('useminPrepare'), this.target);
 
-    var c = new ConfigWriter( flow, {root: root, dest: dest, staging: staging} );
+    var c = new ConfigWriter(flow, {
+      root: root,
+      dest: dest,
+      staging: staging
+    });
 
     var cfgNames = [];
-    c.stepWriters().forEach(function(i) { cfgNames.push(i.name);});
-    c.postWriters().forEach(function(i) { cfgNames.push(i.name);});
+    c.stepWriters().forEach(function (i) {
+      cfgNames.push(i.name);
+    });
+    c.postWriters().forEach(function (i) {
+      cfgNames.push(i.name);
+    });
     var gruntConfig = {};
-    _.forEach(cfgNames, function(name) {
+    _.forEach(cfgNames, function (name) {
       gruntConfig[name] = grunt.config(name) || {};
     });
 
@@ -164,12 +184,11 @@ module.exports = function (grunt) {
       var config;
       try {
         config = c.process(filepath, grunt.config());
-      }
-      catch(e) {
+      } catch (e) {
         grunt.fail.fatal(e);
       }
 
-      _.forEach(cfgNames, function(name) {
+      _.forEach(cfgNames, function (name) {
         gruntConfig[name] = grunt.config(name) || {};
         grunt.config(name, _.assign(gruntConfig[name], config[name]));
       });
@@ -178,7 +197,7 @@ module.exports = function (grunt) {
 
     // log a bit what was added to config
     grunt.log.subhead('Configuration is now:');
-    _.forEach(cfgNames, function(name) {
+    _.forEach(cfgNames, function (name) {
       grunt.log.subhead('  ' + name + ':').writeln('  ' + inspect(grunt.config(name)));
     });
   });

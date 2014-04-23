@@ -3,15 +3,15 @@ var assert = require('assert');
 var path = require('path');
 var File = require('../lib/file.js');
 
-describe('File', function() {
-  it('should store filename, file location, ...', function() {
+describe('File', function () {
+  it('should store filename, file location, ...', function () {
     var filename = path.join(__dirname, 'fixtures', 'usemin.html');
     var file = new File(filename);
     assert.ok(file.dir, path.dirname(filename));
     assert.ok(file.name, path.basename(filename));
   });
 
-  it('should extract a list of blocks from furnished file', function() {
+  it('should extract a list of blocks from furnished file', function () {
     var file = new File(path.join(__dirname, 'fixtures', 'usemin.html'));
     assert.ok(file.blocks.length, 2);
   });
@@ -57,7 +57,7 @@ describe('File', function() {
     assert.equal(2, b1.src.length);
   });
 
-  it('should also detect block that has IE conditionals on same line', function() {
+  it('should also detect block that has IE conditionals on same line', function () {
     var filename = __dirname + '/fixtures/block_with_IEconditionals_inline.html';
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
@@ -67,7 +67,7 @@ describe('File', function() {
     assert.equal('<![endif]-->', file.blocks[0].conditionalEnd);
   });
 
-  it('should also detect block that has IE conditionals within block', function() {
+  it('should also detect block that has IE conditionals within block', function () {
     var filename = __dirname + '/fixtures/block_with_IEconditionals_within.html';
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
@@ -77,9 +77,9 @@ describe('File', function() {
     assert.equal('<![endif]-->', file.blocks[0].conditionalEnd);
   });
 
-  it('should throw an exception if it finds RequireJS blocks', function() {
+  it('should throw an exception if it finds RequireJS blocks', function () {
     var filename = __dirname + '/fixtures/requirejs.html';
-    assert.throws( function() {
+    assert.throws(function () {
       new File(filename);
     }, Error);
   });
