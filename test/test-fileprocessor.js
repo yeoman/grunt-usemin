@@ -366,6 +366,12 @@ describe('FileProcessor', function () {
       assert.equal(replaced, '<li style="background: url("' + filemapping['app/image.png'] + '");"></li>');
     });
 
+    it('should replace unquoted image reference in inlined style', function () {
+      var content = '<li style="background: url(image.png);"></li>';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<li style="background: url(' + filemapping['app/image.png'] + ');"></li>');
+    });
+
     it('should replace image reference in anchors', function () {
       var content = '<a href="image.png"></a>';
       var replaced = fp.replaceWithRevved(content, ['app']);
