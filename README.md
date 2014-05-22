@@ -32,7 +32,7 @@ grunt.registerTask('build', [
   'concat',
   'cssmin',
   'uglify',
-  'rev',
+  'filerev',
   'usemin'
 ]);
 ```
@@ -380,7 +380,7 @@ So in short:
 Type: 'String'
 Default: Empty
 
-Indicate the location of a map file, as produced by `grunt-rev` for example. This map file is a simple JSON file, holding an object
+Indicate the location of a map file, as produced by `grunt-filerev` for example. This map file is a simple JSON file, holding an object
 which attributes are the original file and associated value is the transformed file. For example:
 
 ```js
