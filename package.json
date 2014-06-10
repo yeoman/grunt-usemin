@@ -1,6 +1,6 @@
 {
   "name": "grunt-usemin",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "license": "BSD",
   "author": "The Yeoman Team",
   "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
