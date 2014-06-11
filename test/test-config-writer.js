@@ -266,6 +266,122 @@ describe('ConfigWriter', function () {
     it('should allow for an empty flow');
     it('should allow for a filename as input');
 
+    it('should deduplicate blocks', function () {
+      var flow = new Flow({
+        steps: {
+          js: ['concat', 'uglifyjs']
+        }
+      });
+      var doubleBlocks = [blocks[0], blocks[0]];
+      var file = helpers.createFile('foo', 'app', doubleBlocks);
+      var c = new ConfigWriter(flow, {
+        input: 'app',
+        dest: 'dist',
+        staging: '.tmp'
+      });
+      var config = c.process(file);
+      var expected = helpers.normalize({
+        concat: {
+          generated: {
+            files: [{
+              dest: '.tmp/concat/scripts/site.js',
+              src: ['app/foo.js', 'app/bar.js', 'app/baz.js']
+            }]
+          }
+        },
+        uglify: {
+          generated: {
+            files: [{
+              dest: 'dist/scripts/site.js',
+              src: ['.tmp/concat/scripts/site.js']
+            }]
+          }
+        }
+      });
+
+      assert.deepEqual(config, expected);
+    });
+    it('should deduplicate blocks across files', function () {
+      var flow = new Flow({
+        steps: {
+          js: ['concat', 'uglifyjs']
+        }
+      });
+      var file = helpers.createFile('foo', 'app', blocks);
+      var c = new ConfigWriter(flow, {
+        input: 'app',
+        dest: 'dist',
+        staging: '.tmp'
+      });
+      var firstConfig = c.process(file);
+      var repeatConfig = c.process(file);
+      var expectedFirst = helpers.normalize({
+        concat: {
+          generated: {
+            files: [{
+              dest: '.tmp/concat/scripts/site.js',
+              src: ['app/foo.js', 'app/bar.js', 'app/baz.js']
+            }]
+          }
+        },
+        uglify: {
+          generated: {
+            files: [{
+              dest: 'dist/scripts/site.js',
+              src: ['.tmp/concat/scripts/site.js']
+            }]
+          }
+        }
+      });
+      var expectedRepeat = helpers.normalize({
+        concat: {
+          generated: {}
+        },
+        uglify: {
+          generated: {}
+        }
+      });
+
+      assert.deepEqual(firstConfig, expectedFirst);
+      assert.deepEqual(repeatConfig, expectedRepeat);
+    });
+    it('should throw with conflicting blocks', function () {
+      var flow = new Flow({
+        steps: {
+          js: ['concat', 'uglifyjs']
+        }
+      });
+      var conflictBlock = {
+        type: 'js',
+        dest: 'scripts/site.js',
+        searchPath: [],
+        indent: '    ',
+        src: [
+          'foo.js',
+          'bar.js',
+          'baz.js',
+          'fail.js'
+        ],
+        raw: [
+          '    <!-- build:js scripts/site.js -->',
+          '    <script src="foo.js"></script>',
+          '    <script src="bar.js"></script>',
+          '    <script src="baz.js"></script>',
+          '    <script src="fail.js"></script>',
+          '    <!-- endbuild -->'
+        ]
+      };
+      var file = helpers.createFile('foo', 'app', [blocks[0], conflictBlock]);
+      var c = new ConfigWriter(flow, {
+        input: 'app',
+        dest: 'dist',
+        staging: '.tmp'
+      });
+      assert.throws(function () {
+        c.process(file);
+      });
+    });
+
     describe('stepWriters', function () {
       it('should return all writers if called without block type', function () {
         var flow = new Flow({
