@@ -66,7 +66,7 @@ describe('FileProcessor', function () {
       };
 
       var result = fp.replaceWith(block);
-      assert.equal(result, '  <link rel="stylesheet" href="foo.css"/>');
+      assert.equal(result, '  <link rel="stylesheet" href="foo.css">');
     });
 
     it('should remove css blocks which have no stylesheets linked in them', function () {
@@ -108,6 +108,24 @@ describe('FileProcessor', function () {
       assert.equal(result, '');
     });
 
+    it('should replace cutsom blocks using provided replacement function', function () {
+      var blockReplacements = {
+        less: function (block) {
+          return 'custom replacement for ' + block.dest;
+        }
+      };
+      var fp = new FileProcessor('html', {}, function () {}, blockReplacements);
+      var block = {
+        dest: 'foo.css',
+        type: 'less',
+        src: ['bar.less'],
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  custom replacement for foo.css');
+    });
+
     it('should preserve defer attribute (JS)', function () {
       var fp = new FileProcessor('html', {});
       var block = {
@@ -147,7 +165,7 @@ describe('FileProcessor', function () {
       };
 
       var result = fp.replaceWith(block);
-      assert.equal(result, '  <link rel="stylesheet" href="foo.css" media="(min-width:980px)"/>');
+      assert.equal(result, '  <link rel="stylesheet" href="foo.css" media="(min-width:980px)">');
     });
 
     it('should preserve IE conditionals for js blocks', function () {
@@ -177,7 +195,7 @@ describe('FileProcessor', function () {
       };
 
       var result = fp.replaceWith(block);
-      assert.equal(result, '  <!--[if (lt IE 9) & (!IEmobile)]>\n  <link rel="stylesheet" href="foo.css"/>\n  <![endif]-->');
+      assert.equal(result, '  <!--[if (lt IE 9) & (!IEmobile)]>\n  <link rel="stylesheet" href="foo.css">\n  <![endif]-->');
     });
   });
 
