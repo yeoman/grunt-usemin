@@ -136,28 +136,28 @@ useminPrepare: {
 
 ### dest
 
-Type: 'string' <br/>
+Type: 'string'  
 Default: `nil`
 
 Base directory where the transformed files should be output.
 
 ### staging
 
-Type: 'string' <br/>
+Type: 'string'  
 Default: `.tmp`
 
 Base directory where the temporary files should be output (e.g. concatenated files).
 
 ### root
 
-Type: 'string' or 'Array' <br/>
-Default: `nil` <br/>
+Type: 'string' or 'Array'  
+Default: `nil`
 
 The root directory from which your files will be resolved.
 
 ### flow
 
-Type: 'object' <br/>
+Type: 'object'  
 Default: `{ steps: { js: ['concat', 'uglifyjs'], css: ['concat', 'cssmin'] }, post: {} }`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
@@ -327,7 +327,7 @@ By default `usemin` will look under `dist/html` for revved versions of `styles/m
 
 #### assetsDirs
 
-Type: 'Array' <br/>
+Type: 'Array'  
 Default: Single item array set to the value of the directory where the currently looked at file is.
 
 List of directories where we should start to look for revved version of the assets referenced in the currently looked at file.
@@ -344,7 +344,7 @@ usemin: {
 
 #### patterns
 
-Type: 'Object' <br/>
+Type: 'Object'  
 Default: Empty
 
 Allows for user defined pattern to replace reference to files. For example, let's suppose that you want to replace
@@ -377,7 +377,7 @@ So in short:
 
 #### blockReplacements
 
-Type: 'Object' <br/>
+Type: 'Object'  
 Default: `{ css: function (block) { ... }, js: function (block) { ... } }`
 
 This lets you define how blocks get their content replaced. Useful to have block types other that `css` and `js`.
@@ -395,7 +395,7 @@ usemin: {
   options: {
     blockReplacements: {
       less: function (block) {
-          return '<link rel="stylesheet" href="' + block.dest + '" />';
+          return '<link rel="stylesheet" href="' + block.dest + '">';
       }
     }
   }
@@ -404,7 +404,7 @@ usemin: {
 
 #### revmap
 
-Type: 'String' <br/>
+Type: 'String'  
 Default: Empty
 
 Indicate the location of a map file, as produced by `grunt-filerev` for example. This map file is a simple JSON file, holding an object

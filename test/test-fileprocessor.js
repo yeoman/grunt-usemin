@@ -66,7 +66,7 @@ describe('FileProcessor', function () {
       };
 
       var result = fp.replaceWith(block);
-      assert.equal(result, '  <link rel="stylesheet" href="foo.css"/>');
+      assert.equal(result, '  <link rel="stylesheet" href="foo.css">');
     });
 
     it('should remove css blocks which have no stylesheets linked in them', function () {
@@ -165,7 +165,7 @@ describe('FileProcessor', function () {
       };
 
       var result = fp.replaceWith(block);
-      assert.equal(result, '  <link rel="stylesheet" href="foo.css" media="(min-width:980px)"/>');
+      assert.equal(result, '  <link rel="stylesheet" href="foo.css" media="(min-width:980px)">');
     });
 
     it('should preserve IE conditionals for js blocks', function () {
@@ -195,7 +195,7 @@ describe('FileProcessor', function () {
       };
 
       var result = fp.replaceWith(block);
-      assert.equal(result, '  <!--[if (lt IE 9) & (!IEmobile)]>\n  <link rel="stylesheet" href="foo.css"/>\n  <![endif]-->');
+      assert.equal(result, '  <!--[if (lt IE 9) & (!IEmobile)]>\n  <link rel="stylesheet" href="foo.css">\n  <![endif]-->');
     });
   });
 

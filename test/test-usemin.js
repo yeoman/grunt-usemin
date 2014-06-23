@@ -147,7 +147,7 @@ describe('usemin', function () {
       var changed = grunt.file.read('build/foo/index.html');
 
       assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png"\>/));
-      assert.ok(changed.match(/<link rel=\"stylesheet\" href=\"styles\/main\.min\.css\"\/>/));
+      assert.ok(changed.match(/<link rel=\"stylesheet\" href=\"styles\/main\.min\.css\">/));
       assert.ok(changed.match(/<img src=\"\.\.\/images\/misc\/test\.2a436\.png\">/));
 
     });
@@ -339,7 +339,7 @@ describe('usemin', function () {
       options: {
         blockReplacements: {
           less: function (block) {
-            return '<link rel="stylesheet" href="' + block.dest + '" />';
+            return '<link rel="stylesheet" href="' + block.dest + '">';
           }
         }
       }
@@ -350,7 +350,7 @@ describe('usemin', function () {
 
     var changed = grunt.file.read('index.html');
     // Check replace has performed its duty
-    assert.equal(changed, '<link rel="stylesheet" href="styles/main.css" />');
+    assert.equal(changed, '<link rel="stylesheet" href="styles/main.css">');
   });
 });
 
