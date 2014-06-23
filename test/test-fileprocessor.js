@@ -330,7 +330,7 @@ describe('FileProcessor', function () {
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '" ng-src="{{my.image}}">');
     });
 
-    it('should replace img src after class attribute', function() {
+    it('should replace img src after class attribute', function () {
       var content = '<img class="myclass" src="image.png">';
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<img class="myclass" src="' + filemapping['app/image.png'] + '">');
@@ -384,7 +384,7 @@ describe('FileProcessor', function () {
       assert.equal(replaced, '<input type="image" src="' + filemapping['app/image.png'] + '" />');
     });
 
-    it('should replace img in meta content', function() {
+    it('should replace img in meta content', function () {
       var content = '<meta name="foo" content="image.png">';
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<meta name="foo" content="' + filemapping['app/image.png'] + '">');
