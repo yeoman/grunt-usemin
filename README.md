@@ -1,8 +1,9 @@
 # grunt-usemin [![Build Status](https://secure.travis-ci.org/yeoman/grunt-usemin.svg?branch=master)](http://travis-ci.org/yeoman/grunt-usemin)
 
-> Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).
+> Replaces references to non-optimized scripts or stylesheets into a set of HTML files
 
-Watch out, this task is designed for Grunt 0.4 and upwards.
+**[Maintainer wanted](https://github.com/yeoman/grunt-usemin/issues/313)**
+
 
 ## Getting Started
 If you haven't used [grunt][] before, be sure to check out the [Getting Started][] guide, as it explains how to create a [gruntfile][Getting Started] as well as install and use grunt plugins. Once you're familiar with that process, install this plugin with this command:
