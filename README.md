@@ -1,6 +1,6 @@
 # grunt-usemin [![Build Status](https://secure.travis-ci.org/yeoman/grunt-usemin.svg?branch=master)](http://travis-ci.org/yeoman/grunt-usemin)
 
-> Replaces references to non-optimized scripts or stylesheets into a set of HTML files
+> Replaces references from non-optimized scripts, stylesheets and other assets to their optimized version within a set of HTML files (or any templates/views).
 
 **[Maintainer wanted](https://github.com/yeoman/grunt-usemin/issues/313)**
 
@@ -17,22 +17,29 @@ npm install grunt-usemin --save-dev
 
 ## Tasks
 
-`usemin` exports 2 different tasks:
-* `useminPrepare` prepares the configuration to transform specific construction (blocks) in the scrutinized file into a single line, targeting an optimized version of the files (e.g concatenated, uglifyjs-ed ...)
+`usemin` replaces the references of scripts, stylesheets and other assets within HTML files dynamically with optimized versions of them. To do this `usemin` exports 2 built-in tasks called `useminPrepare` and `usemin` and utilizes a couple of other Grunt plugins for the optimization process. `usemin` does this by generating the subtasks for these Grunt plugins dynamically.
+
+The built-in tasks of `usemin`:
+* `useminPrepare` prepares the configuration to transform specific blocks in the scrutinized file into a single line, targeting an optimized version of the files. This is done by generating subtasks called `generated` for every optimization steps handled by the Grunt plugins listed below.
 * `usemin` replaces the blocks by the file they reference, and replaces all references to assets by their revisioned version if it is found on the disk. This target modifies the files it is working on.
 
-In addition, `useminPrepare` dynamically generates the configuration for `concat`, `uglify`, and `cssmin`.
-**Important**: _you still need to manually manage these dependencies and call each task_.
+Grunt plugins which `usemin` can use to optimize files:
+* [`concat`](https://github.com/gruntjs/grunt-contrib-concat) concatenates files (usually JS or CSS).
+* [`uglify`](https://github.com/gruntjs/grunt-contrib-uglify) minifies JS files.
+* [`cssmin`](https://github.com/gruntjs/grunt-contrib-cssmin) minifies CSS files.
+* [`filerev`](https://github.com/yeoman/grunt-filerev) revisions static assets through a file content hash.
 
-Usually, `useminPrepare` is launched first, then the steps of the transformation flow (e.g. `concat`, `uglify`, and `cssmin`), and then, in the end `usemin` is launched. For example:
+**Important**: _You still need to manually install and load these dependencies_.
+
+In a typical `usemin` setup you launch `useminPrepare` first, then call every optimization step you want through their `generated` subtask and call `usemin` in the end. It could look like this:
 
 ```js
 // simple build task
 grunt.registerTask('build', [
   'useminPrepare',
-  'concat',
-  'cssmin',
-  'uglify',
+  'concat:generated',
+  'cssmin:generated',
+  'uglify:generated',
   'filerev',
   'usemin'
 ]);
@@ -89,16 +96,30 @@ The produced configuration will look like:
 
 ```js
 {
-  concat: {
-    '.tmp/concat/js/app.js': [
-      'app/js/app.js',
-      'app/js/controllers/thing-controller.js',
-      'app/js/models/thing-model.js',
-      'app/js/views/thing-view.js'
-    ]
+  concat:
+    generated: {
+      files: [
+        {
+          dest: '.tmp/concat/js/app.js',
+          src: [
+            'app/js/app.js',
+            'app/js/controllers/thing-controller.js',
+            'app/js/models/thing-model.js',
+            'app/js/views/thing-view.js'
+          ]
+        }
+      ]
+    }
   },
-  uglifyjs: {
-    'dist/js/app.js': ['.tmp/concat/js/app.js']
+  uglify: {
+    generated: {
+      files: [
+        {
+          dest: 'dist/js/app.js',
+          src: [ '.tmp/concat/js/app.js' ]
+        }
+      ]
+    }
   }
 }
 ```
