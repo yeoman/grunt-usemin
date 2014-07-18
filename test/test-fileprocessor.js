@@ -234,7 +234,8 @@ describe('FileProcessor', function () {
       'app/video.webm': 'video.1234.webm',
       'tmp/bar.css': 'bar.1234.css',
       'app/foo.js': 'foo.1234.js',
-      '/styles/main.css': '/styles/main.1234.css'
+      '/styles/main.css': '/styles/main.1234.css',
+      'app/image.svg': 'image.1234.svg'
     };
 
     var revvedfinder = helpers.makeFinder(filemapping);
@@ -340,6 +341,12 @@ describe('FileProcessor', function () {
       var content = '<img src="image.png">';
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '">');
+    });
+
+    it('should replace object data reference with revved version', function () {
+      var content = '<object type="image/svg+xml" data="image.svg">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<object type="image/svg+xml" data="' + filemapping['app/image.svg'] + '">');
     });
 
     it('should replace img src regardless of ng-src attribute', function () {
