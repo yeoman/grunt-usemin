@@ -553,4 +553,85 @@ describe('FileProcessor', function () {
 
 
   });
+
+  describe('json type', function () {
+    var cp;
+
+    describe('absolute path', function () {
+      var content = '{"images1": "/build/images/test.png","images2": "/images/foo.png","images3": "/images/misc/test.png","images4": "/images/test.png","images5": "/images/foo.png","images6": "/images/pic.png","images7": "/images/misc/test.png"}';
+      var filemapping = {
+        'build/images/test.png': '/images/test.23012.png',
+        'build/images/foo.png': '//images/foo.23012.png',
+        'build/images/misc/test.png': '/images/misc/test.23012.png',
+        'foo/images/test.png': '/images/test.23012.png',
+        'foo/images/foo.png': '//images/foo.23012.png',
+        'foo/images/pic.png': '/images/pic.23012.png',
+        'foo/images/misc/test.png': '/images/misc/test.23012.png'
+      };
+
+      var revvedfinder = helpers.makeFinder(filemapping);
+
+      beforeEach(function () {
+        cp = new FileProcessor('json', revvedfinder);
+      });
+
+      it('should replace with revved files when found', function () {
+        var changed = cp.replaceWithRevved(content, ['build']);
+
+        assert.ok(changed.match(/\/images\/test\.23012\.png/));
+        assert.ok(changed.match(/\/images\/misc\/test\.23012\.png/));
+        assert.ok(changed.match(/\/\/images\/foo\.23012\.png/));
+      });
+
+      it('should take into account alternate search paths', function () {
+        var changed = cp.replaceWithRevved(content, ['foo']);
+
+        assert.ok(changed.match(/\/images\/test\.23012\.png/));
+        assert.ok(changed.match(/\/images\/misc\/test\.23012\.png/));
+        assert.ok(changed.match(/\/\/images\/foo\.23012\.png/));
+
+      });
+
+      it('should take into account src attribute', function () {
+        var changed = cp.replaceWithRevved(content, ['foo']);
+
+        assert.ok(changed.match(/\/images\/pic\.23012\.png/));
+        assert.ok(changed.match(/\/images\/misc\/test\.23012\.png/));
+        assert.ok(changed.match(/\/\/images\/foo\.23012\.png/));
+
+      });
+
+    });
+
+    describe('relative path', function () {
+      var content = '{"image1": "images/test.png""image2": "images/foo.png""image3": "../images/misc/test.png""image4": "images/test.png""image5": "images/foo.png"}';
+      var filemapping = {
+        'build/images/test.png': 'images/test.23012.png',
+        'build/images/foo.png': 'images/foo.23012.png',
+        'images/misc/test.png': '../images/misc/test.23012.png',
+        'foo/images/test.png': 'images/test.23012.png',
+        'foo/images/foo.png': 'images/foo.23012.png'
+      };
+
+      var revvedfinder = helpers.makeFinder(filemapping);
+
+      beforeEach(function () {
+        cp = new FileProcessor('json', revvedfinder);
+      });
+
+      it('should replace with revved files when found', function () {
+        var changed = cp.replaceWithRevved(content, ['build']);
+
+        assert.ok(changed.match(/\"images\/test\.23012\.png/));
+        assert.ok(changed.match(/\"\.\.\/images\/misc\/test\.23012\.png/));
+      });
+
+      it('should take into account alternate search paths', function () {
+        var changed = cp.replaceWithRevved(content, ['foo']);
+
+        assert.ok(changed.match(/\"images\/test\.23012\.png/));
+        assert.ok(changed.match(/\"\.\.\/images\/misc\/test\.23012\.png/));
+      });
+    });
+  });
 });
