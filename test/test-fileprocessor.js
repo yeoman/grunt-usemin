@@ -349,6 +349,18 @@ describe('FileProcessor', function () {
       assert.equal(replaced, '<object type="image/svg+xml" data="' + filemapping['app/image.svg'] + '">');
     });
 
+    it('should replace image xlink:href reference with revved version', function () {
+      var content = '<image xlink:href="image.svg">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<image xlink:href="' + filemapping['app/image.svg'] + '">');
+    });
+
+    it('should replace image src reference with revved version', function () {
+      var content = '<image src="image.png">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<image src="' + filemapping['app/image.png'] + '">');
+    });
+
     it('should replace img src regardless of ng-src attribute', function () {
       var content = '<img src="image.png" ng-src="{{my.image}}">';
       var replaced = fp.replaceWithRevved(content, ['app']);
