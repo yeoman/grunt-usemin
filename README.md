@@ -96,7 +96,7 @@ The produced configuration will look like:
 
 ```js
 {
-  concat:
+  concat: {
     generated: {
       files: [
         {
