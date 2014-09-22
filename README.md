@@ -233,7 +233,7 @@ useminPrepare: {
       },
       post: {
         js: [{
-          name: 'uglifyjs',
+          name: 'uglify',
           createConfig: function (context, block) {
             var generated = context.options.generated;
             generated.options = {
