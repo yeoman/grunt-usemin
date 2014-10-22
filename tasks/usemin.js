@@ -129,7 +129,7 @@ module.exports = function (grunt) {
     var locator = getLocator(grunt, options);
     var revvedfinder = new RevvedFinder(locator);
     var handler = new FileProcessor(patterns, revvedfinder, function (msg) {
-      grunt.log.writeln(msg);
+      grunt.verbose.writeln(msg);
     }, blockReplacements);
 
     this.files.forEach(function (fileObj) {
