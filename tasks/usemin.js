@@ -1,5 +1,6 @@
 'use strict';
 var util = require('util');
+var chalk = require('chalk');
 
 var inspect = function (obj) {
   return util.inspect(obj, false, 4, true);
@@ -139,7 +140,7 @@ module.exports = function (grunt) {
       files.forEach(function (filename) {
         debug('looking at file %s', filename);
 
-        grunt.log.subhead('Processing as ' + options.type.toUpperCase() + ' - ' + filename);
+        grunt.log.writeln(chalk.bold('Processing as ' + options.type.toUpperCase() + ' - ') + chalk.cyan(filename));
 
         // Our revved version locator
         var content = handler.process(filename, options.assetsDirs);
