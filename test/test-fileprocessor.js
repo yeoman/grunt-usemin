@@ -231,6 +231,7 @@ describe('FileProcessor', function () {
       'app/bar.css': 'bar.5678.css',
       'app/baz.css': '/baz.8910.css',
       'app/image.png': 'image.1234.png',
+      'app/image@2x.png': 'image@2x.1234.png',
       'app/video.webm': 'video.1234.webm',
       'tmp/bar.css': 'bar.1234.css',
       'app/foo.js': 'foo.1234.js',
@@ -427,6 +428,15 @@ describe('FileProcessor', function () {
       assert.equal(replaced, '<meta name="foo" content="' + filemapping['app/image.png'] + '">');
     });
 
+    it('should replace img reference in srcset', function () {
+      var content = '<img srcset="image@2x.png 2x" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img srcset="' + filemapping['app/image@2x.png'] + ' 2x" />');
+
+      content = '<source srcset="image@2x.png 2x" />';
+      replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<source srcset="' + filemapping['app/image@2x.png'] + ' 2x" />');
+    });
   });
 
   describe('css type', function () {
