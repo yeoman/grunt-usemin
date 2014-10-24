@@ -131,7 +131,8 @@ module.exports = function (grunt) {
 
     this.files.forEach(function (fileObj) {
       var files = grunt.file.expand({
-        nonull: true
+        nonull: true,
+        filter: 'isFile'
       }, fileObj.src);
       files.forEach(function (filename) {
         debug('looking at file %s', filename);
