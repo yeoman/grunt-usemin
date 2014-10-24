@@ -24,6 +24,7 @@
     "test": "grunt test"
   },
   "dependencies": {
+    "chalk": "~0.5.1",
     "debug": "~2.1.0",
     "lodash": "~2.4.1"
   },
