@@ -108,7 +108,7 @@ describe('FileProcessor', function () {
       assert.equal(result, '');
     });
 
-    it('should replace cutsom blocks using provided replacement function', function () {
+    it('should replace custom blocks using provided replacement function', function () {
       var blockReplacements = {
         less: function (block) {
           return 'custom replacement for ' + block.dest;
