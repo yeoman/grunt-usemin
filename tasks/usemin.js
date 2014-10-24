@@ -2,10 +2,6 @@
 var util = require('util');
 var chalk = require('chalk');
 
-var inspect = function (obj) {
-  return util.inspect(obj, false, 4, true);
-};
-
 // Retrieve the flow config from the furnished configuration. It can be:
 //  - a dedicated one for the furnished target
 //  - a general one
@@ -200,7 +196,8 @@ module.exports = function (grunt) {
     // log a bit what was added to config
     grunt.log.subhead('Configuration is now:');
     _.forEach(cfgNames, function (name) {
-      grunt.log.subhead('  ' + name + ':').writeln('  ' + inspect(grunt.config(name)));
+      grunt.log.subhead('  ' + name + ':')
+        .writeln('  ' + util.inspect(grunt.config(name), false, 4, true, true));
     });
   });
 };
