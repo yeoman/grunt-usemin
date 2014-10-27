@@ -137,14 +137,16 @@ module.exports = function (grunt) {
       files.forEach(function (filename) {
         debug('looking at file %s', filename);
 
-        grunt.log.writeln(chalk.bold('Processing as ' + options.type.toUpperCase() + ' - ') + chalk.cyan(filename));
+        grunt.verbose.writeln(chalk.bold('Processing as ' + options.type.toUpperCase() + ' - ') + chalk.cyan(filename));
 
         // Our revved version locator
         var content = handler.process(filename, options.assetsDirs);
 
         // write the new content to disk
         grunt.file.write(filename, content);
+
       });
+      grunt.log.writeln('Replaced ' + chalk.cyan(files.length) + ' references to assets');
     });
   });
 
@@ -155,8 +157,8 @@ module.exports = function (grunt) {
     var staging = options.staging || '.tmp';
     var root = options.root;
 
-    grunt.log
-      .writeln('Going through ' + grunt.log.wordlist(this.filesSrc) + ' to update the config')
+    grunt.verbose
+      .writeln('Going through ' + grunt.verbose.wordlist(this.filesSrc) + ' to update the config')
       .writeln('Looking for build script HTML comment blocks');
 
     var flow = getFlowFromConfig(grunt.config('useminPrepare'), this.target);
@@ -195,9 +197,10 @@ module.exports = function (grunt) {
     });
 
     // log a bit what was added to config
-    grunt.log.subhead('Configuration is now:');
+    grunt.verbose.subhead('Configuration is now:');
     _.forEach(cfgNames, function (name) {
-      grunt.log.subhead('  ' + name + ':')
+      grunt.log.subhead(name, grunt.config(name));
+      grunt.verbose.subhead('  ' + name + ':')
         .writeln('  ' + util.inspect(grunt.config(name), false, 4, true, true));
     });
   });
