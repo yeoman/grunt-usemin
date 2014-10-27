@@ -437,6 +437,30 @@ describe('FileProcessor', function () {
       replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<source srcset="' + filemapping['app/image@2x.png'] + ' 2x" />');
     });
+
+    it('should replace svg src reference with revved version for img tag', function () {
+      var content = '<img src="image.svg#symbol">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img src="' + filemapping['app/image.svg'] + '#symbol">');
+    });
+
+    it('should replace svg src reference with revved version for image tag', function () {
+      var content = '<image src="image.svg#symbol">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<image src="' + filemapping['app/image.svg'] + '#symbol">');
+    });
+
+    it('should replace use xlink:href reference with revved version for svg <use> tag', function () {
+      var content = '<svg><use xlink:href="image.svg#symbol"></svg>';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<svg><use xlink:href="' + filemapping['app/image.svg'] + '#symbol"></svg>');
+    });
+
+    it('should replace image xlink:href reference with revved version for svg <image> tag', function () {
+      var content = '<svg><image xlink:href="image.svg#symbol"></svg>';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<svg><image xlink:href="' + filemapping['app/image.svg'] + '#symbol"></svg>');
+    });
   });
 
   describe('css type', function () {
