@@ -146,7 +146,10 @@ module.exports = function (grunt) {
         grunt.file.write(filename, content);
 
       });
-      grunt.log.writeln('Replaced ' + chalk.cyan(files.length) + ' references to assets');
+
+      grunt.log.write('Replaced ' + chalk.cyan(files.length) + ' ' +
+        (files.length === 1 ? 'reference' : 'references') + ' to assets'
+      );
     });
   });
 
@@ -199,7 +202,6 @@ module.exports = function (grunt) {
     // log a bit what was added to config
     grunt.verbose.subhead('Configuration is now:');
     _.forEach(cfgNames, function (name) {
-      grunt.log.subhead(name, grunt.config(name));
       grunt.verbose.subhead('  ' + name + ':')
         .writeln('  ' + util.inspect(grunt.config(name), false, 4, true, true));
     });
