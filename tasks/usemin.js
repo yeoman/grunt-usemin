@@ -199,7 +199,6 @@ module.exports = function (grunt) {
     // log a bit what was added to config
     grunt.verbose.subhead('Configuration is now:');
     _.forEach(cfgNames, function (name) {
-      grunt.log.subhead(name, grunt.config(name));
       grunt.verbose.subhead('  ' + name + ':')
         .writeln('  ' + util.inspect(grunt.config(name), false, 4, true, true));
     });
