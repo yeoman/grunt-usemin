@@ -29,6 +29,11 @@ Grunt plugins which `usemin` can use to optimize files:
 * [`cssmin`](https://github.com/gruntjs/grunt-contrib-cssmin) minifies CSS files.
 * [`filerev`](https://github.com/yeoman/grunt-filerev) revisions static assets through a file content hash.
 
+To install required plugins, run:
+```
+npm install grunt-contrib-concat grunt-contrib-uglify grunt-contrib-cssmin grunt-filerev --save
+```
+
 **Important**: _You still need to manually install and load these dependencies_.
 
 In a typical `usemin` setup you launch `useminPrepare` first, then call every optimization step you want through their `generated` subtask and call `usemin` in the end. It could look like this:
@@ -413,7 +418,7 @@ For example, to create a `less` block you could define its replacement function 
 
 ```js
 usemin: {
-  html: index.html,
+  html: 'index.html',
   options: {
     blockReplacements: {
       less: function (block) {
