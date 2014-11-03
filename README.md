@@ -29,9 +29,10 @@ Grunt plugins which `usemin` can use to optimize files:
 * [`cssmin`](https://github.com/gruntjs/grunt-contrib-cssmin) minifies CSS files.
 * [`filerev`](https://github.com/yeoman/grunt-filerev) revisions static assets through a file content hash.
 
-To install required plugins, run:
-```
-npm install grunt-contrib-concat grunt-contrib-uglify grunt-contrib-cssmin grunt-filerev --save
+To install these plugins, run:
+
+```shell
+npm install grunt-contrib-concat grunt-contrib-uglify grunt-contrib-cssmin grunt-filerev --save-dev
 ```
 
 **Important**: _You still need to manually install and load these dependencies_.
