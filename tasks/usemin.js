@@ -147,7 +147,7 @@ module.exports = function (grunt) {
 
       });
 
-      grunt.log.write('Replaced ' + chalk.cyan(files.length) + ' ' +
+      grunt.log.writeln('Replaced ' + chalk.cyan(files.length) + ' ' +
         (files.length === 1 ? 'reference' : 'references') + ' to assets'
       );
     });
