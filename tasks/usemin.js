@@ -205,5 +205,8 @@ module.exports = function (grunt) {
       grunt.verbose.subhead('  ' + name + ':')
         .writeln('  ' + util.inspect(grunt.config(name), false, 4, true, true));
     });
+
+    // only displayed if not in verbose mode
+    grunt.verbose.or.writeln('Configuration changed for', grunt.log.wordlist(cfgNames));
   });
 };
