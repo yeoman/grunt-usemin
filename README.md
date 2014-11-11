@@ -400,8 +400,10 @@ So in short:
   * First one if the regexp to use. The first group is the one that is supposed to represent the file
     reference to replace
   * Second one is a logging string
-    * FIXME
-    * FIXME
+  * A function which behaves like a filter-in. Receives the matched group and must return the file 
+    path of the asset. Great functionality when you have a compiled file by a template engine.
+  * A function which behaves like a filter-out. It receives the revved path of the asset and must
+    return it as an url from it will be reached from web server.
 
 #### blockReplacements
 
