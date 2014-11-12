@@ -161,7 +161,7 @@ module.exports = function (grunt) {
     var root = options.root;
 
     grunt.verbose
-      .writeln('Going through ' + grunt.verbose.wordlist(this.filesSrc) + ' to update the config')
+      .writeln('Going through ' + grunt.log.wordlist(this.filesSrc) + ' to update the config')
       .writeln('Looking for build script HTML comment blocks');
 
     var flow = getFlowFromConfig(grunt.config('useminPrepare'), this.target);
