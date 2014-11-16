@@ -429,13 +429,51 @@ describe('FileProcessor', function () {
     });
 
     it('should replace img reference in srcset', function () {
+      var content = '<img srcset="image.png" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img srcset="' + filemapping['app/image.png'] + '" />');
+    });
+
+    it('should replace img reference in srcset with pixel density descriptor', function () {
       var content = '<img srcset="image@2x.png 2x" />';
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<img srcset="' + filemapping['app/image@2x.png'] + ' 2x" />');
+    });
 
-      content = '<source srcset="image@2x.png 2x" />';
-      replaced = fp.replaceWithRevved(content, ['app']);
+    it('should replace img reference in srcset with width descriptor', function () {
+      var content = '<img srcset="image.png 200w" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img srcset="' + filemapping['app/image.png'] + ' 200w" />');
+    });
+
+    it('should replace img reference in srcset with pixel density descriptor and with width descriptor', function () {
+      var content = '<img srcset="image.png 200w 2x" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img srcset="' + filemapping['app/image.png'] + ' 200w 2x" />');
+    });
+
+    it('should replace source reference in srcset', function () {
+      var content = '<source srcset="image.png" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<source srcset="' + filemapping['app/image.png'] + '" />');
+    });
+
+    it('should replace source reference in srcset with pixel density descriptor', function () {
+      var content = '<source srcset="image@2x.png 2x" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<source srcset="' + filemapping['app/image@2x.png'] + ' 2x" />');
+    });
+
+    it('should replace source reference in srcset with width descriptor', function () {
+      var content = '<source srcset="image.png 200w" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<source srcset="' + filemapping['app/image.png'] + ' 200w" />');
+    });
+
+    it('should replace source reference in srcset with pixel density descriptor and with width descriptor', function () {
+      var content = '<source srcset="image.png 200w 2x" />';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<source srcset="' + filemapping['app/image.png'] + ' 200w 2x" />');
     });
 
     it('should replace svg src reference with revved version for img tag', function () {
