@@ -5,42 +5,40 @@ var FileProcessor = require('../lib/fileprocessor.js');
 
 describe('FileProcessor', function () {
   describe('constructor', function () {
-    it('should fail if no pattern is furnished', function () {
+    it('should fail if no type is furnished', function () {
       assert.throws(function () {
         new FileProcessor();
-      }, /No pattern given/);
+      }, /No type given/);
     });
 
     it('should accept a pattern name', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       assert.ok(fp);
     });
 
-    it('should access a pattern object', function () {
-      var foo = {
-        foo: 'bar'
-      };
-      var fp = new FileProcessor(foo, {});
+    it('should fail if pattern is not an array', function () {
+      assert.throws(function () {
+        new FileProcessor('html', {});
+      }, /Patterns must be an array/);
+    });
+
+    it('should accept a custom pattern', function () {
+      var foo = ['bar'];
+      var fp = new FileProcessor('html', foo, {});
       assert.ok(fp);
-      assert.deepEqual(fp.patterns, foo);
+      assert.notEqual(fp.patterns.indexOf(foo[0]), -1);
     });
 
-    it('should fail if pattern name is not known', function () {
+    it('should fail if no finder is furnished', function () {
       assert.throws(function () {
-        new FileProcessor('foo');
-      }, /Unsupported pattern: foo/);
-    });
-
-    it('should check all needed arguments are furnished', function () {
-      assert.throws(function () {
-        new FileProcessor('html');
+        new FileProcessor('html', []);
       }, /Missing parameter: finder/);
     });
   });
 
   describe('replaceBlocks', function () {
     it('should replace block with the right expression', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       fp.replaceWith = function () {
         return 'foo';
       };
@@ -57,7 +55,7 @@ describe('FileProcessor', function () {
 
   describe('replaceWith', function () {
     it('should replace css blocks with a link to a stylesheet', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.css',
         type: 'css',
@@ -70,7 +68,7 @@ describe('FileProcessor', function () {
     });
 
     it('should remove css blocks which have no stylesheets linked in them', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.css',
         type: 'css',
@@ -83,7 +81,7 @@ describe('FileProcessor', function () {
     });
 
     it('should replace js blocks with a link to a javascript file', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -96,7 +94,7 @@ describe('FileProcessor', function () {
     });
 
     it('should remove js blocks which have no javascripts linked in the block', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -114,7 +112,7 @@ describe('FileProcessor', function () {
           return 'custom replacement for ' + block.dest;
         }
       };
-      var fp = new FileProcessor('html', {}, function () {}, blockReplacements);
+      var fp = new FileProcessor('html', [], {}, function () {}, blockReplacements);
       var block = {
         dest: 'foo.css',
         type: 'less',
@@ -127,7 +125,7 @@ describe('FileProcessor', function () {
     });
 
     it('should preserve defer attribute (JS)', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -141,7 +139,7 @@ describe('FileProcessor', function () {
     });
 
     it('should preserve async attribute (JS)', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -155,7 +153,7 @@ describe('FileProcessor', function () {
     });
 
     it('should preserve media attribute', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.css',
         type: 'css',
@@ -169,7 +167,7 @@ describe('FileProcessor', function () {
     });
 
     it('should preserve IE conditionals for js blocks', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.js',
         type: 'js',
@@ -184,7 +182,7 @@ describe('FileProcessor', function () {
     });
 
     it('should preserve IE conditionals for css blocks', function () {
-      var fp = new FileProcessor('html', {});
+      var fp = new FileProcessor('html', [], {});
       var block = {
         dest: 'foo.css',
         type: 'css',
@@ -210,7 +208,7 @@ describe('FileProcessor', function () {
           return 'toto';
         }
       };
-      var fp = new FileProcessor(pattern, finder);
+      var fp = new FileProcessor('html', pattern, finder);
       var content = 'bar\nfoo12345\nfoo8979\nbaz\n';
       var result = fp.replaceWithRevved(content, ['']);
 
@@ -242,7 +240,7 @@ describe('FileProcessor', function () {
     var revvedfinder = helpers.makeFinder(filemapping);
 
     beforeEach(function () {
-      fp = new FileProcessor('html', revvedfinder);
+      fp = new FileProcessor('html', [], revvedfinder);
 
     });
 
@@ -276,7 +274,7 @@ describe('FileProcessor', function () {
       var fp;
 
       beforeEach(function () {
-        fp = new FileProcessor('html', revvedfinder);
+        fp = new FileProcessor('html', [], revvedfinder);
       });
 
       it('should replace file referenced from root', function () {
@@ -311,7 +309,7 @@ describe('FileProcessor', function () {
       var fp;
 
       beforeEach(function () {
-        fp = new FileProcessor('html', revvedfinder);
+        fp = new FileProcessor('html', [], revvedfinder);
       });
 
       it('should replace script source with revved version', function () {
@@ -481,7 +479,7 @@ describe('FileProcessor', function () {
       var revvedfinder = helpers.makeFinder(filemapping);
 
       beforeEach(function () {
-        cp = new FileProcessor('css', revvedfinder);
+        cp = new FileProcessor('css', [], revvedfinder);
       });
 
       it('should replace with revved files when found', function () {
@@ -524,7 +522,7 @@ describe('FileProcessor', function () {
       var revvedfinder = helpers.makeFinder(filemapping);
 
       beforeEach(function () {
-        cp = new FileProcessor('css', revvedfinder);
+        cp = new FileProcessor('css', [], revvedfinder);
       });
 
       it('should replace with revved files when found', function () {
@@ -557,7 +555,7 @@ describe('FileProcessor', function () {
       var revvedfinder = helpers.makeFinder(filemapping);
 
       beforeEach(function () {
-        cp = new FileProcessor('css', revvedfinder);
+        cp = new FileProcessor('css', [], revvedfinder);
       });
 
       it('should replace but ignore querystrings on revved files when found', function () {
@@ -583,7 +581,7 @@ describe('FileProcessor', function () {
       var revvedfinder = helpers.makeFinder(filemapping);
 
       beforeEach(function () {
-        cp = new FileProcessor('css', revvedfinder);
+        cp = new FileProcessor('css', [], revvedfinder);
       });
 
       it('should replace but ignore querystrings on revved files when found', function () {
@@ -618,7 +616,7 @@ describe('FileProcessor', function () {
       var revvedfinder = helpers.makeFinder(filemapping);
 
       beforeEach(function () {
-        cp = new FileProcessor('json', revvedfinder);
+        cp = new FileProcessor('json', [], revvedfinder);
       });
 
       it('should replace with revved files when found', function () {
@@ -662,7 +660,7 @@ describe('FileProcessor', function () {
       var revvedfinder = helpers.makeFinder(filemapping);
 
       beforeEach(function () {
-        cp = new FileProcessor('json', revvedfinder);
+        cp = new FileProcessor('json', [], revvedfinder);
       });
 
       it('should replace with revved files when found', function () {
