@@ -277,7 +277,6 @@ describe('usemin', function () {
     grunt.file.copy(path.join(__dirname, 'fixtures/misc.js'), 'misc.js');
     grunt.task.run('usemin');
     grunt.task.start();
-
     var changed = grunt.file.read('misc.js');
 
     // Check replace has performed its duty

@@ -111,21 +111,19 @@ module.exports = function (grunt) {
     var blockReplacements = options.blockReplacements || {};
 
     debug('Looking at %s target', this.target);
-    var patterns;
+    var patterns = [];
+    var type = this.target;
 
     // Check if we have a user defined pattern
     if (options.patterns && options.patterns[this.target]) {
-      debug('Using user defined pattern for %s', this.target);
+      debug('Adding user defined patterns for %s', this.target);
       patterns = options.patterns[this.target];
-    } else {
-      debug('Using predefined pattern for %s', this.target);
-      patterns = options.type;
     }
 
     // var locator = options.revmap ? grunt.file.readJSON(options.revmap) : function (p) { return grunt.file.expand({filter: 'isFile'}, p); };
     var locator = getLocator(grunt, options);
     var revvedfinder = new RevvedFinder(locator);
-    var handler = new FileProcessor(patterns, revvedfinder, function (msg) {
+    var handler = new FileProcessor(type, patterns, revvedfinder, function (msg) {
       grunt.verbose.writeln(msg);
     }, blockReplacements);
 
