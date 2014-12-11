@@ -187,7 +187,7 @@ module.exports = function (grunt) {
       try {
         config = c.process(filepath, grunt.config());
       } catch (e) {
-        grunt.fail.fatal(e);
+        grunt.fail.warn(e);
       }
 
       _.forEach(cfgNames, function (name) {
