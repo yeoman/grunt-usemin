@@ -1,4 +1,4 @@
-# grunt-usemin [![Build Status](https://secure.travis-ci.org/yeoman/grunt-usemin.svg?branch=master)](http://travis-ci.org/yeoman/grunt-usemin)
+# grunt-usemin [![Linux Build Status](https://img.shields.io/travis/yeoman/grunt-usemin/master.svg?style=flat&label=Linux%20build)](https://travis-ci.org/yeoman/grunt-usemin) [![Windows Build status](https://img.shields.io/appveyor/ci/addyosmani/grunt-usemin/master.svg?style=flat&label=Windows%20build)](https://ci.appveyor.com/project/addyosmani/grunt-usemin/branch/master)
 
 > Replaces references from non-optimized scripts, stylesheets and other assets to their optimized version within a set of HTML files (or any templates/views).
 
