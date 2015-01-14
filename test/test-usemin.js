@@ -4,6 +4,7 @@ var assert = require('assert');
 var grunt = require('grunt');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
+var helpers = require('./helpers');
 
 grunt.task.init([]);
 grunt.config.init({});
@@ -287,7 +288,11 @@ describe('usemin', function () {
     grunt.file.mkdir('images');
     grunt.file.write('images/test.2132.png', 'foo');
     grunt.file.write('images/test.2134.png', 'foo');
-    grunt.file.write('summary.js', '{"images/test.png": "images/test.2134.png"}');
+
+    var summary = {};
+    summary[helpers.normalize('images/test.png')] = 'images/test.2134.png';
+
+    grunt.file.write('summary.js', JSON.stringify(summary));
     grunt.log.muted = true;
     grunt.config.init();
     grunt.config('usemin', {
@@ -310,10 +315,11 @@ describe('usemin', function () {
     // grunt.file.mkdir('images');
     // grunt.file.write('images/test.2132.png', 'foo');
     // grunt.file.write('images/test.2134.png', 'foo');
+    var summary = {};
+    summary[helpers.normalize('images/test.png')] = 'images/test.2134.png';
+
     grunt.filerev = {
-      summary: {
-        'images/test.png': 'images/test.2134.png'
-      }
+      summary: summary
     };
     grunt.log.muted = true;
     grunt.config.init();
