@@ -9,11 +9,12 @@ init:
 
 environment:
   matrix:
+    - nodejs_version: 1.0
+    - nodejs_version: 0.12
     - nodejs_version: 0.10
-    - nodejs_version: 0.11
 
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
   - npm install -g grunt-cli
   - npm install
 
@@ -25,8 +26,6 @@ test_script:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - nodejs_version: 0.11
 
 cache:
   - C:\Users\appveyor\AppData\Roaming\npm\node_modules  # global npm modules
