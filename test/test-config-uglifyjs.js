@@ -25,18 +25,35 @@ describe('Uglify config write', function () {
     assert.equal(uglifyConfig.name, 'uglify');
   });
 
+  function resolveInFile(fname) {
+    // jshint -W040
+    return path.join(this.inDir, fname);
+    // jshint +W040
+  }
+
   it('should use the input files correctly', function () {
     var ctx = {
       inDir: 'zzz',
       inFiles: ['foo.js', 'bar.js', 'baz.js'],
       outDir: 'tmp/uglify',
-      outFiles: []
+      outFiles: [],
+      resolveInFile: resolveInFile
     };
     var cfg = uglifyConfig.createConfig(ctx, block);
+
     assert.ok(cfg.files);
     assert.equal(cfg.files.length, 3);
-    var dests = ['tmp/uglify/foo.js', 'tmp/uglify/bar.js', 'tmp/uglify/baz.js'];
-    var srcs = ['zzz/foo.js', 'zzz/bar.js', 'zzz/baz.js'];
+
+    var dests = [
+      'tmp/uglify/foo.js',
+      'tmp/uglify/bar.js',
+      'tmp/uglify/baz.js'
+    ];
+    var srcs = [
+      'zzz/foo.js',
+      'zzz/bar.js',
+      'zzz/baz.js'
+    ];
 
     cfg.files.forEach(function (files, idx) {
       assert.ok(files.src);
@@ -54,14 +71,22 @@ describe('Uglify config write', function () {
       inFiles: ['foo.js', 'bar.js', 'baz.js'],
       outDir: 'dist',
       outFiles: [],
-      last: true
+      last: true,
+      resolveInFile: resolveInFile
     };
     var cfg = uglifyConfig.createConfig(ctx, block);
+
     assert.ok(cfg.files);
     assert.equal(cfg.files.length, 1);
+
     var files = cfg.files[0];
+
     assert.equal(files.dest, path.normalize('dist/scripts/site.js'));
-    assert.deepEqual(files.src, [path.normalize('zzz/foo.js'), path.normalize('zzz/bar.js'), path.normalize('zzz/baz.js')]);
+    assert.deepEqual(files.src, [
+      path.normalize('zzz/foo.js'),
+      path.normalize('zzz/bar.js'),
+      path.normalize('zzz/baz.js')
+    ]);
     assert.deepEqual(ctx.outFiles, ['scripts/site.js']);
   });
 

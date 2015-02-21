@@ -25,14 +25,22 @@ describe('Concat config write', function () {
     assert.equal(concatConfig.name, 'concat');
   });
 
+  function resolveInFile(fname) {
+    // jshint -W040
+    return path.join(this.inDir, fname);
+    // jshint +W040
+  }
+
   it('should use the input files correctly', function () {
     var ctx = {
       inDir: '.',
       inFiles: ['foo.js', 'bar.js', 'baz.js'],
       outDir: 'tmp/concat',
-      outFiles: []
+      outFiles: [],
+      resolveInFile: resolveInFile
     };
     var cfg = concatConfig.createConfig(ctx, block);
+
     assert.ok(cfg.files);
     assert.equal(cfg.files.length, 1);
     var files = cfg.files[0];

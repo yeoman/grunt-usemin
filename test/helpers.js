@@ -5,6 +5,7 @@ var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var _ = require('lodash');
 var helpers = module.exports;
+var grunt = require('grunt');
 
 helpers.directory = function directory(dir) {
   return function directory(done) {
@@ -138,4 +139,19 @@ helpers.normalize = function (object) {
   }
 
   return object;
+};
+
+var warn = grunt.fail.warn;
+
+// mock grunt.fail.warn to avoid breaking test
+helpers.mockGruntFailWarn = function (ctx, name) {
+  name = name || 'warnMessage';
+  grunt.fail.warn = function (message) {
+    ctx[name] = message;
+  };
+};
+
+// mock grunt.fail.warn to avoid breaking test
+helpers.restoreGruntFailWarn = function () {
+  grunt.fail.warn = warn;
 };

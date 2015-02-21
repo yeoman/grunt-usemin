@@ -14,6 +14,24 @@ describe('usemin', function () {
   describe('absolute paths', function () {
     beforeEach(helpers.directory('temp'));
 
+    it('should warn user if no html file found', function () {
+      grunt.log.muted = true;
+      grunt.config.init();
+      grunt.config('usemin', {
+        html: 'build/foo.html'
+      });
+
+      // mock grunt.fail.warn
+      helpers.mockGruntFailWarn(this);
+
+      grunt.task.run('usemin');
+      grunt.task.start();
+
+      // restore grunt.fail.warn
+      helpers.restoreGruntFailWarn();
+      assert.ok(this.warnMessage, 'No files found for target html');
+    });
+
     it('should replace with revved files when found', function () {
       grunt.file.mkdir('build');
       grunt.file.mkdir('build/images');
@@ -347,6 +365,15 @@ describe('useminPrepare', function () {
       html: 'index.html'
     });
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+    grunt.file.copy(path.join(__dirname, 'fixtures/style.css'), 'styles/main.css');
+    grunt.file.mkdir('scripts');
+    grunt.file.write('scripts/bar.js', 'bar');
+    grunt.file.write('scripts/baz.js', 'baz');
+    grunt.file.mkdir('scripts/vendor');
+    grunt.file.mkdir('scripts/vendor/bootstrap');
+    grunt.file.write('scripts/vendor/bootstrap/bootstrap-affix.js', 'bootstrap-affix');
+    grunt.file.write('scripts/vendor/bootstrap/bootstrap-alert.js', 'bootstrap-alert');
+
     grunt.task.run('useminPrepare');
     grunt.task.start();
 
@@ -357,7 +384,7 @@ describe('useminPrepare', function () {
     assert.equal(concat.generated.files.length, 2);
 
     assert.equal(concat.generated.files[1].dest, path.normalize('.tmp/concat/scripts/plugins.js'));
-    assert.equal(concat.generated.files[1].src.length, 13);
+    assert.equal(concat.generated.files[1].src.length, 2);
     assert.equal(concat.generated.files[0].dest, path.normalize('.tmp/concat/styles/main.min.css'));
     assert.equal(concat.generated.files[0].src.length, 1);
 
@@ -374,6 +401,11 @@ describe('useminPrepare', function () {
       html: 'index.html'
     });
     grunt.file.copy(path.join(__dirname, 'fixtures/alternate_search_path.html'), 'index.html');
+    grunt.file.mkdir('build');
+    grunt.file.mkdir('build/scripts');
+    grunt.file.write('build/scripts/bar.js', 'bar');
+    grunt.file.write('build/scripts/baz.js', 'baz');
+
     grunt.task.run('useminPrepare');
     grunt.task.start();
 
@@ -387,6 +419,26 @@ describe('useminPrepare', function () {
     assert.deepEqual(uglify.generated.files[0].src, [path.normalize('.tmp/concat/scripts/foo.js')]);
   });
 
+  it('should warn user if no html file found', function () {
+    grunt.log.muted = true;
+    grunt.config.init();
+    grunt.config('useminPrepare', {
+      html: 'foo.html'
+    });
+
+    // mock grunt.fail.warn
+    helpers.mockGruntFailWarn(this);
+
+    grunt.task.run('usemin');
+    grunt.task.start();
+
+    grunt.task.run('useminPrepare');
+    grunt.task.start();
+
+    // restore grunt.fail.warn
+    helpers.restoreGruntFailWarn();
+    assert.ok(this.warnMessage, 'No source file found.');
+  });
 
   it('output config for subsequent tasks should be relative to observed file', function () {
     grunt.log.muted = true;
@@ -633,6 +685,16 @@ describe('useminPrepare', function () {
     });
 
     grunt.file.copy(path.join(__dirname, 'fixtures/usemin.html'), 'index.html');
+
+    grunt.file.copy(path.join(__dirname, 'fixtures/style.css'), 'styles/main.css');
+    grunt.file.mkdir('foo');
+    grunt.file.write('foo/scripts/bar.js', 'bar');
+    grunt.file.write('foo/scripts/baz.js', 'baz');
+    grunt.file.mkdir('foo/scripts/vendor');
+    grunt.file.mkdir('foo/scripts/vendor/bootstrap');
+    grunt.file.write('foo/scripts/vendor/bootstrap/bootstrap-affix.js', 'bootstrap-affix');
+    grunt.file.write('foo/scripts/vendor/bootstrap/bootstrap-alert.js', 'bootstrap-alert');
+
     grunt.task.run('useminPrepare');
     grunt.task.start();
 

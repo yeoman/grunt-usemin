@@ -111,6 +111,7 @@ module.exports = function (grunt) {
     var blockReplacements = options.blockReplacements || {};
 
     debug('Looking at %s target', this.target);
+
     var patterns = [];
     var type = this.target;
 
@@ -132,6 +133,11 @@ module.exports = function (grunt) {
         nonull: true,
         filter: 'isFile'
       }, fileObj.src);
+
+      if (!files.length) {
+        grunt.fail.warn('No files found for target ' + type);
+      }
+
       files.forEach(function (filename) {
         debug('looking at file %s', filename);
 
@@ -158,6 +164,10 @@ module.exports = function (grunt) {
     var staging = options.staging || '.tmp';
     var root = options.root;
 
+    if (!this.filesSrc.length) {
+      grunt.fail.warn('No source file found.');
+    }
+
     grunt.verbose
       .writeln('Going through ' + grunt.log.wordlist(this.filesSrc) + ' to update the config')
       .writeln('Looking for build script HTML comment blocks');
@@ -168,7 +178,7 @@ module.exports = function (grunt) {
       root: root,
       dest: dest,
       staging: staging
-    });
+    }, options);
 
     var cfgNames = [];
     c.stepWriters().forEach(function (i) {

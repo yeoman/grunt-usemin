@@ -36,9 +36,9 @@ describe('File', function () {
     assert.equal(3, b1.raw.length);
     assert.equal('css', b1.type);
     assert.equal(1, b1.src.length);
-    assert.equal(16, b2.raw.length);
+    assert.equal(4, b2.raw.length);
     assert.equal('js', b2.type);
-    assert.equal(13, b2.src.length);
+    assert.equal(2, b2.src.length);
   });
 
   it('should also detect block that use alternate search dir', function () {
