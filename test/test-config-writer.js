@@ -20,7 +20,7 @@ describe('ConfigWriter', function () {
 
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs', copy]
+          js: ['concat', 'uglify', copy]
         },
         post: {}
       });
@@ -47,7 +47,7 @@ describe('ConfigWriter', function () {
     it('should output a set of config', function () {
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs']
+          js: ['concat', 'uglify']
         }
       });
       var file = helpers.createFile('foo', 'app', blocks);
@@ -82,7 +82,7 @@ describe('ConfigWriter', function () {
     it('should have a configurable destination directory', function () {
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs']
+          js: ['concat', 'uglify']
         }
       });
 
@@ -118,7 +118,7 @@ describe('ConfigWriter', function () {
     it('should have a configurable staging directory', function () {
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs']
+          js: ['concat', 'uglify']
         }
       });
 
@@ -154,7 +154,7 @@ describe('ConfigWriter', function () {
     it('should allow for single step flow', function () {
       var flow = new Flow({
         steps: {
-          js: ['uglifyjs']
+          js: ['uglify']
         }
       });
 
@@ -181,7 +181,7 @@ describe('ConfigWriter', function () {
     it('should allow for a configuration of the flow\'s step order', function () {
       var flow = new Flow({
         steps: {
-          js: ['uglifyjs', 'concat']
+          js: ['uglify', 'concat']
         }
       });
 
@@ -222,7 +222,7 @@ describe('ConfigWriter', function () {
     it('should augment the furnished config', function () {
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs']
+          js: ['concat', 'uglify']
         }
       });
       var config = {
@@ -269,7 +269,7 @@ describe('ConfigWriter', function () {
     it('should deduplicate blocks', function () {
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs']
+          js: ['concat', 'uglify']
         }
       });
       var doubleBlocks = [blocks[0], blocks[0]];
@@ -304,7 +304,7 @@ describe('ConfigWriter', function () {
     it('should deduplicate blocks across files', function () {
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs']
+          js: ['concat', 'uglify']
         }
       });
       var file = helpers.createFile('foo', 'app', blocks);
@@ -348,7 +348,7 @@ describe('ConfigWriter', function () {
     it('should throw with conflicting blocks', function () {
       var flow = new Flow({
         steps: {
-          js: ['concat', 'uglifyjs']
+          js: ['concat', 'uglify']
         }
       });
       var conflictBlock = {
@@ -386,7 +386,7 @@ describe('ConfigWriter', function () {
       it('should return all writers if called without block type', function () {
         var flow = new Flow({
           steps: {
-            js: ['concat', 'uglifyjs'],
+            js: ['concat', 'uglify'],
             css: ['concat']
           }
         });
