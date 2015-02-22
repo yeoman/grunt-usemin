@@ -54,7 +54,7 @@ grunt.registerTask('build', [
 ## The useminPrepare task
 
 `useminPrepare` task updates the grunt configuration to apply a configured transformation flow to tagged files (i.e. blocks).
-By default the transformation flow is composed of `concat` and `uglifyjs` for JS files, but it can be configured.
+By default the transformation flow is composed of `concat` and `uglify` for JS files, but it can be configured.
 
 ### Blocks
 Blocks are expressed as:
@@ -85,7 +85,7 @@ An example of this in completed form can be seen below:
 
 The transformation flow is made of sequential steps: each of the steps transform the file, and useminPrepare will modify the configuration in order for the described steps to be correctly performed.
 
-By default the flow is: `concat -> uglifyjs`.
+By default the flow is: `concat -> uglify`.
 Additionally to the flow, at the end, some postprocessors can be launched to further alter the configuration.
 
 Let's have an example, using the default flow (we're just going to look at the steps), `app` for input dir, `dist` for output dir,  and the following block:
@@ -186,7 +186,7 @@ The root directory from which your files will be resolved.
 ### flow
 
 Type: 'object'  
-Default: `{ steps: { js: ['concat', 'uglifyjs'], css: ['concat', 'cssmin'] }, post: {} }`
+Default: `{ steps: { js: ['concat', 'uglify'], css: ['concat', 'cssmin'] }, post: {} }`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
 You can change the `steps` or the post-processors (`post`) separately.
@@ -202,7 +202,7 @@ useminPrepare: {
     flow: {
       html: {
         steps: {
-          js: ['uglifyjs']
+          js: ['uglify']
         },
         post: {}
       }
@@ -219,7 +219,7 @@ useminPrepare: {
   options: {
     flow: {
       steps: {
-        js: ['uglifyjs']
+        js: ['uglify']
       },
       post: {}
     }
@@ -235,7 +235,7 @@ useminPrepare: {
   options: {
     flow: {
       steps: {
-        js: ['uglifyjs']
+        js: ['uglify']
       },
       post: {
         js: [{
@@ -262,7 +262,7 @@ User-defined steps and post-processors must have 2 attributes:
 * `name`: name of the `Gruntfile` attribute that holds the corresponding config
 * `createConfig` which is a 2 arguments function ( a `context` and the treated `block`)
 
-For an example of steps/post-processors, you can have a look at `concat` and `uglifyjs` in the `lib/config` directory of this repository.
+For an example of steps/post-processors, you can have a look at `concat` and `uglify` in the `lib/config` directory of this repository.
 
 ##### `createConfig`
 

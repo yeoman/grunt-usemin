@@ -10,7 +10,7 @@ var getFlowFromConfig = function (config, target) {
   var Flow = require('../lib/flow');
   var flow = new Flow({
     steps: {
-      js: ['concat', 'uglifyjs'],
+      js: ['concat', 'uglify'],
       css: ['concat', 'cssmin']
     },
     post: {}

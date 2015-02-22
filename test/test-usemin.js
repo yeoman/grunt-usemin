@@ -530,7 +530,7 @@ describe('useminPrepare', function () {
       options: {
         flow: {
           steps: {
-            js: ['uglifyjs']
+            js: ['uglify']
           },
           post: {}
         }
@@ -562,7 +562,7 @@ describe('useminPrepare', function () {
         flow: {
           html: {
             steps: {
-              js: ['uglifyjs']
+              js: ['uglify']
             },
             post: {}
           }
