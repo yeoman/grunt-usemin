@@ -402,5 +402,24 @@ describe('ConfigWriter', function () {
         assert.deepEqual(names, ['concat', 'uglify']);
       });
     });
+
+    it('should not add the same block multiple times though we call process() explicitly 2 times.', function () {
+      var flow = new Flow({steps: {js: ['concat', 'uglifyjs']}});
+
+      var file = helpers.createFile('foo', 'app', blocks);
+      var c = new ConfigWriter(flow, {input: 'app', dest: 'destination', staging: '.tmp'});
+      var config = c.process(file);
+      config = c.process(file, config);  // This second process is intentional. Details are in issue #307.
+      var expected = helpers.normalize({
+        concat: {generated: {files: [
+          {dest: '.tmp/concat/scripts/site.js', src: ['app/foo.js', 'app/bar.js', 'app/baz.js']}
+        ]}},
+        uglify: {generated: {files: [
+          {dest: 'destination/scripts/site.js', src: ['.tmp/concat/scripts/site.js']}
+        ]}}
+      });
+
+      assert.deepEqual(config, expected);
+    });
   });
 });
