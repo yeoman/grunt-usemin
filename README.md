@@ -358,7 +358,7 @@ By default `usemin` will look under `dist/html` for revved versions of `styles/m
 Type: 'Array'  
 Default: Single item array set to the value of the directory where the currently looked at file is.
 
-List of directories where we should start to look for revved version of the assets referenced in the currently looked at file.
+List of directories where we should start to look for *revved version* of the assets referenced in the currently looked at file.
 
 Example:
 ```js
@@ -369,6 +369,13 @@ usemin: {
   }
 }
 ```
+
+Suppose in `index.html` you have a reference to `/images/foo.png`, `usemin` will search for the revved version of `/images/foo.png`, say `/images/foo.12345678.png` in any directories in `assetsDirs` options.
+
+In others words, given the configuration above, `usemin` will search for the existence of one of these files:
+ * foo/bar/images/foo.12345678.png
+ * bar/images/foo.12345678.png
+
 
 #### patterns
 
@@ -400,7 +407,7 @@ So in short:
   * First one if the regexp to use. The first group is the one that is supposed to represent the file
     reference to replace
   * Second one is a logging string
-  * A function which behaves like a filter-in. Receives the matched group and must return the file 
+  * A function which behaves like a filter-in. Receives the matched group and must return the file
     path of the asset. Great functionality when you have a compiled file by a template engine.
   * A function which behaves like a filter-out. It receives the revved path of the asset and must
     return it as an url from it will be reached from web server.
