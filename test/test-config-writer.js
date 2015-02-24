@@ -404,7 +404,7 @@ describe('ConfigWriter', function () {
     });
 
     it('should not add the same block multiple times though we call process() explicitly 2 times.', function () {
-      var flow = new Flow({steps: {js: ['concat', 'uglifyjs']}});
+      var flow = new Flow({steps: {js: ['concat', 'uglify']}});
 
       var file = helpers.createFile('foo', 'app', blocks);
       var c = new ConfigWriter(flow, {input: 'app', dest: 'destination', staging: '.tmp'});
