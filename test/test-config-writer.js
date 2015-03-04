@@ -8,7 +8,7 @@ describe('ConfigWriter', function () {
   before(helpers.directory('temp'));
 
   describe('constructor', function () {
-    it('should check it\'s input');
+    it('should check its input');
 
     it('should allow for user-defined steps per block type', function () {
       var copy = {
