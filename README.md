@@ -151,6 +151,8 @@ It uses only one target: `html`, with a list of the concerned files. For example
 By default, it will consider the directory where the looked-at file is located as the 'root' filesystem. Each relative path (for example to a javascript file) will be resolved from this path. Same goes for the absolute ones.
 If you need to change the 'root' dir, use the `root` option (see below).
 
+Note that `useminPrepare` and `usemin` tasks will both throw an error if a resource is not found.
+
 ```js
 useminPrepare: {
   html: 'index.html'
@@ -268,18 +270,23 @@ The given steps or post-processors may be specified as strings (for the default 
 ### resolveSource
 
 Type: 'function'
-Default: `nil`
+Default: `undefined`
 
 This is an optional hook allowing applications to override how source urls
 are resolved to filesystem paths. This function is called with the signature
-`resolveSource(sourceUrl, fileDir, fileName, blockTarget, searchPath)`. It should
-return the path to the source file, `null` to indicate the default resolution
-rules should be used, or `false` to indicate the file cannot be resolved.
+`resolveSource(sourceUrl, fileDir, fileName, blockTarget, searchPath)`, where:
 
-`sourceUrl` is the source reference being resolved, `fileDir` and `fileName`
-are the directory and name of the file the reference was found in,
-`blockTarget` is the target path for the block the reference occurred within,
-and `searchPath` is an array of the directories that would be searched by default.
+ * `sourceUrl` is the source reference being resolved,
+ * `fileDir` and `fileName` are respectively, the directory and name of the file, the reference was found in,
+ * `blockTarget` is the target path for the block the reference occurred within,
+ * `searchPath` is an array of the directories that would be searched by default.
+
+The return value of this function should be :
+ * the path to the source file,
+ * `null` to indicate the default resolution rules should be used to resolve `sourceUrl`,
+ * `false` to indicate the file cannot be resolved, thus default resolution rules are not used.
+
+The default resolution is to search the `sourceUrl` in all provided entries in `searchPath` array.
 
 For example:
 
@@ -289,29 +296,49 @@ For example:
 'useminPrepare', {
     options: {
         resolveSource: function (sourceUrl, fileDir, fileName, blockTarget, searchPath) {
-            var fs = require('fs'), path = require('path');
-            var m = sourceUrl.match(/^\/alt-static-url\/(.*)/);
-            if(m){
-                var source = path.join("alt-static-location", m[1]);
-                if(fs.existsSync(source)) { return source; }
+            var fs = require('fs');
+            var path = require('path');
+
+            var match = sourceUrl.match(/^\/alt-static-url\/(.*)/);
+            if (match) {
+                var source = path.join("alt-static-location", match[1]);
+                // return the override source path if found on filesystem
+                // else will default to null which means that resource will be search using
+                // default behavior
+                if (fs.existsSync(source)) {
+                  return source;
+                }
+                /*
+                // You might be interested in return false if source cannot be resolved using the
+                // following code instead:
+                // it will return the overriden source path if resource found on filesystem
+                // or false if not found, meaning default behavior will not be used
+                return fs.existsSync(source) ? source : false;
+                */
             }
+            // returning null will match the default behavior for any url not matching
+            // the prefix `^/alt-static-url/`
             return null;
         }
     }
 }
 ```
 
-* To replicate the default behavior:
+* To replicate the default behavior, use the following version. It should be noted that this is only for illustration purpose, as the default behavior will be used if no `resolveSource` hook is provided, or if `resolveSource` fails to resolve the sourceUrl, hence returning null.
 
 ```js
 'useminPrepare', {
     options: {
         resolveSource: function (sourceUrl, fileDir, fileName, blockTarget, searchPath) {
-            var fs = require('fs'), path = require('path');
-            for (var i=0; i< searchPath.length; ++i) {
-              var source = path.join(searchPath[i], fname);
-              if (fs.existsSync(source)) { return source; }
+            var fs = require('fs');
+            var path = require('path');
+            for (var i = 0; i < searchPath.length; ++i) {
+                var source = path.join(searchPath[i], fname);
+                if (fs.existsSync(source)) {
+                    return source;
+                }
             }
+            // source not found, so returning false as it cannot be resolved
             return false;
         }
     }
