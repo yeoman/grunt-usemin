@@ -1,5 +1,4 @@
 'use strict';
-var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
 var helpers = require('./helpers');
@@ -116,9 +115,9 @@ describe('ConfigWriter', function () {
 
       this.warnMessage = ''; // clear log output
 
-      // create file
-      fs.mkdirSync('warn-missing');
-      fs.writeFileSync(path.join('warn-missing', 'foo.js'), 'var a=1;');
+      // mock file
+      helpers.file.mkdir('warn-missing');
+      helpers.file.write(path.join('warn-missing', 'foo.js'), 'var a=1;');
 
       // process file
       c.process(file);
