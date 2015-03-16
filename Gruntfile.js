@@ -45,5 +45,10 @@ module.exports = function (grunt) {
   grunt.loadTasks('tasks');
 
   grunt.registerTask('default', ['jshint', 'jscs', 'mochacli']);
-  grunt.registerTask('test', 'default');
+  grunt.registerTask('test', function (file) {
+    if (file) {
+      grunt.config('mochacli.all', 'test/test-' + file + '.js');
+    }
+    grunt.task.run('mochacli');
+  });
 };

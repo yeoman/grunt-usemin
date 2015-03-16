@@ -262,12 +262,23 @@ describe('FileProcessor', function () {
       assert.equal(replaced, '<script src="http://bar/foo.js"></script>');
     });
 
+    it('should not remove data attributes', function () {
+      var content = '<script src="http://bar/foo.js" data-test="ihiuhi" data-test01></script>';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<script src="http://bar/foo.js" data-test="ihiuhi" data-test01></script>');
+    });
+
+    it('should not remove non valid html attributes', function () {
+      var content = '<script src="http://bar/foo.js" test="ihiuhi" test01></script>';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<script src="http://bar/foo.js" test="ihiuhi" test01></script>');
+    });
+
     it('should not add .js to data-main for requirejs', function () {
       var content = '<script data-main="bar" src="require.js"></script>';
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<script data-main="bar" src="require.js"></script>');
     });
-
 
     describe('absolute paths', function () {
       var fp;

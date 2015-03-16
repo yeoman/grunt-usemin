@@ -16,15 +16,16 @@ describe('File', function () {
     assert.ok(file.blocks.length, 2);
   });
 
-  it('should *not* skip blank lines', function () {
-    var filename = path.join(__dirname, '/fixtures/block_with_empty_line.html');
+  it('should skip blank lines', function () {
+    var filename = __dirname + '/fixtures/block_with_empty_line.html';
     var file = new File(filename);
 
     assert.equal(1, file.blocks.length);
     assert.equal('foo.css', file.blocks[0].dest);
-    assert.equal(5, file.blocks[0].raw.length);
     assert.equal(2, file.blocks[0].src.length);
-    assert.equal('  ', file.blocks[0].indent);
+    assert.equal(4, file.blocks[0].raw.length);
+    assert.equal(' ', file.blocks[0].indent);
+    assert.equal(32, file.blocks[0].indent.charCodeAt(0));
   });
 
   it('should return the right number of blocks with the right number of lines', function () {
@@ -63,8 +64,8 @@ describe('File', function () {
     assert.equal(1, file.blocks.length);
     assert.ok(file.blocks[0].conditionalStart);
     assert.ok(file.blocks[0].conditionalEnd);
-    assert.equal('<!--[if (lt IE 9) & (!IEmobile)]>', file.blocks[0].conditionalStart);
-    assert.equal('<![endif]-->', file.blocks[0].conditionalEnd);
+    assert.equal('[if (lt IE 9) & (!IEmobile)]>', file.blocks[0].conditionalStart);
+    assert.equal('<![endif]', file.blocks[0].conditionalEnd);
   });
 
   it('should also detect block that has IE conditionals within block', function () {
@@ -73,8 +74,8 @@ describe('File', function () {
     assert.equal(1, file.blocks.length);
     assert.ok(file.blocks[0].conditionalStart);
     assert.ok(file.blocks[0].conditionalEnd);
-    assert.equal('<!--[if (lt IE 9) & (!IEmobile)]>', file.blocks[0].conditionalStart);
-    assert.equal('<![endif]-->', file.blocks[0].conditionalEnd);
+    assert.equal('[if (lt IE 9) & (!IEmobile)]>', file.blocks[0].conditionalStart);
+    assert.equal('<![endif]', file.blocks[0].conditionalEnd);
   });
 
   it('should throw an exception if it finds RequireJS blocks', function () {
@@ -166,6 +167,4 @@ describe('File', function () {
     assert.ok(file.blocks[0].media);
     assert.equal('(min-width:980px)', file.blocks[0].media);
   });
-
-
 });
