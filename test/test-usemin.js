@@ -2,8 +2,6 @@
 var path = require('path');
 var assert = require('assert');
 var grunt = require('grunt');
-var rimraf = require('rimraf');
-var mkdirp = require('mkdirp');
 var helpers = require('./helpers');
 
 grunt.task.init([]);
@@ -12,27 +10,9 @@ grunt.config.init({});
 var opts = grunt.cli.options;
 opts.redirect = !opts.silent;
 
-var directory = function directory(dir) {
-  return function directory(done) {
-    process.chdir(__dirname);
-    rimraf(dir, function (err) {
-      if (err) {
-        return done(err);
-      }
-      mkdirp(dir, function (err) {
-        if (err) {
-          return done(err);
-        }
-        process.chdir(dir);
-        done();
-      });
-    });
-  };
-};
-
 describe('usemin', function () {
   describe('absolute paths', function () {
-    beforeEach(directory('temp'));
+    beforeEach(helpers.directory('temp'));
 
     it('should replace with revved files when found', function () {
       grunt.file.mkdir('build');
@@ -125,7 +105,7 @@ describe('usemin', function () {
   });
 
   describe('relative paths', function () {
-    beforeEach(directory('temp'));
+    beforeEach(helpers.directory('temp'));
 
     it('should replace with revved files when found', function () {
       grunt.file.mkdir('build');
@@ -216,7 +196,7 @@ describe('usemin', function () {
 
   });
 
-  before(directory('temp'));
+  before(helpers.directory('temp'));
 
   it('should work on CSS files', function () {
     grunt.file.mkdir('images');
