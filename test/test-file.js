@@ -17,7 +17,7 @@ describe('File', function () {
   });
 
   it('should *not* skip blank lines', function () {
-    var filename = __dirname + '/fixtures/block_with_empty_line.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_empty_line.html');
     var file = new File(filename);
 
     assert.equal(1, file.blocks.length);
@@ -28,7 +28,7 @@ describe('File', function () {
   });
 
   it('should return the right number of blocks with the right number of lines', function () {
-    var filename = __dirname + '/fixtures/usemin.html';
+    var filename = path.join(__dirname, '/fixtures/usemin.html');
     var file = new File(filename);
     assert.equal(2, file.blocks.length);
     var b1 = file.blocks[0];
@@ -42,7 +42,7 @@ describe('File', function () {
   });
 
   it('should also detect block that use alternate search dir', function () {
-    var filename = __dirname + '/fixtures/alternate_search_path.html';
+    var filename = path.join(__dirname, '/fixtures/alternate_search_path.html');
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
     var b1 = file.blocks[0];
@@ -58,7 +58,7 @@ describe('File', function () {
   });
 
   it('should also detect block that has IE conditionals on same line', function () {
-    var filename = __dirname + '/fixtures/block_with_IEconditionals_inline.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_IEconditionals_inline.html');
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
     assert.ok(file.blocks[0].conditionalStart);
@@ -68,7 +68,7 @@ describe('File', function () {
   });
 
   it('should also detect block that has IE conditionals within block', function () {
-    var filename = __dirname + '/fixtures/block_with_IEconditionals_within.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_IEconditionals_within.html');
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
     assert.ok(file.blocks[0].conditionalStart);
@@ -78,14 +78,14 @@ describe('File', function () {
   });
 
   it('should throw an exception if it finds RequireJS blocks', function () {
-    var filename = __dirname + '/fixtures/requirejs.html';
+    var filename = path.join(__dirname, '/fixtures/requirejs.html');
     assert.throws(function () {
       new File(filename);
     }, Error);
   });
 
   it('should not take into consideration path of the source file', function () {
-    var filename = __dirname + '/fixtures/usemin.html';
+    var filename = path.join(__dirname, '/fixtures/usemin.html');
     var file = new File(filename);
 
     assert.equal(2, file.blocks.length);
@@ -95,7 +95,7 @@ describe('File', function () {
   });
 
   it('should not take into consideration source files referenced from root', function () {
-    var filename = __dirname + '/fixtures/root_path.html';
+    var filename = path.join(__dirname, '/fixtures/root_path.html');
     var file = new File(filename);
 
     assert.equal(1, file.blocks.length);
@@ -103,7 +103,7 @@ describe('File', function () {
   });
 
   it('should detect the async attribute', function () {
-    var filename = __dirname + '/fixtures/block_with_async.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_async.html');
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
     assert.ok(file.blocks[0].async);
@@ -111,7 +111,7 @@ describe('File', function () {
   });
 
   it('should throw error if non-asynced script follows a asynced one in one block', function () {
-    var filename = __dirname + '/fixtures/block_with_mixed_async.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_mixed_async.html');
     try {
       new File(filename);
     } catch (e) {
@@ -122,7 +122,7 @@ describe('File', function () {
   });
 
   it('should detect the defer attribute', function () {
-    var filename = __dirname + '/fixtures/block_with_defer.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_defer.html');
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
     assert.ok(file.blocks[0].defer);
@@ -130,7 +130,7 @@ describe('File', function () {
   });
 
   it('should not detect the defer string in file path', function () {
-    var filename = __dirname + '/fixtures/block_with_fake_defer_in_path.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_fake_defer_in_path.html');
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
     assert.ok(!file.blocks[0].defer);
@@ -138,7 +138,7 @@ describe('File', function () {
   });
 
   it('should throw error if non-deferred script follows a deferred one in one block', function () {
-    var filename = __dirname + '/fixtures/block_with_mixed_defer.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_mixed_defer.html');
     try {
       new File(filename);
     } catch (e) {
@@ -149,7 +149,7 @@ describe('File', function () {
   });
 
   it('should throw error if deferred script follows a non-deferred one in one block', function () {
-    var filename = __dirname + '/fixtures/block_with_mixed_defer.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_mixed_defer.html');
     try {
       new File(filename);
     } catch (e) {
@@ -160,7 +160,7 @@ describe('File', function () {
   });
 
   it('should detect the media attribute', function () {
-    var filename = __dirname + '/fixtures/block_with_media.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_media.html');
     var file = new File(filename);
     assert.equal(1, file.blocks.length);
     assert.ok(file.blocks[0].media);

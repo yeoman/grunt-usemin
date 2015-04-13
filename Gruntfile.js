@@ -1,12 +1,14 @@
 'use strict';
+
 module.exports = function (grunt) {
   grunt.initConfig({
+
     jshint: {
       options: {
         jshintrc: '.jshintrc'
       },
-      grunt: {
-        src: ['Gruntfile.js']
+      gruntfile: {
+        src: 'Gruntfile.js'
       },
       core: {
         src: ['lib/**/*.js', 'tasks/*.js']
@@ -20,14 +22,14 @@ module.exports = function (grunt) {
       options: {
         config: '.jscsrc'
       },
-      grunt: {
-        src: ['<%= jshint.grunt.src %>']
+      gruntfile: {
+        src: '<%= jshint.gruntfile.src %>'
       },
       core: {
-        src: ['<%= jshint.core.src %>']
+        src: '<%= jshint.core.src %>'
       },
       test: {
-        src: ['<%= jshint.test.src %>']
+        src: '<%= jshint.test.src %>'
       }
     },
 

@@ -269,7 +269,6 @@ describe('FileProcessor', function () {
     });
 
 
-
     describe('absolute paths', function () {
       var fp;
 
