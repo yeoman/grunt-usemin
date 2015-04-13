@@ -1,9 +1,19 @@
 # grunt-usemin [![Linux Build Status](https://img.shields.io/travis/yeoman/grunt-usemin/master.svg?style=flat&label=Linux%20build)](https://travis-ci.org/yeoman/grunt-usemin) [![Windows Build status](https://img.shields.io/appveyor/ci/addyosmani/grunt-usemin/master.svg?style=flat&label=Windows%20build)](https://ci.appveyor.com/project/addyosmani/grunt-usemin/branch/master)
+[![Gitter](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/yeoman/grunt-usemin)
 
 > Replaces references from non-optimized scripts, stylesheets and other assets to their optimized version within a set of HTML files (or any templates/views).
 
 **[Maintainer wanted](https://github.com/yeoman/grunt-usemin/issues/313)**
 
+## Notice
+
+`grunt-usemin` is going under some major developments to tackle the long list of issues. As they might break with `master` they are merged into [dev branch](https://github.com/yeoman/grunt-usemin/tree/dev).
+
+Currently what has been merged:
+ * support for a `resolveSource` function option
+ * warning for any missing files instead of silent errors
+ * migrate from regexps to HTML parser
+ * (current) support for multiple target
 
 ## Getting Started
 If you haven't used [grunt][] before, be sure to check out the [Getting Started][] guide, as it explains how to create a [gruntfile][Getting Started] as well as install and use grunt plugins. Once you're familiar with that process, install this plugin with this command:
