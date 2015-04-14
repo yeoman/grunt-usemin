@@ -16,8 +16,19 @@ describe('File', function () {
     assert.ok(file.blocks.length, 2);
   });
 
+  it('should ignore comments', function () {
+    var filename = path.join(__dirname, '/fixtures/block_with_comment.html');
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+    assert.equal('foo.css', file.blocks[0].dest);
+    assert.equal(2, file.blocks[0].src.length);
+    assert.equal(4, file.blocks[0].raw.length);
+    assert.equal(' ', file.blocks[0].indent);
+    assert.equal(32, file.blocks[0].indent.charCodeAt(0));
+  });
+
   it('should skip blank lines', function () {
-    var filename = __dirname + '/fixtures/block_with_empty_line.html';
+    var filename = path.join(__dirname, '/fixtures/block_with_empty_line.html');
     var file = new File(filename);
 
     assert.equal(1, file.blocks.length);
