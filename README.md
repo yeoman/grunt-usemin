@@ -291,7 +291,7 @@ Attributes:
 * `options`: options of the `Gruntfile.js` for this step (e.g. if the step is named `foo`, holds configuration of the `Gruntfile.js` associated to the attribute `foo`)
 
 ###### `block`
-The actual looked-at block, parsed an put in a structure.
+The actual looked-at block, parsed and put in a structure.
 
 Example:
 The following block
