@@ -2,8 +2,8 @@
   "name": "grunt-usemin",
   "version": "3.0.0",
   "license": "BSD-2-Clause",
-  "author": "The Yeoman Team",
-  "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views).",
+  "author": "Yeoman",
+  "description": "Replaces references to non-optimized scripts or stylesheets into a set of HTML files (or any templates/views)",
   "keywords": [
     "gruntplugin",
     "usemin",
@@ -12,14 +12,7 @@
     "css",
     "optimize"
   ],
-  "homepage": "https://github.com/yeoman/grunt-usemin",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yeoman/grunt-usemin.git"
-  },
-  "bugs": {
-    "url": "https://github.com/yeoman/grunt-usemin/issues"
-  },
+  "repository": "yeoman/grunt-usemin",
   "scripts": {
     "test": "grunt test"
   },
