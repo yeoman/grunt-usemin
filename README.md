@@ -3,27 +3,31 @@
 
 > Replaces references from non-optimized scripts, stylesheets and other assets to their optimized version within a set of HTML files (or any templates/views).
 
-**[Maintainer wanted](https://github.com/yeoman/grunt-usemin/issues/313)**
+## [Maintainer wanted](https://github.com/yeoman/grunt-usemin/issues/313)
 
 ## Notice
 
 `grunt-usemin` is going under some major developments to tackle the long list of issues. As they might break with `master` they are merged into [dev branch](https://github.com/yeoman/grunt-usemin/tree/dev).
 
 Currently what has been merged:
- * support for a `resolveSource` function option
- * warning for any missing files instead of silent errors
- * migrate from regexps to HTML parser
- * (current) support for multiple target
+
+- Support for a `resolveSource` function option
+- Warning for any missing files instead of silent errors
+- Migrate from regex to HTML parser
+- Support for multiple target *(current)*
+
 
 ## Getting Started
+
 If you haven't used [grunt][] before, be sure to check out the [Getting Started][] guide, as it explains how to create a [gruntfile][Getting Started] as well as install and use grunt plugins. Once you're familiar with that process, install this plugin with this command:
 
-```shell
-npm install grunt-usemin --save-dev
+```
+$ npm install grunt-usemin --save-dev
 ```
 
 [grunt]: http://gruntjs.com/
 [Getting Started]: http://gruntjs.com/getting-started
+
 
 ## Tasks
 
@@ -41,8 +45,8 @@ Grunt plugins which `usemin` can use to optimize files:
 
 To install these plugins, run:
 
-```shell
-npm install grunt-contrib-concat grunt-contrib-uglify grunt-contrib-cssmin grunt-filerev --save-dev
+```
+$ npm install grunt-contrib-concat grunt-contrib-uglify grunt-contrib-cssmin grunt-filerev --save-dev
 ```
 
 **Important**: _You still need to manually install and load these dependencies_.
@@ -61,12 +65,14 @@ grunt.registerTask('build', [
 ]);
 ```
 
+
 ## The useminPrepare task
 
 `useminPrepare` task updates the grunt configuration to apply a configured transformation flow to tagged files (i.e. blocks).
 By default the transformation flow is composed of `concat` and `uglify` for JS files, but it can be configured.
 
 ### Blocks
+
 Blocks are expressed as:
 
 ```html
@@ -108,6 +114,7 @@ Let's have an example, using the default flow (we're just going to look at the s
 <script src="js/views/thing-view.js"></script>
 <!-- endbuild -->
 ```
+
 The produced configuration will look like:
 
 ```js
@@ -148,7 +155,7 @@ One doesn't need to specify a concat/uglify/cssmin configuration anymore.
 
 It uses only one target: `html`, with a list of the concerned files. For example, in your `Gruntfile.js`:
 
-By default, it will consider the directory where the looked-at file is located as the 'root' filesystem. Each relative path (for example to a javascript file) will be resolved from this path. Same goes for the absolute ones.
+By default, it will consider the directory where the looked-at file is located as the 'root' filesystem. Each relative path (for example to a JavaScript file) will be resolved from this path. Same goes for the absolute ones.
 If you need to change the 'root' dir, use the `root` option (see below).
 
 ```js
@@ -174,28 +181,28 @@ useminPrepare: {
 
 ### dest
 
-Type: 'string'  
+Type: `string`  
 Default: `nil`
 
 Base directory where the transformed files should be output.
 
 ### staging
 
-Type: 'string'  
+Type: `string`  
 Default: `.tmp`
 
 Base directory where the temporary files should be output (e.g. concatenated files).
 
 ### root
 
-Type: 'string' or 'Array'  
-Default: `nil`
+Type: `string`, `array`  
+Default: `null`
 
 The root directory from which your files will be resolved.
 
 ### flow
 
-Type: 'object'  
+Type: `object`  
 Default: `{ steps: { js: ['concat', 'uglify'], css: ['concat', 'cssmin'] }, post: {} }`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
@@ -280,6 +287,7 @@ The `createConfig` function is responsible for creating (or updating) the config
 It takes 2 arguments ( a `context` and the treated `block`), and returns a configuration object.
 
 ###### `context`
+
 The `context` object represent the current context the step/post-processor is running in. As the step/post-processor is a step of a flow, it must be listed in the input files and directory it must write a configuration for, potentially the already existing configuration. It must also indicate to the other steps/post-processor which files it will output in which directory. All this information is held by the `context` object.
 Attributes:
 
@@ -291,6 +299,7 @@ Attributes:
 * `options`: options of the `Gruntfile.js` for this step (e.g. if the step is named `foo`, holds configuration of the `Gruntfile.js` associated to the attribute `foo`)
 
 ###### `block`
+
 The actual looked-at block, parsed and put in a structure.
 
 Example:
@@ -365,12 +374,13 @@ By default `usemin` will look under `dist/html` for revved versions of `styles/m
 
 #### assetsDirs
 
-Type: 'Array'  
+Type: `array`  
 Default: Single item array set to the value of the directory where the currently looked at file is.
 
 List of directories where we should start to look for *revved version* of the assets referenced in the currently looked at file.
 
 Example:
+
 ```js
 usemin: {
   html: 'build/index.html',
@@ -389,11 +399,11 @@ In others words, given the configuration above, `usemin` will search for the exi
 
 #### patterns
 
-Type: 'Object'  
-Default: Empty
+Type: `object`  
+Default: `{}`
 
-Allows for user defined pattern to replace reference to files. For example, let's suppose that you want to replace
-all references to `'image.png'` in your Javascript files by the revved version of `image.png` found below the directory `images`.
+Allows for user defined pattern to replace reference to files. For example, let's suppose that you want to replace all references to `'image.png'` in your Javascript files by the revved version of `image.png` found below the directory `images`.
+
 By specifying something along the lines of:
 
 ```js
@@ -451,8 +461,8 @@ usemin: {
 
 #### revmap
 
-Type: 'String'  
-Default: Empty
+Type: `string`  
+Default: `''`
 
 Indicate the location of a map file, as produced by `grunt-filerev` for example. This map file is a simple JSON file, holding an object
 which attributes are the original file and associated value is the transformed file. For example:
@@ -462,15 +472,18 @@ which attributes are the original file and associated value is the transformed f
   "foo.png": "foo.1234.png"
 }
 ```
+
 This map will be used instead of looking for file on the disk.
 
 ## On directories
+
 The main difference to be kept in mind, regarding directories and tasks, is that for `useminPrepare`, the directories needs to indicate the input,
 transient and output path needed to output the right configuration for the processors pipeline,
 whereas in the case of `usemin` it only reflects the output paths, as all the needed assets should have
 been output to the destination dir (either transformed or just copied)
 
 ### useminPrepare
+
 `useminPrepare` is trying to prepare the right configuration for the pipeline of actions that are going to be
 applied on the blocks (for example concatenation and uglify-cation). As such it needs to have the input
 directory, temporary directories (staging) and destination directory.
@@ -480,8 +493,8 @@ to the directory where the html/css file examined is located (can be overridden 
 generally through `root` option).
 Relative files references are also looked at from location of the examined file, unless stated otherwise.
 
-
 ### usemin
+
 `usemin` target replaces references to images, scripts, css, ... in the furnished files (html, css, ...).
 These references may be either absolute (i.e. `/images/foo.png`) or relative (i.e. `image/foo.png`
 or `../images/foo.png`).
@@ -539,22 +552,21 @@ This will, on the fly, generate the following configuration:
 
 ```js
 {
-  concat:
-  {
+  concat: {
     '.tmp/concat/assets/js/optimized.js': [
       'app/assets/js/foo.js',
       'app/assets/js/bar.js'
     ]
   },
 
-  uglify:
-  {
+  uglify: {
     'dist/assets/js/optimized.js': ['.tmp/concat/assets/js/optimized.js']
   }
 }
 ```
 
 ### HTML file and asset files in sibling directories
+
 ```
 app
 |
@@ -611,6 +623,7 @@ This will, on the fly, generate the following configuration:
   }
 }
 ```
+
 
 ## License
 
