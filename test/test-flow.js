@@ -73,7 +73,7 @@ describe('ConfigWriter', function () {
     assert.deepEqual(flow.steps('js'), ['foo', 'bar']);
   });
 
-  it('should allow to set steps', function () {
+  it('should allow to set post-processors', function () {
     var flow = new Flow({
       post: {
         html: ['bar']
@@ -83,6 +83,45 @@ describe('ConfigWriter', function () {
       js: ['foo', 'bar']
     });
     assert.deepEqual(flow.post('js'), ['foo', 'bar']);
+  });
+
+  it('should rename uglifyjs to uglify in steps', function () {
+    var flow = new Flow({});
+    flow.setSteps({
+      js: ['uglifyjs']
+    });
+
+    assert.deepEqual(flow.steps('js'), ['uglify']);
+  });
+
+  it('should rename uglifyjs to uglify in steps given to contructor', function () {
+    var flow = new Flow({
+      steps: {
+        js: ['uglifyjs']
+      }
+    });
+
+    assert.deepEqual(flow.steps('js'), ['uglify']);
+  });
+
+  it('should rename uglifyjs to uglify in post-processors', function () {
+    var flow = new Flow({});
+    flow.setPost({
+      js: ['uglifyjs']
+
+    });
+
+    assert.deepEqual(flow.post('js'), ['uglify']);
+  });
+
+  it('should rename uglifyjs to uglify in post-processors given to contructor', function () {
+    var flow = new Flow({
+      post: {
+        js: ['uglifyjs']
+      }
+    });
+
+    assert.deepEqual(flow.post('js'), ['uglify']);
   });
 
 });
