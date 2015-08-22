@@ -3,7 +3,7 @@ var assert = require('assert');
 var helpers = require('./helpers');
 var Flow = require('../lib/flow.js');
 
-describe('ConfigWriter', function () {
+describe('Flow', function () {
   before(helpers.directory('temp'));
 
   it('should allow steps per block type', function () {
