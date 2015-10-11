@@ -6,16 +6,12 @@ version: "{build}"
 
 clone_depth: 10
 
-# Fix line endings on Windows
-init:
-  - git config --global core.autocrlf true
-
 # What combinations to test
 environment:
   matrix:
-    - nodejs_version: 1
-    - nodejs_version: 0.12
-    - nodejs_version: 0.10
+    - nodejs_version: '4'
+    - nodejs_version: '0.12'
+    - nodejs_version: '0.10'
 
 install:
   - ps: Install-Product node $env:nodejs_version
