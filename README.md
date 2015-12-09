@@ -176,28 +176,28 @@ useminPrepare: {
 
 ### dest
 
-Type: 'string'  
+Type: 'string'
 Default: `nil`
 
 Base directory where the transformed files should be output.
 
 ### staging
 
-Type: 'string'  
+Type: 'string'
 Default: `.tmp`
 
 Base directory where the temporary files should be output (e.g. concatenated files).
 
 ### root
 
-Type: 'string' or 'Array'  
+Type: 'string' or 'Array'
 Default: `nil`
 
 The root directory from which your files will be resolved.
 
 ### flow
 
-Type: 'object'  
+Type: 'object'
 Default: `{ steps: { js: ['concat', 'uglify'], css: ['concat', 'cssmin'] }, post: {} }`
 
 This allow you to configure the workflow, either on a per-target basis, or for all the targets.
@@ -445,7 +445,7 @@ By default `usemin` will look under `dist/html` for revved versions of `styles/m
 
 #### assetsDirs
 
-Type: 'Array'  
+Type: 'Array'
 Default: Single item array set to the value of the directory where the currently looked at file is.
 
 List of directories where we should start to look for *revved version* of the assets referenced in the currently looked at file.
@@ -469,7 +469,7 @@ In others words, given the configuration above, `usemin` will search for the exi
 
 #### patterns
 
-Type: 'Object'  
+Type: 'Object'
 Default: Empty
 
 Allows for user defined pattern to replace reference to files. For example, let's suppose that you want to replace
@@ -504,7 +504,7 @@ So in short:
 
 #### blockReplacements
 
-Type: 'Object'  
+Type: 'Object'
 Default: `{ css: function (block) { ... }, js: function (block) { ... } }`
 
 This lets you define how blocks get their content replaced. Useful to have block types other that `css` and `js`.
@@ -531,7 +531,7 @@ usemin: {
 
 #### revmap
 
-Type: 'String'  
+Type: 'String'
 Default: Empty
 
 Indicate the location of a map file, as produced by `grunt-filerev` for example. This map file is a simple JSON file, holding an object
@@ -543,6 +543,40 @@ which attributes are the original file and associated value is the transformed f
 }
 ```
 This map will be used instead of looking for file on the disk.
+
+#### prefix
+
+Type: 'String'
+Default: Empty
+
+Add a prefix to the generated paths.
+
+For example:
+
+```js
+{
+  "usemin": {
+    "options": {
+      "prefix": "cdn.example.com"
+    }
+  }
+}
+```
+
+The following block
+
+```html
+<!-- build:js scripts/site.js -->
+<script src="foo.js"></script>
+<script src="bar.js"></script>
+<!-- endbuild -->
+```
+
+Will result in:
+
+```html
+<script src="cdn.example.com/scripts/site.js"></script>
+```
 
 ## On directories
 The main difference to be kept in mind, regarding directories and tasks, is that for `useminPrepare`, the directories needs to indicate the input,

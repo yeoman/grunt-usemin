@@ -126,7 +126,7 @@ module.exports = function (grunt) {
     var revvedfinder = new RevvedFinder(locator);
     var handler = new FileProcessor(type, patterns, revvedfinder, function (msg) {
       grunt.verbose.writeln(msg);
-    }, blockReplacements);
+    }, blockReplacements, options);
 
     this.files.forEach(function (fileObj) {
       var files = grunt.file.expand({

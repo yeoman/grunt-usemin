@@ -124,6 +124,34 @@ describe('FileProcessor', function () {
       assert.equal(result, '  custom replacement for foo.css');
     });
 
+    it('should prefix paths for default replacement functions', function () {
+      var fp = new FileProcessor('html', [], {}, function () {}, {}, {
+        prefix: 'custom/prefix/'
+      });
+      var block = {
+        dest: 'foo.css',
+        type: 'css',
+        src: ['bar.css'],
+        indent: '  '
+      };
+
+      var result = fp.replaceWith(block);
+      assert.equal(result, '  <link rel="stylesheet" href="custom/prefix/foo.css">');
+
+      fp = new FileProcessor('html', [], {}, function () {}, {}, {
+        prefix: 'custom/prefix/'
+      });
+      block = {
+        dest: 'foo.js',
+        type: 'js',
+        src: ['bar.js'],
+        indent: '  '
+      };
+
+      result = fp.replaceWith(block);
+      assert.equal(result, '  <script src="custom/prefix/foo.js"><\/script>');
+    });
+
     it('should preserve defer attribute (JS)', function () {
       var fp = new FileProcessor('html', [], {});
       var block = {
