@@ -1,4 +1,6 @@
 # grunt-usemin [![Linux Build Status](https://img.shields.io/travis/yeoman/grunt-usemin/master.svg?style=flat&label=Linux%20build)](https://travis-ci.org/yeoman/grunt-usemin) [![Windows Build status](https://img.shields.io/appveyor/ci/addyosmani/grunt-usemin/master.svg?style=flat&label=Windows%20build)](https://ci.appveyor.com/project/addyosmani/grunt-usemin/branch/master)
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/yeoman/grunt-usemin.svg)](https://greenkeeper.io/)
 [![Gitter](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/yeoman/yeoman)
 
 > Replaces references from non-optimized scripts, stylesheets and other assets to their optimized version within a set of HTML files (or any templates/views).
